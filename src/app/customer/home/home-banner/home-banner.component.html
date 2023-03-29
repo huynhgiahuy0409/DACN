@@ -1,0 +1,44 @@
+<div class="home-banner">
+    <div class="home-banner__background-image">
+    </div>
+    <div class="banner-filter-container grid wide">
+        <div class="welcome-message">
+            <h2>{{selectedTab.title}}</h2>
+            <p>{{selectedTab.subtitle}}</p>
+        </div>
+        <div class="banner_filter">
+            <div class="tab-list box-shadow-bh-1">
+                <div class="tab-item" *ngFor="let i of tabList; index as idx"
+                    [class.active]="selectedTab.idx === idx" [ngSwitch]="i.icon"
+                    (click)="sltTab(i)">
+                    <div class="d-flex-bh align-items-center-bh">
+                        <div class="icon-wrapper mr-r-10">
+                            <ng-container *ngSwitchCase="'0'">
+                                <ng-container
+                                    [ngTemplateOutlet]="hotelAndHomeSvg"></ng-container>
+                            </ng-container>
+                            <ng-container *ngSwitchCase="'1'">
+                                <ng-container
+                                    [ngTemplateOutlet]="privateHomeSvg"></ng-container>
+                            </ng-container>
+                        </div>
+                        <span>
+                            {{i.label}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-content"></div>
+            <div class="search__wrapper">
+                <button mat-raised-button color="primary">Tìm kiếm</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+<ng-template #hotelAndHomeSvg>
+    <app-hotel-home-svg></app-hotel-home-svg>
+</ng-template>
+<ng-template #privateHomeSvg>
+    <app-private-home-svg></app-private-home-svg>
+</ng-template>
