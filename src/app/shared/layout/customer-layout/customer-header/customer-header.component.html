@@ -1,7 +1,7 @@
 <div class="header-container">
-    <div class="logo-wrapper">
+    <a class="logo-wrapper" routerLink="/home">
         <img src="https://cdn6.agoda.net/images/kite-js/logo/agoda/color-default.svg" alt="">
-    </div>
+    </a>
     <div class="d-flex-bh flex-row-reverse-bh align-items-center-bh">
         <div class="button-group d-flex-bh">
             <div class="wrap-fit">
@@ -11,9 +11,9 @@
                 <button mat-stroked-button color="primary">Tạo tài khoản</button>
             </div>
         </div>
-        <div class="cart-wrapper ">
+        <a class="cart-wrapper " routerLink="/cart">
             <app-cart-svg></app-cart-svg>
-        </div>
+        </a>
         <div class="lease-wrapper">
             <button mat-stroked-button color="accent" class="btn btn-l">Đăng ký cho thuê</button>
         </div>

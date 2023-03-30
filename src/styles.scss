@@ -4,12 +4,13 @@
 @import "./assets/my-style/grid.scss";
 @import "./assets/my-style/layout.scss";
 
-
 :root {
   --primary-color: #5390f9;
   --accent-color: #ff557d;
   --primary-text-color: black;
   --white-color: #fff;
+  --secondary-color: rgb(213, 217, 226);
+  --secondary-text: rgb(112, 112, 112);
 }
 
 // reset

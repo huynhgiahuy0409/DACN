@@ -17,6 +17,10 @@ const routes: Routes = [
         redirectTo: 'home',
         pathMatch: 'full'
       },
+      {
+        path: 'cart',
+        loadChildren: () => import('./cart/cart.module').then((m) => m.CartModule)
+      }
     ],
   },
 ];
@@ -25,4 +29,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CustomerRoutingModule {}
+export class CustomerRoutingModule { }

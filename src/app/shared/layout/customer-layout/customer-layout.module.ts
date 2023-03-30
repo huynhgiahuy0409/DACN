@@ -4,10 +4,11 @@ import { CustomerHeaderComponent } from './customer-header/customer-header.compo
 import { CustomerFooterComponent } from './customer-footer/customer-footer.component';
 import { AngularMaterialModule } from '../../angular-material/angular-material.module';
 import { SvgAsTemplateModule } from '../../svg-as-template/svg-as-template.module';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [CustomerHeaderComponent, CustomerFooterComponent],
-  imports: [CommonModule, AngularMaterialModule, SvgAsTemplateModule],
+  imports: [CommonModule, AngularMaterialModule, SvgAsTemplateModule, RouterModule],
   exports: [CustomerHeaderComponent, CustomerFooterComponent],
 })
 export class CustomerLayoutModule { }
