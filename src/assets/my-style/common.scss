@@ -203,19 +203,6 @@
 }
 
 .popover-wrapper::after {
-<<<<<<< HEAD
-  content: "";
-  position: absolute;
-  border-bottom: 15px solid var(--white-color);
-  border-left: 15px solid transparent;
-  border-right: 15px solid transparent;
-  width: 0;
-  height: 0;
-  top: 0;
-  right: 0;
-  transform: translate(-12px, -15px);
-  z-index: 9999;
-=======
     content: "";
     position: absolute;
     border-bottom: 15px solid var(--white-color);
@@ -227,7 +214,6 @@
     right: 0;
     transform: translate(-12px, -15px);
     z-index: 9999;
->>>>>>> huy
 }
 
 .popover--bg-clr {
@@ -479,17 +465,10 @@ svg.booking-oto-rating-stars__hollow-star {
 
 //image
 .fix-img {
-<<<<<<< HEAD
-  position: relative;
-  max-width: 100%;
-  padding-bottom: 100%;
-  overflow: hidden;
-=======
     position: relative;
     max-width: 100%;
     padding-bottom: 100%;
     overflow: hidden;
->>>>>>> huy
 }
 
 .fix-img img {
@@ -553,22 +532,9 @@ svg.booking-oto-rating-stars__hollow-star {
   font-size: 150%;
 }
 
-<<<<<<< HEAD
-.bg-black {
-  background-color: #000;
-}
-
-.bg-gemstone {
-  background-color: var(--gemstone-color);
-}
-
-.mb-0 {
-  margin-bottom: 0 !important;
-=======
 
 .mb-0 {
     margin-bottom: 0 !important;
->>>>>>> huy
 }
 
 .mt-0 {
@@ -583,16 +549,6 @@ svg.booking-oto-rating-stars__hollow-star {
 }
 
 .group-label span {
-<<<<<<< HEAD
-  font-size: 1.2rem;
-  color: #6e6e6e;
-  background: #e8eaef;
-  padding: 0.3rem 0.75rem;
-  margin-right: 8px;
-  margin-bottom: 8px;
-  font-weight: 600;
-  border-radius: 4px;
-=======
     font-size: 1.2rem;
     color: #6e6e6e;
     background: #e8eaef;
@@ -601,7 +557,6 @@ svg.booking-oto-rating-stars__hollow-star {
     margin-bottom: 8px;
     font-weight: 600;
     border-radius: 4px;
->>>>>>> huy
 }
 
 .ml-10 {
@@ -719,23 +674,6 @@ svg.booking-oto-rating-stars__hollow-star {
 }
 
 .form-default .line-form {
-<<<<<<< HEAD
-  margin-bottom: 20px;
-}
-
-.form-default .line-form label.label {
-  font-size: 1.4rem;
-  font-weight: 500;
-  margin-bottom: 10px;
-  display: inline-block;
-}
-
-.form-default .line-form p.info {
-  margin-top: 10px;
-  margin-bottom: 0;
-  font-size: 1.3rem;
-  color: #a9aaad;
-=======
     margin-bottom: 20px;
 }
 
@@ -751,7 +689,6 @@ svg.booking-oto-rating-stars__hollow-star {
     margin-bottom: 0;
     font-size: 1.3rem;
     color: #a9aaad;
->>>>>>> huy
 }
 
 .form-default .line-form .wrap-input {
