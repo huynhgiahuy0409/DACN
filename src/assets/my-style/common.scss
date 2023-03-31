@@ -1,3 +1,14 @@
+// background color
+.white-bg{
+    background-color: #fff;
+}
+.primary-bg{
+    background-color: var(--primary-color);
+}
+//color
+.primary-color{
+    color: var(--primary-color);
+}
 .mat-stroked-button.mat-primary {
   border-color: var(--primary-color);
 }
@@ -11,7 +22,9 @@
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
     0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
-
+.box-shadow-bh-1{
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 3px;
+}
 // default button
 .btn {
   border-radius: 3px;
@@ -24,26 +37,11 @@
   margin: 5px;
   display: inline-block;
 }
-
-// ::ng-deep .mat-stroked-button.mat-accent{
-//     border-color: var(--accent-color);
-// }
-
-.btn.btn-secondary {
-  color: #fff !important;
-  background-color: #141414 !important;
-  box-shadow: none;
+.btn-primary{
+    background-color: var(--primary-color) !important;
+    color: #fff !important
 }
 
-.btn.btn-primary {
-  color: #fff;
-  background-color: var(--primary-color);
-  box-shadow: none;
-}
-
-.btn.btn-raised:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
 
 .btn.btn-m {
   height: 40px;
@@ -205,6 +203,7 @@
 }
 
 .popover-wrapper::after {
+<<<<<<< HEAD
   content: "";
   position: absolute;
   border-bottom: 15px solid var(--white-color);
@@ -216,6 +215,19 @@
   right: 0;
   transform: translate(-12px, -15px);
   z-index: 9999;
+=======
+    content: "";
+    position: absolute;
+    border-bottom: 15px solid var(--white-color);
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    width: 0;
+    height: 0;
+    top: 0;
+    right: 0;
+    transform: translate(-12px, -15px);
+    z-index: 9999;
+>>>>>>> huy
 }
 
 .popover--bg-clr {
@@ -467,10 +479,17 @@ svg.booking-oto-rating-stars__hollow-star {
 
 //image
 .fix-img {
+<<<<<<< HEAD
   position: relative;
   max-width: 100%;
   padding-bottom: 100%;
   overflow: hidden;
+=======
+    position: relative;
+    max-width: 100%;
+    padding-bottom: 100%;
+    overflow: hidden;
+>>>>>>> huy
 }
 
 .fix-img img {
@@ -534,6 +553,7 @@ svg.booking-oto-rating-stars__hollow-star {
   font-size: 150%;
 }
 
+<<<<<<< HEAD
 .bg-black {
   background-color: #000;
 }
@@ -544,6 +564,11 @@ svg.booking-oto-rating-stars__hollow-star {
 
 .mb-0 {
   margin-bottom: 0 !important;
+=======
+
+.mb-0 {
+    margin-bottom: 0 !important;
+>>>>>>> huy
 }
 
 .mt-0 {
@@ -558,6 +583,7 @@ svg.booking-oto-rating-stars__hollow-star {
 }
 
 .group-label span {
+<<<<<<< HEAD
   font-size: 1.2rem;
   color: #6e6e6e;
   background: #e8eaef;
@@ -566,6 +592,16 @@ svg.booking-oto-rating-stars__hollow-star {
   margin-bottom: 8px;
   font-weight: 600;
   border-radius: 4px;
+=======
+    font-size: 1.2rem;
+    color: #6e6e6e;
+    background: #e8eaef;
+    padding: 0.3rem 0.75rem;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    border-radius: 4px;
+>>>>>>> huy
 }
 
 .ml-10 {
@@ -683,6 +719,7 @@ svg.booking-oto-rating-stars__hollow-star {
 }
 
 .form-default .line-form {
+<<<<<<< HEAD
   margin-bottom: 20px;
 }
 
@@ -698,6 +735,23 @@ svg.booking-oto-rating-stars__hollow-star {
   margin-bottom: 0;
   font-size: 1.3rem;
   color: #a9aaad;
+=======
+    margin-bottom: 20px;
+}
+
+.form-default .line-form label.label {
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.form-default .line-form p.info {
+    margin-top: 10px;
+    margin-bottom: 0;
+    font-size: 1.3rem;
+    color: #a9aaad;
+>>>>>>> huy
 }
 
 .form-default .line-form .wrap-input {

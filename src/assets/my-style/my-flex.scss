@@ -3,10 +3,17 @@
 }
 .d-flex-bh .wrap-fit{
     flex: 1;
-    padding-right: 10px;
+    margin-right: 10px;
+}
+.wrap-fit{
+    flex: 1;
+    margin-right: 10px;
+}
+.wrap-fit:last-child{
+    margin-right: unset;
 }
 .d-flex-bh .wrap-fit:last-child{
-    padding-right: unset;
+    margin-right: unset;
 }
 // direction flex
 .d-flex-bh.flex-row-bh {
