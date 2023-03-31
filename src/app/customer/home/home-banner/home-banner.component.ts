@@ -31,14 +31,49 @@ export class HomeBannerComponent implements OnInit {
         'Nhận giá tốt nhất trên hơn 2,000,000 bất động sản trên toàn thế giới',
     },
   ];
-  selectedTab: TabItem;
+  selectedTab: TabItem = this.tabList[0];
   constructor() {
-    this.selectedTab = this.tabList[0];
   }
-
+  stayTypes = [
+    {
+      idx: 0,
+      label: "Ở qua đêm"
+    }, 
+    {
+      idx: 1,
+      label: "Ở trong ngày"
+    }, 
+  ]
+  isToggleOccupancy = false
+  occupancyOptions = [
+    {
+      label: "Phòng",
+      subLabel: "",
+      value: 1,
+    },
+    {
+      label: "Người lớn",
+      subLabel: "Lớn hơn hoặc bằng 18 tuổi",
+      value: 2,
+    },
+    {
+      label: "Trẻ em",
+      subLabel: "Từ 0 tới 17 tuổi",
+      value: 0,
+    },
+  ]
+  selectedStayType = this.stayTypes[0]
   ngOnInit(): void {}
 
   sltTab(tab: TabItem) {
     this.selectedTab = tab;
+  }
+  sltStayType(stayType: any){
+    this.selectedStayType = stayType
+  }
+  a(i: number){
+    i = i + 1
+    console.log(i);
+    
   }
 }

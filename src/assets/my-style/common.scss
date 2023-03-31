@@ -1,3 +1,14 @@
+// background color
+.white-bg{
+    background-color: #fff;
+}
+.primary-bg{
+    background-color: var(--primary-color);
+}
+//color
+.primary-color{
+    color: var(--primary-color);
+}
 .mat-stroked-button.mat-primary {
     border-color: var(--primary-color);
 }
@@ -26,26 +37,11 @@
     margin: 5px;
     display: inline-block;
 }
-
-// ::ng-deep .mat-stroked-button.mat-accent{
-//     border-color: var(--accent-color);
-// }
-
-.btn.btn-secondary {
-    color: #fff !important;
-    background-color: #141414 !important;
-    box-shadow: none;
+.btn-primary{
+    background-color: var(--primary-color) !important;
+    color: #fff !important
 }
 
-.btn.btn-primary {
-    color: #fff;
-    background-color: var(--gemstone-color);
-    box-shadow: none;
-}
-
-.btn.btn-raised:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
 
 .btn.btn-m {
     height: 40px;
@@ -209,7 +205,7 @@
 .popover-wrapper::after {
     content: "";
     position: absolute;
-    border-bhttom: 15px solid var(--white-color);
+    border-bottom: 15px solid var(--white-color);
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
     width: 0;
@@ -471,7 +467,7 @@ svg.booking-oto-rating-stars__hollow-star {
 .fix-img {
     position: relative;
     max-width: 100%;
-    padding-bhttom: 100%;
+    padding-bottom: 100%;
     overflow: hidden;
 }
 
@@ -536,16 +532,9 @@ svg.booking-oto-rating-stars__hollow-star {
     font-size: 150%;
 }
 
-.bg-black {
-    background-color: #000;
-}
-
-.bg-gemstone {
-    background-color: var(--gemstone-color);
-}
 
 .mb-0 {
-    margin-bhttom: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 .mt-0 {
@@ -565,7 +554,7 @@ svg.booking-oto-rating-stars__hollow-star {
     background: #e8eaef;
     padding: 0.3rem 0.75rem;
     margin-right: 8px;
-    margin-bhttom: 8px;
+    margin-bottom: 8px;
     font-weight: 600;
     border-radius: 4px;
 }
@@ -685,19 +674,19 @@ svg.booking-oto-rating-stars__hollow-star {
 }
 
 .form-default .line-form {
-    margin-bhttom: 20px;
+    margin-bottom: 20px;
 }
 
 .form-default .line-form label.label {
     font-size: 1.4rem;
     font-weight: 500;
-    margin-bhttom: 10px;
+    margin-bottom: 10px;
     display: inline-block;
 }
 
 .form-default .line-form p.info {
     margin-top: 10px;
-    margin-bhttom: 0;
+    margin-bottom: 0;
     font-size: 1.3rem;
     color: #a9aaad;
 }
