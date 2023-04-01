@@ -264,7 +264,7 @@
             </div>
         </div>
     </div>
-    <div class="overlay-bh" #overlay *ngIf="overlayState.isShow"></div>
+    <div class="overlay-bh" *ngIf="overlayState.isShow" (click)="onClickOverlay()"></div>
 </div>
 
 <ng-template #hotelAndHomeSvg>

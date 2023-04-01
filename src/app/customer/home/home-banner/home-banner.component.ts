@@ -211,6 +211,10 @@ export class HomeBannerComponent implements OnInit {
       this.isEnableOccupancy = false;
     }
   }
+  onClickOverlay(){
+    this.overlayState.isShow = false
+    this.overlayState.currElement = undefined
+  }
   toggleOccupancy(element: any) {
     if (this.overlayState.currElement !== element) {
       this.overlayState.currElement = element;
@@ -229,5 +233,19 @@ export class HomeBannerComponent implements OnInit {
       result.push(index + '');
     }
     return result;
+  }
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: Event) {
+    // Gọi hàm xử lý sự kiện scroll ở đây
+    if(this.occupancyPopup){
+      const occupancyPopupTop =
+      this.occupancyPopup.nativeElement.getBoundingClientRect().top;
+      console.log(occupancyPopupTop);
+      if(occupancyPopupTop < 0){
+        this.overlayState.currElement = undefined;
+        this.overlayState.isShow = false
+        this.isEnableOccupancy = false
+      }
+    }
   }
 }
