@@ -1,13 +1,13 @@
 // background color
-.white-bg{
-    background-color: #fff;
+.white-bg {
+  background-color: #fff;
 }
-.primary-bg{
-    background-color: var(--primary-color);
+.primary-bg {
+  background-color: var(--primary-color);
 }
 //color
-.primary-color{
-    color: var(--primary-color);
+.primary-color {
+  color: var(--primary-color);
 }
 .mat-stroked-button.mat-primary {
   border-color: var(--primary-color);
@@ -22,8 +22,8 @@
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
     0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
 }
-.box-shadow-bh-1{
-    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 3px;
+.box-shadow-bh-1 {
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 3px;
 }
 // default button
 .btn {
@@ -37,11 +37,10 @@
   margin: 5px;
   display: inline-block;
 }
-.btn-primary{
-    background-color: var(--primary-color) !important;
-    color: #fff !important
+.btn-primary {
+  background-color: var(--primary-color) !important;
+  color: #fff !important;
 }
-
 
 .btn.btn-m {
   height: 40px;
@@ -68,7 +67,7 @@
 
 // Text
 .primary-text {
-  color: var(--gemstone-color) !important;
+  color: var(--primary-color) !important;
 }
 
 .sank-text {
@@ -203,17 +202,17 @@
 }
 
 .popover-wrapper::after {
-    content: "";
-    position: absolute;
-    border-bottom: 15px solid var(--white-color);
-    border-left: 15px solid transparent;
-    border-right: 15px solid transparent;
-    width: 0;
-    height: 0;
-    top: 0;
-    right: 0;
-    transform: translate(-12px, -15px);
-    z-index: 9999;
+  content: "";
+  position: absolute;
+  border-bottom: 15px solid var(--white-color);
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  width: 0;
+  height: 0;
+  top: 0;
+  right: 0;
+  transform: translate(-12px, -15px);
+  z-index: 9999;
 }
 
 .popover--bg-clr {
@@ -465,10 +464,10 @@ svg.booking-oto-rating-stars__hollow-star {
 
 //image
 .fix-img {
-    position: relative;
-    max-width: 100%;
-    padding-bottom: 100%;
-    overflow: hidden;
+  position: relative;
+  max-width: 100%;
+  padding-bottom: 100%;
+  overflow: hidden;
 }
 
 .fix-img img {
@@ -532,9 +531,8 @@ svg.booking-oto-rating-stars__hollow-star {
   font-size: 150%;
 }
 
-
 .mb-0 {
-    margin-bottom: 0 !important;
+  margin-bottom: 0 !important;
 }
 
 .mt-0 {
@@ -549,14 +547,14 @@ svg.booking-oto-rating-stars__hollow-star {
 }
 
 .group-label span {
-    font-size: 1.2rem;
-    color: #6e6e6e;
-    background: #e8eaef;
-    padding: 0.3rem 0.75rem;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    font-weight: 600;
-    border-radius: 4px;
+  font-size: 1.2rem;
+  color: #6e6e6e;
+  background: #e8eaef;
+  padding: 0.3rem 0.75rem;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  font-weight: 600;
+  border-radius: 4px;
 }
 
 .ml-10 {
@@ -660,9 +658,31 @@ svg.booking-oto-rating-stars__hollow-star {
   text-align: end !important;
 }
 
-.fw-bhld {
+.fw-bold {
   font-weight: bold;
 }
+
+.fs-110 {
+  font-size: 110%;
+}
+
+.w-50 {
+  width: 50%;
+}
+
+.divider-line {
+  border-bottom: 1px solid rgb(213, 217, 226);
+}
+
+.justify-content-end {
+  justify-content: end;
+}
+
+.text-check {
+  color: green;
+}
+
+//end hieu custom
 
 // form
 .form-default {
@@ -674,21 +694,21 @@ svg.booking-oto-rating-stars__hollow-star {
 }
 
 .form-default .line-form {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .form-default .line-form label.label {
-    font-size: 1.4rem;
-    font-weight: 500;
-    margin-bottom: 10px;
-    display: inline-block;
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 10px;
+  display: inline-block;
 }
 
 .form-default .line-form p.info {
-    margin-top: 10px;
-    margin-bottom: 0;
-    font-size: 1.3rem;
-    color: #a9aaad;
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: 1.3rem;
+  color: #a9aaad;
 }
 
 .form-default .line-form .wrap-input {
@@ -724,4 +744,8 @@ svg.booking-oto-rating-stars__hollow-star {
 
 .model-actions {
   padding: 0 20px 20px;
+}
+
+.hide {
+  display: none;
 }

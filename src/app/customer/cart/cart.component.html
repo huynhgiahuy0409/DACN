@@ -44,10 +44,10 @@
                 <div class="w-fit divider-line"></div>
                 <div class="d-flex-bh flex-wrap-bh w-fit" [class.bg-chosen]="isChecked(item.id)">
                     <div class="item-selection">
-                        <mat-checkbox (change)="onChangeOption($event)" [id]="convertToString(item.id)">{{item.units}} X
+                        <mat-checkbox (change)="onChangeOption($event)" [id]="convertToString(item.id)" class="cart-checkbox">{{item.units}} X
                             {{item.special_feature}}</mat-checkbox>
-                        <p class="text-secondary item-daterange">{{getDateInString(item.start_date)}} —
-                            {{getDateInString(item.end_date)}}</p>
+                        <p class="text-secondary item-daterange">{{getDateInPlain(item.start_date)}} —
+                            {{getDateInPlain(item.end_date)}}</p>
                     </div>
                     <div class="item-price text-end">
                         <p class="text-price">{{formatMoney(item.price)}}</p>
@@ -67,7 +67,7 @@
                 <div class="total-price__item">
                     <p>{{formatMoney(getTotalPrice())}}</p>
                 </div>
-                <button class="w-fit btn btn-primary btn-continue bx__shadow" [disabled]="chosenItems.length<1">Tiếp
+                <button class="w-fit btn btn-primary btn-continue bx__shadow" [disabled]="chosenItems.length<1" routerLink="/checkout">Tiếp
                     theo</button>
             </div>
         </div>

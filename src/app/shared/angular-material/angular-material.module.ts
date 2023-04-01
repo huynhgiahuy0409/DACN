@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
-import {MatButtonModule} from '@angular/material/button';
-import {MatInputModule} from '@angular/material/input';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import { MatStepperModule } from '@angular/material/stepper';
+
 @NgModule({
   declarations: [],
   exports: [
@@ -17,8 +19,9 @@ import {MatIconModule} from '@angular/material/icon';
     MatInputModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    MatNativeDateModule, 
-    MatIconModule
+    MatNativeDateModule,
+    MatIconModule,
+    MatStepperModule
   ]
 })
 export class AngularMaterialModule { }

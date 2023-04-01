@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Cart, CartItem } from 'src/app/models/model';
+import { cart } from 'src/app/models/constance';
+import { Cart } from 'src/app/models/model';
+import { getDateInString } from 'src/app/shared/utils/DateUtils';
 import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 
 @Component({
@@ -9,36 +11,7 @@ import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 })
 export class CartComponent implements OnInit {
 
-  cart: Cart = {
-    items: [
-      {
-        id: 1,
-        name: 'Product 1',
-        price: 1000000,
-        location: 'Location 1',
-        image: 'https://pix8.agoda.net/hotelImages/2279980/-1/08635f845557c87d704ed9cf15c583d1.jpg?ca=7&ce=1&s=828x464&ar=16x9',
-        avgRating: 10.0,
-        reviews: 100,
-        units: 1,
-        special_feature: 'Special Feature 1',
-        start_date: 1680102315647,
-        end_date: 1680170095140
-      },
-      {
-        id: 2,
-        name: 'Product 2',
-        price: 2000000,
-        location: 'Location 2',
-        image: 'https://pix8.agoda.net/hotelImages/2279980/-1/08635f845557c87d704ed9cf15c583d1.jpg?ca=7&ce=1&s=828x464&ar=16x9',
-        avgRating: 9.5,
-        reviews: 200,
-        units: 2,
-        special_feature: 'Special Feature 2',
-        start_date: 1680102315647,
-        end_date: 1680170095140
-      },
-    ]
-  };
+  cart: Cart = cart;
 
   chosenItems: any[] = [];
 
@@ -77,9 +50,8 @@ export class CartComponent implements OnInit {
     return totalPrice;
   }
 
-  getDateInString(dateNum: number) {
-    const date = new Date(dateNum);
-    return `${date.getDate()} tháng ${date.getMonth() + 1} năm ${date.getFullYear()}`;
+  getDateInPlain(dateNum: number) {
+    return getDateInString(dateNum);
   }
 
   onDeleteItemFromCart(id: number) {

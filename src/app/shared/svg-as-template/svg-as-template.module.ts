@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { CartSvgComponent } from './cart-svg/cart-svg.component';
 import { HotelHomeSvgComponent } from './hotel-home-svg/hotel-home-svg.component';
 import { PrivateHomeSvgComponent } from './private-home-svg/private-home-svg.component';
+import { CheckSvgComponent } from './check-svg/check-svg.component';
+import { WifiSvgComponent } from './wifi-svg/wifi-svg.component';
 
 
 
@@ -10,7 +12,9 @@ import { PrivateHomeSvgComponent } from './private-home-svg/private-home-svg.com
   declarations: [
     CartSvgComponent,
     HotelHomeSvgComponent,
-    PrivateHomeSvgComponent
+    PrivateHomeSvgComponent,
+    CheckSvgComponent,
+    WifiSvgComponent
   ],
   imports: [
     CommonModule
@@ -18,7 +22,9 @@ import { PrivateHomeSvgComponent } from './private-home-svg/private-home-svg.com
   exports: [
     CartSvgComponent,
     HotelHomeSvgComponent,
-    PrivateHomeSvgComponent
-   ]
+    PrivateHomeSvgComponent,
+    CheckSvgComponent,
+    WifiSvgComponent
+  ]
 })
 export class SvgAsTemplateModule { }
