@@ -1,4 +1,4 @@
-<div class="home-banner">
+<div class="home-banner" #homeBanner>
     <div class="home-banner__background-image"></div>
     <div class="banner-filter-container grid wide">
         <div class="welcome-message">
@@ -28,103 +28,170 @@
                 </div>
             </div>
             <div class="tab-content">
-                <form class="filter-form form-default">
-                    <div class="button-group__wrapper d-flex-bh
-                        align-items-center-bh">
-                        <div class="button__wrapper" *ngFor="let i of stayTypes;
-                            index as idx">
-                            <button (click)="sltStayType(i)" type="button"
-                                class="white-bg" mat-stroked-button
-                                color="primary"
-                                [class.btn-primary]="selectedStayType.idx ===
-                                idx">
-                                {{ i.label }}
-                            </button>
-                        </div>
-                    </div>
-                    <div class="line-form">
-                        <div class="icon__wrapper">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </div>
-                        <mat-form-field class="example-full-width" appearance="fill">
-                            <mat-label>Nhập địa danh hoặc vị trí</mat-label>
-                            <input matInput placeholder="Ex. Thành phố Hồ Chí Minh">
-                          </mat-form-field>
-                    </div>
-                    <div class="d-flex-bh">
-                        <div class="wrap-fit">
-                            <div class="line-form">
-                                <div class="line-form__fit-item">
-                                    <mat-form-field class="w-fit" appearance="fill">
-                                        <mat-datepicker #startPicker></mat-datepicker>
-                                        <mat-label>Chọn ngày đi</mat-label>
-                                        <input matInput
-                                        [matDatepicker]="startPicker">
-                                        <mat-datepicker-toggle matSuffix
-                                            [for]="startPicker">
-                                            <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
-                                        </mat-datepicker-toggle>
-                                    </mat-form-field>
-                                </div>
-                                <div class="line-form__fit-item">
-                                    <mat-form-field class="w-fit" appearance="fill">
-                                        <mat-datepicker #endPicker></mat-datepicker>
-                                        <mat-label>Chọn ngày về</mat-label>
-                                        <input matInput
-                                        [matDatepicker]="endPicker">
-                                        <mat-datepicker-toggle matSuffix
-                                            [for]="endPicker"></mat-datepicker-toggle>
-                                    </mat-form-field>
-                                </div>
+                <ng-container *ngIf="selectedTab.idx === 0; else privateStayForm">
+                    <ng-container [ngTemplateOutlet]="hotelAndHomeForm"></ng-container>
+                </ng-container>
+                <ng-template #hotelAndHomeForm>
+                    <ng-container [ngTemplateOutlet]="commonForm"></ng-container>
+                </ng-template>
+                <ng-template #privateStayForm>
+                    <ng-container [ngTemplateOutlet]="commonForm"></ng-container>
+                </ng-template>
+                <ng-template #commonForm>
+                    <form class="filter-form form-default">
+                        <div class="button-group__wrapper" *ngIf="selectedTab.idx === 0">
+                            <div class="button__wrapper" *ngFor="let i of stayTypes;
+                                index as idx">
+                                <button #stayButton (click)="sltStayType(i,
+                                    stayButton)" type="button"
+                                    class="btn btn-l white-bg " mat-stroked-button
+                                    color="primary"
+                                    [class.btn-primary]="selectedStayType.idx ===
+                                    idx">
+                                    {{ i.label }}
+                                </button>
                             </div>
                         </div>
-                        <div class="wrap-fit">
-                            <div class="line-form" id="occupancy-box">
-                                <div class="w-fit d-flex-bh" (click)="isToggleOccupancy = !isToggleOccupancy">
-                                    <div class="icon__wrapper">
-                                        <i class="fa-solid fa-user-group"></i>
+                        <div #locationLineForm class="line-form" (click)="
+                            updateOverlayState(locationLineForm)">
+                            <div class="icon__wrapper">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                            <div class="d-flex-bh align-items-center-bh w-fit">
+                                <mat-form-field class="w-fit"
+                                    appearance="fill">
+                                    <mat-label>Nhập địa danh hoặc vị trí</mat-label>
+                                    <input matInput placeholder="Ex. Thành phố Hồ
+                                        Chí Minh">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="d-flex-bh">
+                            <div class="wrap-fit">
+                                <div class="line-form">
+                                    <div #startDateLineForm
+                                        class="line-form__fit-item" (click)="
+                                        updateOverlayState(startDateLineForm)">
+                                        <mat-form-field class="w-fit"
+                                            appearance="fill">
+                                            <mat-datepicker #startPicker></mat-datepicker>
+                                            <mat-label>Chọn ngày đi</mat-label>
+                                            <input matInput
+                                                [matDatepicker]="startPicker">
+                                            <mat-datepicker-toggle matSuffix
+                                                [for]="startPicker">
+                                                <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+                                            </mat-datepicker-toggle>
+                                        </mat-form-field>
                                     </div>
-                                    <div class="occupancy-selection">
-                                        <div class="info-group">
-                                            <p>{{occupancyOptions[1].value}} người lớn <span *ngIf="occupancyOptions[2].value > 0">, {{occupancyOptions[2].value}} trẻ em</span></p>
-                                            <span>{{occupancyOptions[0].value}} phòng</span>
-                                        </div>
-                                        <div class="arrow-down__wrapper" [class.toggle]="isToggleOccupancy" (click)="isToggleOccupancy = !isToggleOccupancy">
-                                            <i class="fa-solid fa-angle-down"></i>
-                                        </div>
+                                    <div class="line-form__fit-item"
+                                        #endDateLineForm class="line-form__fit-item"
+                                        (click)="
+                                        updateOverlayState(endDateLineForm)">
+                                        <mat-form-field class="w-fit"
+                                            appearance="fill">
+                                            <mat-datepicker #endPicker></mat-datepicker>
+                                            <mat-label>Chọn ngày về</mat-label>
+                                            <input matInput
+                                                [matDatepicker]="endPicker">
+                                            <mat-datepicker-toggle matSuffix
+                                                [for]="endPicker"></mat-datepicker-toggle>
+                                        </mat-form-field>
                                     </div>
                                 </div>
-                                <div class="occupancy__popup" *ngIf="isToggleOccupancy">
-                                    <div class="occupancy-option__list">
-                                        <div class="occupancy-option__item" *ngFor="let i of occupancyOptions">
+                            </div>
+                            <div class="wrap-fit">
+                                <div
+                                    id="occupancy-box">
+                                    <div #occupancyLineForm class="line-form"
+                                        (click)="toggleOccupancy(occupancyLineForm)">
+                                        <div class="icon__wrapper">
+                                            <i class="fa-solid fa-user-group"></i>
+                                        </div>
+                                        <div class="occupancy-selection">
                                             <div class="info-group">
-                                                <div class="label">{{i.label}}</div>
-                                                <span class="sub-label">{{i.subLabel}}</span>
+                                                <p>{{occupancyOptions[1].value}}
+                                                    người lớn <span
+                                                        *ngIf="occupancyOptions[2].value>
+                                                        0">,
+                                                        {{occupancyOptions[2].value}}
+                                                        trẻ em</span></p>
+                                                <span>{{occupancyOptions[0].value}}
+                                                    phòng</span>
                                             </div>
-                                            <div class="control-group">
-                                                <div class="control-button">
-                                                    <i class="fa-solid fa-minus" (click)="i.value = i.value - 1"></i>
+                                            <div class="arrow-down__wrapper"
+                                                [class.toggle]="isEnableOccupancy">
+                                                <i class="fa-solid fa-angle-down"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div #occupancyPopup class="occupancy__popup"
+                                        *ngIf="isEnableOccupancy">
+                                        <div class="occupancy-option__list">
+                                            <div class="overlay"></div>
+                                            <div class="occupancy-option__item"
+                                                *ngFor="let i of occupancyOptions">
+                                                <div class="info-group">
+                                                    <div class="label">{{i.label}}</div>
+                                                    <span class="sub-label">{{i.subLabel}}</span>
                                                 </div>
-                                                <h3>{{i.value}}</h3>
-                                                <div class="control-button">
-                                                    <i class="fa-solid fa-plus" (click)="i.value = i.value + 1"></i>
+                                                <div class="control-group">
+                                                    <div class="control-button"
+                                                        (click)="updateChildrenOption(i,-1)">
+                                                        <i class="fa-solid
+                                                            fa-minus"></i>
+                                                    </div>
+                                                    <h3>{{i.value}}</h3>
+                                                    <div class="control-button"
+                                                        (click)="updateChildrenOption(i,1)">
+                                                        <i class="fa-solid fa-plus"></i>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <ng-container
+                                                *ngIf="occupancyOptions[2].value>
+                                                0">
+                                                <div class="occupancy-option__item
+                                                    child-option"
+                                                    *ngFor="let i of tempChildren;
+                                                    index as idx">
+                                                    <div class="info-group">
+                                                        <div class="label">Tuổi của
+                                                            trẻ em {{idx + 1}}</div>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <mat-form-field
+                                                            appearance="fill">
+                                                            <mat-label>Favorite food</mat-label>
+                                                            <mat-select
+                                                                name="food">
+                                                                <mat-option
+                                                                    *ngFor="let food
+                                                                    of [1,1,1,1,1]">
+                                                                    aaaa
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="line-form"></div>
-                </form>
+                    </form>
+                </ng-template>
             </div>
             <div class="search__wrapper">
                 <button mat-raised-button color="primary">Tìm kiếm</button>
             </div>
         </div>
     </div>
+    <div class="overlay-bh" #overlay *ngIf="overlayState.isShow">
+    </div>
 </div>
+
 <ng-template #hotelAndHomeSvg>
     <app-hotel-home-svg></app-hotel-home-svg>
 </ng-template>
