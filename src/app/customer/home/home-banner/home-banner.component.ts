@@ -1,11 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import { NgIf } from '@angular/common';
+import {
+  AfterContentChecked,
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  DoCheck,
+  ElementRef,
+  HostListener,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { filter } from 'rxjs';
 import { RedirectInfo } from 'src/app/models/model';
-interface TabItem {
+interface Tab {
   idx: number;
   label: string;
-  icon: string;
   title: string;
   subtitle: string;
+}
+interface Occupancy {
+  idx: number;
+  label: string;
+  subLabel?: string;
+  value: number;
+  childOptions?: string[];
+  add(occupancy: Occupancy): void;
+  remove(occupancy: Occupancy): void;
+}
+interface StayType {
+  idx: number;
+  label: string;
+  value: string;
 }
 @Component({
   selector: 'app-home-banner',
@@ -13,11 +41,20 @@ interface TabItem {
   styleUrls: ['./home-banner.component.scss'],
 })
 export class HomeBannerComponent implements OnInit {
-  tabList: TabItem[] = [
+  @ViewChild('occupancyPopup')
+  occupancyPopup!: ElementRef<HTMLDivElement>;
+  @ViewChild('occupancyBox')
+  occupancyBox!: ElementRef<HTMLDivElement>;
+  @ViewChild('homeBanner')
+  homeBanner!: ElementRef<HTMLDivElement>;
+  enableOverlay: boolean = false;
+  isEnableOccupancy = false;
+  selectedTab!: Tab;
+  ageOptions!: string[];
+  tabList: Tab[] = [
     {
       idx: 0,
       label: 'Khách sạn & Nhà',
-      icon: '0',
       title: 'Khách sạn & nhà, nhà riêng tư',
       subtitle:
         'Nhận giá tốt nhất trên hơn 2,000,000 bất động sản trên toàn thế giới',
@@ -25,55 +62,172 @@ export class HomeBannerComponent implements OnInit {
     {
       idx: 1,
       label: 'Nhà riêng tư',
-      icon: '1',
       title: 'Đặt một căn nhà riêng tư trên Spring Hotel',
       subtitle:
         'Nhận giá tốt nhất trên hơn 2,000,000 bất động sản trên toàn thế giới',
     },
   ];
-  selectedTab: TabItem = this.tabList[0];
-  constructor() {
-  }
-  stayTypes = [
+  selectedStayType!: StayType;
+  stayTypes: StayType[] = [
     {
       idx: 0,
-      label: "Ở qua đêm"
-    }, 
+      label: 'Ở qua đêm',
+      value: 'OVERNIGHT',
+    },
     {
       idx: 1,
-      label: "Ở trong ngày"
-    }, 
-  ]
-  isToggleOccupancy = false
-  occupancyOptions = [
+      label: 'Ở trong ngày',
+      value: 'DAY-USE',
+    },
+  ];
+  hotelAndHomeForm: any;
+  occupancyOptions: Occupancy[] = [
     {
-      label: "Phòng",
-      subLabel: "",
+      idx: 0,
+      label: 'Phòng',
       value: 1,
+      add: (occupancy: Occupancy) => {
+        occupancy.value++;
+        this.occupancy.get('room')?.patchValue(occupancy.value);
+      },
+      remove: (occupancy: Occupancy) => {
+        occupancy.value--;
+        this.occupancy.get('room')?.patchValue(occupancy.value);
+      },
     },
     {
-      label: "Người lớn",
-      subLabel: "Lớn hơn hoặc bằng 18 tuổi",
+      idx: 1,
+      label: 'Người lớn',
+      subLabel: 'Lớn hơn hoặc bằng 18 tuổi',
       value: 2,
+      add: (occupancy: Occupancy) => {
+        occupancy.value++;
+        this.occupancy.get('adult')?.patchValue(occupancy.value);
+      },
+      remove: (occupancy: Occupancy) => {
+        occupancy.value--;
+        this.occupancy.get('adult')?.patchValue(occupancy.value);
+      },
     },
     {
-      label: "Trẻ em",
-      subLabel: "Từ 0 tới 17 tuổi",
+      idx: 2,
+      label: 'Trẻ em',
+      subLabel: 'Từ 0 tới 17 tuổi',
       value: 0,
+      childOptions: [],
+      add: (occupancy: Occupancy) => {
+        occupancy.value++;
+        this.children.push(this.__fb.control(this.ageOptions[0]));
+      },
+      remove: (occupancy: Occupancy) => {
+        let length = occupancy.childOptions!.length
+        occupancy.value--;
+        this.children.removeAt(length - 1)
+      },
     },
-  ]
-  selectedStayType = this.stayTypes[0]
+  ];
+  overlayState = {
+    isShow: false,
+    currElement: undefined,
+  };
+  hotelAndHomeFormGroup!: FormGroup;
+  privateHomeFormGroup!: FormGroup;
+  constructor(private __fb: FormBuilder) {
+    this.selectedTab = this.tabList[0];
+    this.selectedStayType = this.stayTypes[0];
+    this.ageOptions = this.createChildrenAgeRange();
+    // form init
+    this.hotelAndHomeFormGroup = this.__fb.group({
+      stayType: this.selectedStayType.value,
+      place: '',
+      startDate: new Date(),
+      endDate: new Date(),
+      occupancy: this.__fb.group({
+        room: this.occupancyOptions[0].value,
+        adult: this.occupancyOptions[1].value,
+        children: this.__fb.array([]),
+      }),
+    });
+    this.privateHomeFormGroup = this.__fb.group({
+      place: '',
+      startDate: new Date(),
+      endDate: new Date(),
+      occupancy: this.__fb.group({
+        room: this.occupancyOptions[0].value,
+        adult: this.occupancyOptions[1].value,
+        children: this.__fb.array([]),
+      }),
+    });
+    this.hotelAndHomeFormGroup.valueChanges.subscribe((value) =>
+      console.log(value)
+    );
+  }
+  get children(): FormArray {
+    return this.hotelAndHomeFormGroup
+      .get('occupancy')
+      ?.get('children') as FormArray;
+  }
+  get occupancy(): FormGroup {
+    return this.hotelAndHomeFormGroup.get('occupancy') as FormGroup;
+  }
+  ngAfterViewChecked(): void {
+    if (this.occupancyPopup) {
+      const windowHeight = window.innerHeight;
+      const elementBottom =
+        this.occupancyPopup.nativeElement.getBoundingClientRect().bottom;
+      const pageYOffset = window.pageYOffset;
+      if (elementBottom > windowHeight) {
+        const deltaElement = elementBottom - windowHeight;
+        window.scrollTo({
+          top: pageYOffset + deltaElement,
+        });
+      }
+    }
+  }
+  ngAfterViewInit(): void {}
   ngOnInit(): void {}
 
-  sltTab(tab: TabItem) {
+  sltTab(tab: Tab) {
     this.selectedTab = tab;
+    this.enableOverlay = false;
+    this.overlayState.isShow = false;
+    this.isEnableOccupancy = false;
   }
-  sltStayType(stayType: any){
-    this.selectedStayType = stayType
+  sltStayType(stayType: any, element: any) {
+    this.selectedStayType = stayType;
+    this.hotelAndHomeFormGroup.patchValue({
+      stayType: stayType.value,
+    });
+    this.updateOverlayState(element);
   }
-  a(i: number){
-    i = i + 1
-    console.log(i);
-    
+  updateOverlayState(element: any) {
+    if (this.overlayState.currElement !== element) {
+      this.overlayState.currElement = element;
+      this.overlayState.isShow = true;
+      this.isEnableOccupancy = false;
+    } else {
+      this.overlayState.currElement = undefined;
+      this.overlayState.isShow = false;
+      this.isEnableOccupancy = false;
+    }
+  }
+  toggleOccupancy(element: any) {
+    if (this.overlayState.currElement !== element) {
+      this.overlayState.currElement = element;
+      this.overlayState.isShow = true;
+      this.isEnableOccupancy = true;
+    } else {
+      this.overlayState.currElement = undefined;
+      this.overlayState.isShow = false;
+      this.isEnableOccupancy = false;
+    }
+  }
+  createChildrenAgeRange(): string[] {
+    const result: string[] = [];
+    result.push('< 0');
+    for (let index = 1; index <= 17; index++) {
+      result.push(index + '');
+    }
+    return result;
   }
 }
