@@ -12,22 +12,35 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { filter } from 'rxjs';
 import { RedirectInfo } from 'src/app/models/model';
-interface TabItem {
+interface Tab {
   idx: number;
   label: string;
-  icon: string;
   title: string;
   subtitle: string;
+}
+interface Occupancy {
+  idx: number;
+  label: string;
+  subLabel?: string;
+  value: number;
+  childOptions?: string[];
+  add(occupancy: Occupancy): void;
+  remove(occupancy: Occupancy): void;
+}
+interface StayType {
+  idx: number;
+  label: string;
+  value: string;
 }
 @Component({
   selector: 'app-home-banner',
   templateUrl: './home-banner.component.html',
   styleUrls: ['./home-banner.component.scss'],
 })
-export class HomeBannerComponent
-  implements OnInit, OnChanges, DoCheck, AfterViewInit, AfterViewChecked
-{
+export class HomeBannerComponent implements OnInit {
   @ViewChild('occupancyPopup')
   occupancyPopup!: ElementRef<HTMLDivElement>;
   @ViewChild('occupancyBox')
@@ -35,12 +48,13 @@ export class HomeBannerComponent
   @ViewChild('homeBanner')
   homeBanner!: ElementRef<HTMLDivElement>;
   enableOverlay: boolean = false;
-  tempChildren!: any[];
-  tabList: TabItem[] = [
+  isEnableOccupancy = false;
+  selectedTab!: Tab;
+  ageOptions!: string[];
+  tabList: Tab[] = [
     {
       idx: 0,
       label: 'Khách sạn & Nhà',
-      icon: '0',
       title: 'Khách sạn & nhà, nhà riêng tư',
       subtitle:
         'Nhận giá tốt nhất trên hơn 2,000,000 bất động sản trên toàn thế giới',
@@ -48,14 +62,114 @@ export class HomeBannerComponent
     {
       idx: 1,
       label: 'Nhà riêng tư',
-      icon: '1',
       title: 'Đặt một căn nhà riêng tư trên Spring Hotel',
       subtitle:
         'Nhận giá tốt nhất trên hơn 2,000,000 bất động sản trên toàn thế giới',
     },
   ];
-  selectedTab: TabItem = this.tabList[0];
-  constructor() {}
+  selectedStayType!: StayType;
+  stayTypes: StayType[] = [
+    {
+      idx: 0,
+      label: 'Ở qua đêm',
+      value: 'OVERNIGHT',
+    },
+    {
+      idx: 1,
+      label: 'Ở trong ngày',
+      value: 'DAY-USE',
+    },
+  ];
+  hotelAndHomeForm: any;
+  occupancyOptions: Occupancy[] = [
+    {
+      idx: 0,
+      label: 'Phòng',
+      value: 1,
+      add: (occupancy: Occupancy) => {
+        occupancy.value++;
+        this.occupancy.get('room')?.patchValue(occupancy.value);
+      },
+      remove: (occupancy: Occupancy) => {
+        occupancy.value--;
+        this.occupancy.get('room')?.patchValue(occupancy.value);
+      },
+    },
+    {
+      idx: 1,
+      label: 'Người lớn',
+      subLabel: 'Lớn hơn hoặc bằng 18 tuổi',
+      value: 2,
+      add: (occupancy: Occupancy) => {
+        occupancy.value++;
+        this.occupancy.get('adult')?.patchValue(occupancy.value);
+      },
+      remove: (occupancy: Occupancy) => {
+        occupancy.value--;
+        this.occupancy.get('adult')?.patchValue(occupancy.value);
+      },
+    },
+    {
+      idx: 2,
+      label: 'Trẻ em',
+      subLabel: 'Từ 0 tới 17 tuổi',
+      value: 0,
+      childOptions: [],
+      add: (occupancy: Occupancy) => {
+        occupancy.value++;
+        this.children.push(this.__fb.control(this.ageOptions[0]));
+      },
+      remove: (occupancy: Occupancy) => {
+        let length = occupancy.childOptions!.length
+        occupancy.value--;
+        this.children.removeAt(length - 1)
+      },
+    },
+  ];
+  overlayState = {
+    isShow: false,
+    currElement: undefined,
+  };
+  hotelAndHomeFormGroup!: FormGroup;
+  privateHomeFormGroup!: FormGroup;
+  constructor(private __fb: FormBuilder) {
+    this.selectedTab = this.tabList[0];
+    this.selectedStayType = this.stayTypes[0];
+    this.ageOptions = this.createChildrenAgeRange();
+    // form init
+    this.hotelAndHomeFormGroup = this.__fb.group({
+      stayType: this.selectedStayType.value,
+      place: '',
+      startDate: new Date(),
+      endDate: new Date(),
+      occupancy: this.__fb.group({
+        room: this.occupancyOptions[0].value,
+        adult: this.occupancyOptions[1].value,
+        children: this.__fb.array([]),
+      }),
+    });
+    this.privateHomeFormGroup = this.__fb.group({
+      place: '',
+      startDate: new Date(),
+      endDate: new Date(),
+      occupancy: this.__fb.group({
+        room: this.occupancyOptions[0].value,
+        adult: this.occupancyOptions[1].value,
+        children: this.__fb.array([]),
+      }),
+    });
+    this.hotelAndHomeFormGroup.valueChanges.subscribe((value) =>
+      console.log(value)
+    );
+  }
+  get children(): FormArray {
+    return this.hotelAndHomeFormGroup
+      .get('occupancy')
+      ?.get('children') as FormArray;
+  }
+  get occupancy(): FormGroup {
+    return this.hotelAndHomeFormGroup.get('occupancy') as FormGroup;
+  }
   ngAfterViewChecked(): void {
     if (this.occupancyPopup) {
       const windowHeight = window.innerHeight;
@@ -71,65 +185,22 @@ export class HomeBannerComponent
     }
   }
   ngAfterViewInit(): void {}
-  ngDoCheck(): void {
-    this.tempChildren = new Array(this.occupancyOptions[2].value);
-  }
-  ngOnChanges(changes: SimpleChanges): void {}
-  stayTypes = [
-    {
-      idx: 0,
-      label: 'Ở qua đêm',
-    },
-    {
-      idx: 1,
-      label: 'Ở trong ngày',
-    },
-  ];
-  isEnableOccupancy = false;
-  occupancyOptions = [
-    {
-      idx: 0,
-      label: 'Phòng',
-      subLabel: '',
-      value: 1,
-    },
-    {
-      index: 1,
-      label: 'Người lớn',
-      subLabel: 'Lớn hơn hoặc bằng 18 tuổi',
-      value: 2,
-    },
-    {
-      index: 2,
-      label: 'Trẻ em',
-      subLabel: 'Từ 0 tới 17 tuổi',
-      value: 0,
-    },
-  ];
-  selectedStayType = this.stayTypes[0];
-  overlayState = {
-    isShow: false,
-    currElement: undefined,
-  };
   ngOnInit(): void {}
 
-  sltTab(tab: TabItem) {
+  sltTab(tab: Tab) {
     this.selectedTab = tab;
     this.enableOverlay = false;
-    this.overlayState.isShow = false
-    this.isEnableOccupancy = false
+    this.overlayState.isShow = false;
+    this.isEnableOccupancy = false;
   }
   sltStayType(stayType: any, element: any) {
     this.selectedStayType = stayType;
+    this.hotelAndHomeFormGroup.patchValue({
+      stayType: stayType.value,
+    });
     this.updateOverlayState(element);
   }
-
-  updateChildrenOption(option: any, action: -1 | 1) {
-    option.value = option.value + action;
-  }
   updateOverlayState(element: any) {
-    console.log(element);
-
     if (this.overlayState.currElement !== element) {
       this.overlayState.currElement = element;
       this.overlayState.isShow = true;
@@ -150,5 +221,13 @@ export class HomeBannerComponent
       this.overlayState.isShow = false;
       this.isEnableOccupancy = false;
     }
+  }
+  createChildrenAgeRange(): string[] {
+    const result: string[] = [];
+    result.push('< 0');
+    for (let index = 1; index <= 17; index++) {
+      result.push(index + '');
+    }
+    return result;
   }
 }
