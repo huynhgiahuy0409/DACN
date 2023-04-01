@@ -1,6 +1,15 @@
 *{
     --icon-color: #333333
 }
+.overlay-bh{
+    position: fixed;
+    left:0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    z-index: 999;
+    background-color: rgba(0, 0, 0, 0.8);
+}
 .home-banner{
     display: block;
     width: 100%;
@@ -52,10 +61,10 @@
     background-color: #fff;
     display: flex;
     padding: 0 64px;
-    border-radius: 30px;
+    border-radius: 10px;
     margin: 0 auto;
     position: relative;
-    z-index: 9999;
+    z-index: 1000;
 }
 .home-banner .tab-list .tab-item{
     flex: 1;
@@ -93,7 +102,7 @@
     border-radius: 30px;
     box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 8px 3px;
     margin-top: -16px;
-    padding: 32px 48px 64px;
+    padding: 64px 48px;
     background-color: #F8F7F9;
 }
 .home-banner .banner_filter .search__wrapper{
@@ -110,18 +119,23 @@
 .filter-form .line-form{
     width: 100%;
     border: 1px solid #ccc;
-    padding: 10px;
     background-color: #fff;
     border-radius: 15px;
     display: flex;
-    align-items: center;
     min-height: 66px;
+    z-index: 1000;
+    position: relative;
+    align-items: stretch;
+    cursor: pointer;
 }
 .filter-form i{
    font-size: 2rem;
 }
 .filter-form .line-form .icon__wrapper{
-   padding: 10px
+   padding: 10px 20px;
+   padding-right: 10px;
+   display: flex;
+   align-items: center;
 }
 .filter-form .line-form .icon__wrapper i{
     font-size:  2rem;
@@ -134,19 +148,26 @@
     padding: 0;
 }
 .filter-form .button-group__wrapper {
-    margin-bottom: 20px
+    margin-bottom: 20px;
+    z-index: 1000;
+    position: relative;
+    display: inline-flex;
 }
 .filter-form .button-group__wrapper .button__wrapper{
-    margin-right: 20px
+    margin-right: 10px
+}
+.filter-form .button-group__wrapper .button__wrapper button{
+    background-color: #fff;
 }
 .filter-form .button-group__wrapper .button__wrapper:last-child{
     margin-right: unset
 }
 .filter-form .line-form .line-form__fit-item {
     flex: 1;
-    margin-right: 10px;
     position: relative;
-    border-right: 1px solid #ccc
+    border-right: 1px solid #ccc;
+    display: flex;
+    align-items: center;
 }
 .filter-form .line-form .line-form__fit-item:last-child{
     border: unset
@@ -173,12 +194,6 @@
     height: 2.5rem;
     color: var(--icon-color)
 }
-::ng-deep .filter-form .mat-form-field-appearance-fill .mat-form-field-flex{
-    padding: 0 10px; 
-}
-::ng-deep .filter-form .mat-form-field-infix{
-    padding: 0;
-}
 @keyframes slide-right {
     0% {
         width: 200%;
@@ -192,12 +207,13 @@
     position: relative;
     cursor: pointer;
     user-select: none;
+    z-index: 1001;
 }
 #occupancy-box .occupancy__popup{
     position: absolute;
     top: calc(100% + 4px);
     left: 0;
-    z-index: 1;
+    z-index: 1001;
     display: block;
     width: 100%;
 }
@@ -224,7 +240,8 @@
 .occupancy-selection{
     display: flex;
     align-items: center;
-    flex: 1
+    flex: 1;
+    padding-right: 20px
 }
 .occupancy-selection .info-group{
     flex: 1;
@@ -311,6 +328,17 @@
 .occupancy-option__item .info-group .label{
     font-size: 1.6rem;
     font-weight: 700;
+}
+.occupancy-option__item.child-option{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.occupancy-option__item.child-option .info-group{
+    padding-top: 0
+}
+.occupancy-option__item.child-option .info-group .label{
+    font-size: 1.3rem;
+    font-weight: 450;
 }
 .occupancy-option__item .info-group .sub-label{
     font-size: 1.2rem;

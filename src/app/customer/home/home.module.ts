@@ -11,7 +11,7 @@ import { SvgAsTemplateModule } from 'src/app/shared/svg-as-template/svg-as-templ
 @NgModule({
   declarations: [
     HomeComponent,
-    HomeBannerComponent
+    HomeBannerComponent,
   ],
   imports: [
     CommonModule,

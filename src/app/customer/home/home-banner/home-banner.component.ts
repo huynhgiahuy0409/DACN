@@ -34,6 +34,7 @@ export class HomeBannerComponent
   occupancyBox!: ElementRef<HTMLDivElement>;
   @ViewChild('homeBanner')
   homeBanner!: ElementRef<HTMLDivElement>;
+  enableOverlay: boolean = false;
   tempChildren!: any[];
   tabList: TabItem[] = [
     {
@@ -84,7 +85,7 @@ export class HomeBannerComponent
       label: 'Ở trong ngày',
     },
   ];
-  isToggleOccupancy = false;
+  isEnableOccupancy = false;
   occupancyOptions = [
     {
       idx: 0,
@@ -106,25 +107,48 @@ export class HomeBannerComponent
     },
   ];
   selectedStayType = this.stayTypes[0];
+  overlayState = {
+    isShow: false,
+    currElement: undefined,
+  };
   ngOnInit(): void {}
 
   sltTab(tab: TabItem) {
     this.selectedTab = tab;
+    this.enableOverlay = false;
+    this.overlayState.isShow = false
+    this.isEnableOccupancy = false
   }
-  sltStayType(stayType: any) {
+  sltStayType(stayType: any, element: any) {
     this.selectedStayType = stayType;
+    this.updateOverlayState(element);
   }
-  @HostListener('document:click', ['$event'])
-  clickOut(event: any) {
-    if (this.occupancyBox) {
-      if (this.occupancyBox.nativeElement.contains(event.target)) {
-        this.isToggleOccupancy = true;
-      } else {
-        this.isToggleOccupancy = false;
-      }
-    }
-  }
+
   updateChildrenOption(option: any, action: -1 | 1) {
     option.value = option.value + action;
+  }
+  updateOverlayState(element: any) {
+    console.log(element);
+
+    if (this.overlayState.currElement !== element) {
+      this.overlayState.currElement = element;
+      this.overlayState.isShow = true;
+      this.isEnableOccupancy = false;
+    } else {
+      this.overlayState.currElement = undefined;
+      this.overlayState.isShow = false;
+      this.isEnableOccupancy = false;
+    }
+  }
+  toggleOccupancy(element: any) {
+    if (this.overlayState.currElement !== element) {
+      this.overlayState.currElement = element;
+      this.overlayState.isShow = true;
+      this.isEnableOccupancy = true;
+    } else {
+      this.overlayState.currElement = undefined;
+      this.overlayState.isShow = false;
+      this.isEnableOccupancy = false;
+    }
   }
 }
