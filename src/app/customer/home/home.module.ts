@@ -6,6 +6,7 @@ import { HomeComponent } from './home.component';
 import { AngularMaterialModule } from 'src/app/shared/angular-material/angular-material.module';
 import { HomeBannerComponent } from './home-banner/home-banner.component';
 import { SvgAsTemplateModule } from 'src/app/shared/svg-as-template/svg-as-template.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -17,7 +18,9 @@ import { SvgAsTemplateModule } from 'src/app/shared/svg-as-template/svg-as-templ
     CommonModule,
     HomeRoutingModule,
     AngularMaterialModule,
-    SvgAsTemplateModule
+    SvgAsTemplateModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class HomeModule { }
