@@ -1,0 +1,27 @@
+
+<div class="container-create">
+  <mat-sidenav-container>
+    <mat-sidenav [(opened)]=opened mode="side">
+      <mat-list>
+        <mat-list-item><a routerLink="basic">Thông tin cơ bản</a></mat-list-item>
+        <mat-list-item><a routerLink="location">Vị trí</a></mat-list-item>
+        <mat-list-item><a routerLink="home">Mô tả</a></mat-list-item>
+        <mat-list-item><a routerLink="home">Tiện nghi</a></mat-list-item>
+        <mat-list-item><a routerLink="home">Định giá</a></mat-list-item>
+        <mat-list-item><a routerLink="home">Ảnh</a></mat-list-item>
+        <mat-list-item><a routerLink="home">Hồ sơ</a></mat-list-item>
+        <mat-list-item><a routerLink="home">Đăng</a></mat-list-item>
+
+
+      </mat-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+
+
+
