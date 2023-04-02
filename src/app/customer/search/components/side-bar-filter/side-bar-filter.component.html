@@ -1,0 +1,8 @@
+<ul class="sidebar-filter__group">
+    <ng-container *ngFor="let filterField of filterFields">
+        <app-field-builder [field]="filterField"></app-field-builder>
+    </ng-container>
+    <p>{{
+        filterFields | json
+    }}</p>
+</ul>
