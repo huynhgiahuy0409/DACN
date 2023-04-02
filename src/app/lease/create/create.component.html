@@ -1,16 +1,37 @@
-
 <div class="container-create">
   <mat-sidenav-container>
     <mat-sidenav [(opened)]=opened mode="side">
       <mat-list>
-        <mat-list-item><a routerLink="basic">Thông tin cơ bản</a></mat-list-item>
-        <mat-list-item><a routerLink="location">Vị trí</a></mat-list-item>
-        <mat-list-item><a routerLink="home">Mô tả</a></mat-list-item>
-        <mat-list-item><a routerLink="home">Tiện nghi</a></mat-list-item>
-        <mat-list-item><a routerLink="home">Định giá</a></mat-list-item>
-        <mat-list-item><a routerLink="home">Ảnh</a></mat-list-item>
-        <mat-list-item><a routerLink="home">Hồ sơ</a></mat-list-item>
-        <mat-list-item><a routerLink="home">Đăng</a></mat-list-item>
+        <mat-list-item>
+
+
+          <a routerLink="basic"
+             routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+
+          >
+            <mat-icon class="icon-no-active">check_circle_outline</mat-icon>
+            Thông
+            tin cơ bản</a>
+
+        </mat-list-item>
+        <mat-list-item>
+
+
+          <a routerLink="location" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}"
+
+          >
+            <mat-icon class="icon-no-active">check_circle_outline</mat-icon>
+            Vị trí</a>
+
+
+          <!--          <a routerLink="location" routerLinkActive="active">Vị trí</a>-->
+        </mat-list-item>
+        <mat-list-item><a routerLink="home" routerLinkActive="active">Mô tả</a></mat-list-item>
+        <mat-list-item><a routerLink="home" routerLinkActive="active">Tiện nghi</a></mat-list-item>
+        <mat-list-item><a routerLink="home" routerLinkActive="active">Định giá</a></mat-list-item>
+        <mat-list-item><a routerLink="home" routerLinkActive="active">Ảnh</a></mat-list-item>
+        <mat-list-item><a routerLink="home" routerLinkActive="active">Hồ sơ</a></mat-list-item>
+        <mat-list-item><a routerLink="home" routerLinkActive="active">Đăng</a></mat-list-item>
 
 
       </mat-list>

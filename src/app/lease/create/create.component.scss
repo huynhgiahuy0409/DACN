@@ -2,6 +2,7 @@
 .container-create{
   width: 100%;
   background: #FDFDFD;
+
 }
 mat-sidenav-container{
   width: 1170px;
@@ -16,9 +17,28 @@ mat-sidenav{
   background: #FFFFFF;
 
 }
-mat-sidenav-content{
-  background: #FCFCFC;
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-top: 20px;
+
+
+
+mat-list-item a{
+  display: flex;
+  align-items: center;
+
 }
+.icon-no-active{
+  display: block;
+  margin-right: 5px;
+  color: #1174a6;
+
+}
+.active{
+  display: flex;
+  align-items: center;
+  color: #1174a6;
+  font-weight: 700;
+  & .icon-no-active{
+
+    color: #32a923;
+  }
+}
+
