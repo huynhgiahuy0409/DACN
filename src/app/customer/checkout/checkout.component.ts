@@ -3,6 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { cart } from 'src/app/models/constance';
 import { Cart } from 'src/app/models/model';
 import { getDateNoYearTitle, getNightNumber } from 'src/app/shared/utils/DateUtils';
+import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 
 @Component({
   selector: 'app-checkout',
@@ -56,5 +57,17 @@ export class CheckoutComponent implements OnInit {
 
   isShowAmenitiesItem(index: number) {
     return this.showAmenitiesItem.includes(index);
+  }
+
+  formatPrice(price: number) {
+    return getMoneyFormat(price);
+  }
+
+  getTotalPrice() {
+    const totalPrice = this.cart.items.reduce((total, item) => {
+      return total + item.price;
+    }
+      , 0);
+    return totalPrice + (totalPrice*10/100);
   }
 }
