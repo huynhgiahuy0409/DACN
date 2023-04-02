@@ -1,0 +1,8 @@
+<section>
+    <ng-container *ngFor="let checkOption of field.checkOptions">
+        <p>
+            <mat-checkbox color="primary"
+                [(ngModel)]="checkOption.checked">{{checkOption.label}}</mat-checkbox>
+        </p>
+    </ng-container>
+</section>

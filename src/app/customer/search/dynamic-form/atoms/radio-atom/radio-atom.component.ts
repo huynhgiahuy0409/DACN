@@ -1,0 +1,17 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { FilterField } from '../../../components/side-bar-filter/side-bar-filter.component';
+
+@Component({
+  selector: 'app-radio-atom',
+  templateUrl: './radio-atom.component.html',
+  styleUrls: ['./radio-atom.component.scss']
+})
+export class RadioAtomComponent implements OnInit {
+  @Input()
+  field!: FilterField
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+}
