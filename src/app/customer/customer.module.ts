@@ -7,6 +7,7 @@ import { CustomerLayoutModule } from '../shared/layout/customer-layout/customer-
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerComponent } from './customer.component';
 import { DemoComponent } from './demo/demo.component';
+import { FilterBarModule } from '../shared/layout/customer-layout/filter-bar/filter-bar.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { DemoComponent } from './demo/demo.component';
     CustomerRoutingModule,
     CustomerLayoutModule,
     AngularMaterialModule,
-    RouterModule
+    RouterModule,
+    FilterBarModule
   ]
 })
 export class CustomerModule { }

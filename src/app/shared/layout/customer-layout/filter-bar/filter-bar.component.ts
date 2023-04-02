@@ -1,78 +1,23 @@
-import { NgIf } from '@angular/common';
-import {
-  AfterContentChecked,
-  AfterViewChecked,
-  AfterViewInit,
-  Component,
-  DoCheck,
-  ElementRef,
-  HostListener,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { filter } from 'rxjs';
-import { Occupancy, RedirectInfo } from 'src/app/models/model';
-interface Tab {
-  idx: number;
-  label: string;
-  title: string;
-  subtitle: string;
-}
+import { Occupancy } from 'src/app/models/model';
 
-interface StayType {
-  idx: number;
-  label: string;
-  value: string;
-}
 @Component({
-  selector: 'app-home-banner',
-  templateUrl: './home-banner.component.html',
-  styleUrls: ['./home-banner.component.scss'],
+  selector: 'app-filter-bar',
+  templateUrl: './filter-bar.component.html',
+  styleUrls: ['./filter-bar.component.scss']
 })
-export class HomeBannerComponent implements OnInit {
+export class FilterBarComponent implements OnInit {
   @ViewChild('occupancyPopup')
   occupancyPopup!: ElementRef<HTMLDivElement>;
   @ViewChild('occupancyBox')
   occupancyBox!: ElementRef<HTMLDivElement>;
   @ViewChild('homeBanner')
   homeBanner!: ElementRef<HTMLDivElement>;
-  isShowFilterBar: boolean = false
   enableOverlay: boolean = false;
   isEnableOccupancy = false;
-  selectedTab!: Tab;
   ageOptions!: string[];
-  tabList: Tab[] = [
-    {
-      idx: 0,
-      label: 'Khách sạn & Nhà',
-      title: 'Khách sạn & nhà, nhà riêng tư',
-      subtitle:
-        'Nhận giá tốt nhất trên hơn 2,000,000 bất động sản trên toàn thế giới',
-    },
-    {
-      idx: 1,
-      label: 'Nhà riêng tư',
-      title: 'Đặt một căn nhà riêng tư trên Spring Hotel',
-      subtitle:
-        'Nhận giá tốt nhất trên hơn 2,000,000 bất động sản trên toàn thế giới',
-    },
-  ];
-  selectedStayType!: StayType;
-  stayTypes: StayType[] = [
-    {
-      idx: 0,
-      label: 'Ở qua đêm',
-      value: 'OVERNIGHT',
-    },
-    {
-      idx: 1,
-      label: 'Ở trong ngày',
-      value: 'DAY-USE',
-    },
-  ];
+  
   hotelAndHomeForm: any;
   occupancyOptions: Occupancy[] = [
     {
@@ -126,12 +71,9 @@ export class HomeBannerComponent implements OnInit {
   hotelAndHomeFormGroup!: FormGroup;
   privateHomeFormGroup!: FormGroup;
   constructor(private __fb: FormBuilder) {
-    this.selectedTab = this.tabList[0];
-    this.selectedStayType = this.stayTypes[0];
     this.ageOptions = this.createChildrenAgeRange();
     // form init
     this.hotelAndHomeFormGroup = this.__fb.group({
-      stayType: this.selectedStayType.value,
       place: '',
       startDate: new Date(),
       endDate: new Date(),
@@ -180,19 +122,6 @@ export class HomeBannerComponent implements OnInit {
   ngAfterViewInit(): void {}
   ngOnInit(): void {}
 
-  sltTab(tab: Tab) {
-    this.selectedTab = tab;
-    this.enableOverlay = false;
-    this.overlayState.isShow = false;
-    this.isEnableOccupancy = false;
-  }
-  sltStayType(stayType: any, element: any) {
-    this.selectedStayType = stayType;
-    this.hotelAndHomeFormGroup.patchValue({
-      stayType: stayType.value,
-    });
-    this.updateOverlayState(element);
-  }
   updateOverlayState(element: any) {
     if (this.overlayState.currElement !== element) {
       this.overlayState.currElement = element;
@@ -240,14 +169,6 @@ export class HomeBannerComponent implements OnInit {
         this.overlayState.isShow = false
         this.isEnableOccupancy = false
       }
-    }
-    const homeBannerBottom = this.homeBanner.nativeElement.getBoundingClientRect().bottom
-    console.log(homeBannerBottom);
-    
-    if(homeBannerBottom < 0){
-      this.isShowFilterBar = true
-    }else{
-      this.isShowFilterBar = false
     }
   }
 }

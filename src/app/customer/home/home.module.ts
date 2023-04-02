@@ -1,3 +1,4 @@
+import { FilterBarModule } from './../../shared/layout/customer-layout/filter-bar/filter-bar.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -20,7 +21,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AngularMaterialModule,
     SvgAsTemplateModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FilterBarModule
   ]
 })
 export class HomeModule { }

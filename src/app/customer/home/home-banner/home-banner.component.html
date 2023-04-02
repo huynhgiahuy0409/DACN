@@ -1,3 +1,4 @@
+<app-filter-bar *ngIf="isShowFilterBar === true"></app-filter-bar>
 <div class="home-banner" #homeBanner>
     <div class="home-banner__background-image"></div>
     <div class="banner-filter-container grid wide">
@@ -7,15 +8,18 @@
         </div>
         <div class="banner_filter">
             <div class="tab-list box-shadow-bh-1">
-                <div class="tab-item" *ngFor="let tab of tabList; index as idx" [class.active]="tab === selectedTab"
+                <div class="tab-item" *ngFor="let tab of tabList; index as idx"
+                    [class.active]="tab === selectedTab"
                     [ngSwitch]="idx" (click)="sltTab(tab)">
                     <div class="d-flex-bh align-items-center-bh">
                         <div class="icon-wrapper mr-r-10">
                             <ng-container *ngSwitchCase="0">
-                                <ng-container [ngTemplateOutlet]="hotelAndHomeSvg"></ng-container>
+                                <ng-container
+                                    [ngTemplateOutlet]="hotelAndHomeSvg"></ng-container>
                             </ng-container>
                             <ng-container *ngSwitchCase="1">
-                                <ng-container [ngTemplateOutlet]="privateHomeSvg"></ng-container>
+                                <ng-container
+                                    [ngTemplateOutlet]="privateHomeSvg"></ng-container>
                             </ng-container>
                         </div>
                         <span>
@@ -25,173 +29,275 @@
                 </div>
             </div>
             <div class="tab-content">
-                <ng-container *ngIf="selectedTab.idx === 0; else privateHomeForm">
-                    <ng-container [ngTemplateOutlet]="hotelAndHomeForm"></ng-container>
+                <ng-container *ngIf="selectedTab.idx === 0; else
+                    privateHomeForm">
+                    <div class="grid">
+                        <form [formGroup]="hotelAndHomeFormGroup"
+                            class="filter-form form-default">
+                            <div class="row">
+                                <div class="button-group__wrapper col l-12"
+                                    *ngIf="selectedTab.idx === 0">
+                                    <div class="button__wrapper" *ngFor="let
+                                        stayType of stayTypes; index as idx">
+                                        <button #stayButton
+                                            (click)="sltStayType(stayType,
+                                            stayButton)" type="button"
+                                            class="btn btn-l white-bg"
+                                            mat-stroked-button color="primary"
+                                            [class.btn-primary]="selectedStayType
+                                            === stayType">
+                                            {{ stayType.label }}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col l-12">
+                                    <div #locationLineForm class="line-form"
+                                        (click)="updateOverlayState(locationLineForm)">
+                                        <div class="icon__wrapper">
+                                            <i class="fa-solid
+                                                fa-magnifying-glass"></i>
+                                        </div>
+                                        <div class="d-flex-bh
+                                            align-items-center-bh w-fit">
+                                            <mat-form-field class="w-fit"
+                                                appearance="fill">
+                                                <mat-label>Nhập địa danh hoặc vị
+                                                    trí</mat-label>
+                                                <input formControlName="place"
+                                                    matInput placeholder="Ex.
+                                                    Thành phố Hồ Chí Minh" />
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row sm-gutters">
+                                <div class="col l-6">
+                                    <div class="line-form">
+                                            <div #startDateLineForm
+                                                class="line-form__fit-item"
+                                                (click)="updateOverlayState(startDateLineForm)">
+                                                <div class="date-picker__wrapper right-line">
+                                                    <mat-form-field class="w-fit mat-date-picker"
+                                                        appearance="fill">
+                                                        <mat-datepicker
+                                                            #startPicker></mat-datepicker>
+                                                        <mat-label>Chọn ngày đi</mat-label>
+                                                        <input matInput
+                                                            [matDatepicker]="startPicker"
+                                                            formControlName="startDate"
+                                                            />
+                                                        <mat-datepicker-toggle
+                                                            matSuffix
+                                                            [for]="startPicker">
+                                                            <mat-icon
+                                                                matDatepickerToggleIcon>calendar_today</mat-icon>
+                                                        </mat-datepicker-toggle>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div class="line-form__fit-item"
+                                                #endDateLineForm
+                                                (click)="updateOverlayState(endDateLineForm)">
+                                                <div class="date-picker__wrapper">
+                                                    <mat-form-field class="w-fit"
+                                                        appearance="fill">
+                                                        <mat-datepicker #endPicker></mat-datepicker>
+                                                        <mat-label>Chọn ngày về</mat-label>
+                                                        <input matInput
+                                                            [matDatepicker]="endPicker"
+                                                            formControlName="endDate"
+                                                            />
+                                                        <mat-datepicker-toggle
+                                                            matSuffix
+                                                            [for]="endPicker"></mat-datepicker-toggle>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="col l-6">
+                                    <div id="occupancy-box"
+                                        formGroupName="occupancy">
+                                        <div #occupancyLineForm
+                                            class="line-form"
+                                            (click)="toggleOccupancy(occupancyLineForm)">
+                                            <div class="icon__wrapper">
+                                                <i class="fa-solid
+                                                    fa-user-group"></i>
+                                            </div>
+                                            <div class="occupancy-selection">
+                                                <div class="info-group">
+                                                    <p>
+                                                        {{ occupancy.value.adult
+                                                        }} người lớn
+                                                        <span
+                                                            *ngIf="occupancy.value.children.length>
+                                                            0">,
+                                                            {{
+                                                            occupancy.value.children.length
+                                                            }}
+                                                            trẻ em</span>
+                                                    </p>
+                                                    <span>{{
+                                                        occupancy.value.room }}
+                                                        phòng</span>
+                                                </div>
+                                                <div class="arrow-down__wrapper"
+                                                    [class.toggle]="isEnableOccupancy">
+                                                    <i class="fa-solid
+                                                        fa-angle-down"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div #occupancyPopup
+                                            class="occupancy__popup"
+                                            *ngIf="isEnableOccupancy">
+                                            <div class="occupancy-option__list">
+                                                <div class="overlay"></div>
+                                                <div
+                                                    class="occupancy-option__item"
+                                                    *ngFor="let i of
+                                                    occupancyOptions; index as
+                                                    idx">
+                                                    <div class="info-group">
+                                                        <div class="label">{{
+                                                            i.label }}</div>
+                                                        <span class="sub-label">{{
+                                                            i.subLabel }}</span>
+                                                    </div>
+                                                    <div class="control-group">
+                                                        <div
+                                                            class="control-button"
+                                                            (click)="i.remove(i)">
+                                                            <i class="fa-solid
+                                                                fa-minus"></i>
+                                                        </div>
+                                                        <h3>{{ i.value }}</h3>
+                                                        <div
+                                                            class="control-button"
+                                                            (click)="i.add(i)">
+                                                            <i class="fa-solid
+                                                                fa-plus"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <ng-container
+                                                    formArrayName="children"
+                                                    *ngIf="children.controls.length>
+                                                    0">
+                                                    <div
+                                                        class="occupancy-option__item
+                                                        child-option"
+                                                        *ngFor="let c of
+                                                        children.controls; index
+                                                        as idx">
+                                                        <ul class="info-group">
+                                                            <div class="dot"></div>
+                                                            <li class="label">
+                                                                Tuổi của trẻ em
+                                                                {{ idx + 1 }}
+                                                            </li>
+                                                        </ul>
+                                                        <div
+                                                            class="control-group">
+                                                            <mat-form-field
+                                                                class="w-fit">
+                                                                <mat-select
+                                                                    [formControlName]="idx">
+                                                                    <mat-option
+                                                                        [value]="age"
+                                                                        *ngFor="let
+                                                                        age of
+                                                                        ageOptions">
+                                                                        {{ age
+                                                                        }}
+                                                                    </mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
+                                                        </div>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </ng-container>
-                <ng-template #hotelAndHomeForm>
-                    <form [formGroup]="hotelAndHomeFormGroup" class="filter-form form-default">
-                        <div class="button-group__wrapper" *ngIf="selectedTab.idx === 0">
-                            <div class="button__wrapper" *ngFor="let stayType of stayTypes; index as idx">
-                                <button #stayButton (click)="sltStayType(stayType, stayButton)" type="button"
-                                    class="btn btn-l white-bg" mat-stroked-button color="primary"
-                                    [class.btn-primary]="selectedStayType === stayType">
-                                    {{ stayType.label }}
-                                </button>
-                            </div>
-                        </div>
-                        <div #locationLineForm class="line-form" (click)="updateOverlayState(locationLineForm)">
-                            <div class="icon__wrapper">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </div>
-                            <div class="d-flex-bh align-items-center-bh w-fit">
-                                <mat-form-field class="w-fit" appearance="fill">
-                                    <mat-label>Nhập địa danh hoặc vị trí</mat-label>
-                                    <input formControlName="place" matInput placeholder="Ex. Thành phố Hồ Chí Minh" />
-                                </mat-form-field>
-                            </div>
-                        </div>
-                        <div class="d-flex-bh">
-                            <div class="wrap-fit">
-                                <div class="line-form">
-                                    <div #startDateLineForm class="line-form__fit-item"
-                                        (click)="updateOverlayState(startDateLineForm)">
-                                        <mat-form-field class="w-fit" appearance="fill">
-                                            <mat-datepicker #startPicker></mat-datepicker>
-                                            <mat-label>Chọn ngày đi</mat-label>
-                                            <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
-                                            <mat-datepicker-toggle matSuffix [for]="startPicker">
-                                                <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
-                                            </mat-datepicker-toggle>
-                                        </mat-form-field>
-                                    </div>
-                                    <div class="line-form__fit-item" #endDateLineForm class="line-form__fit-item"
-                                        (click)="updateOverlayState(endDateLineForm)">
-                                        <mat-form-field class="w-fit" appearance="fill">
-                                            <mat-datepicker #endPicker></mat-datepicker>
-                                            <mat-label>Chọn ngày về</mat-label>
-                                            <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
-                                            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="wrap-fit">
-                                <div id="occupancy-box" formGroupName="occupancy">
-                                    <div #occupancyLineForm class="line-form"
-                                        (click)="toggleOccupancy(occupancyLineForm)">
-                                        <div class="icon__wrapper">
-                                            <i class="fa-solid fa-user-group"></i>
-                                        </div>
-                                        <div class="occupancy-selection">
-                                            <div class="info-group">
-                                                <p>
-                                                    {{ occupancy.value.adult }} người lớn
-                                                    <span *ngIf="occupancy.value.children.length > 0">,
-                                                        {{ occupancy.value.children.length  }}
-                                                        trẻ em</span>
-                                                </p>
-                                                <span>{{ occupancy.value.room }} phòng</span>
-                                            </div>
-                                            <div class="arrow-down__wrapper" [class.toggle]="isEnableOccupancy">
-                                                <i class="fa-solid fa-angle-down"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div #occupancyPopup class="occupancy__popup" *ngIf="isEnableOccupancy">
-                                        <div class="occupancy-option__list">
-                                            <div class="overlay"></div>
-                                            <div class="occupancy-option__item"
-                                                *ngFor="let i of occupancyOptions; index as idx">
-                                                <div class="info-group">
-                                                    <div class="label">{{ i.label }}</div>
-                                                    <span class="sub-label">{{ i.subLabel }}</span>
-                                                </div>
-                                                <div class="control-group">
-                                                    <div class="control-button" (click)="i.remove(i)">
-                                                        <i class="fa-solid fa-minus"></i>
-                                                    </div>
-                                                    <h3>{{ i.value }}</h3>
-                                                    <div class="control-button" (click)="i.add(i)">
-                                                        <i class="fa-solid fa-plus"></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <ng-container formArrayName="children" *ngIf="children.controls.length > 0">
-                                                <div class="occupancy-option__item child-option"
-                                                    *ngFor="let c of children.controls; index as idx">
-                                                    <ul class="info-group">
-                                                        <div class="dot"></div>
-                                                        <li class="label">
-                                                            Tuổi của trẻ em {{ idx + 1 }}
-                                                        </li>
-                                                    </ul>
-                                                    <div class="control-group">
-                                                        <mat-form-field class="w-fit">
-                                                            <mat-select [formControlName]="idx">
-                                                                <mat-option [value]="age" *ngFor="let age of ageOptions">
-                                                                    {{ age }}
-                                                                </mat-option>
-                                                            </mat-select>
-                                                        </mat-form-field>
-                                                    </div>
-                                                </div>
-                                            </ng-container>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </ng-template>
                 <ng-template #privateHomeForm>
-                    <form [formGroup]="privateHomeFormGroup" class="filter-form form-default">
-                        <div class="button-group__wrapper" *ngIf="selectedTab.idx === 0">
-                            <div class="button__wrapper" *ngFor="let stayType of stayTypes; index as idx">
-                                <button #stayButton (click)="sltStayType(stayType, stayButton)" type="button"
-                                    class="btn btn-l white-bg" mat-stroked-button color="primary"
-                                    [class.btn-primary]="selectedStayType === stayType">
+                    <form [formGroup]="privateHomeFormGroup" class="filter-form
+                        form-default">
+                        <div class="button-group__wrapper"
+                            *ngIf="selectedTab.idx === 0">
+                            <div class="button__wrapper" *ngFor="let stayType of
+                                stayTypes; index as idx">
+                                <button #stayButton
+                                    (click)="sltStayType(stayType, stayButton)"
+                                    type="button"
+                                    class="btn btn-l white-bg"
+                                    mat-stroked-button color="primary"
+                                    [class.btn-primary]="selectedStayType ===
+                                    stayType">
                                     {{ stayType.label }}
                                 </button>
                             </div>
                         </div>
-                        <div #locationLineForm class="line-form" (click)="updateOverlayState(locationLineForm)">
+                        <div #locationLineForm class="line-form"
+                            (click)="updateOverlayState(locationLineForm)">
                             <div class="icon__wrapper">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                             <div class="d-flex-bh align-items-center-bh w-fit">
                                 <mat-form-field class="w-fit" appearance="fill">
                                     <mat-label>Nhập địa danh hoặc vị trí</mat-label>
-                                    <input formControlName="place" matInput placeholder="Ex. Thành phố Hồ Chí Minh" />
+                                    <input formControlName="place" matInput
+                                        placeholder="Ex. Thành phố Hồ Chí Minh"
+                                        />
                                 </mat-form-field>
                             </div>
                         </div>
                         <div class="d-flex-bh">
                             <div class="wrap-fit">
                                 <div class="line-form">
-                                    <div #startDateLineForm class="line-form__fit-item"
+                                    <div #startDateLineForm
                                         (click)="updateOverlayState(startDateLineForm)">
-                                        <mat-form-field class="w-fit" appearance="fill">
+                                        <mat-form-field class="w-fit h-fit"
+                                            appearance="fill">
                                             <mat-datepicker #startPicker></mat-datepicker>
                                             <mat-label>Chọn ngày đi</mat-label>
-                                            <input matInput [matDatepicker]="startPicker" formControlName="startDate" />
-                                            <mat-datepicker-toggle matSuffix [for]="startPicker">
-                                                <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+                                            <input matInput
+                                                [matDatepicker]="startPicker"
+                                                formControlName="startDate" />
+                                            <mat-datepicker-toggle matSuffix
+                                                [for]="startPicker">
+                                                <mat-icon
+                                                    matDatepickerToggleIcon>calendar_today</mat-icon>
                                             </mat-datepicker-toggle>
                                         </mat-form-field>
                                     </div>
-                                    <div class="line-form__fit-item" #endDateLineForm class="line-form__fit-item"
+                                    <div class="line-form__fit-item"
+                                        #endDateLineForm
                                         (click)="updateOverlayState(endDateLineForm)">
-                                        <mat-form-field class="w-fit" appearance="fill">
+                                        <mat-form-field class="w-fit"
+                                            appearance="fill">
                                             <mat-datepicker #endPicker></mat-datepicker>
                                             <mat-label>Chọn ngày về</mat-label>
-                                            <input matInput [matDatepicker]="endPicker" formControlName="endDate" />
-                                            <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+                                            <input matInput
+                                                [matDatepicker]="endPicker"
+                                                formControlName="endDate" />
+                                            <mat-datepicker-toggle matSuffix
+                                                [for]="endPicker"></mat-datepicker-toggle>
                                         </mat-form-field>
                                     </div>
                                 </div>
                             </div>
                             <div class="wrap-fit">
-                                <div id="occupancy-box" formGroupName="occupancy">
+                                <div id="occupancy-box"
+                                    formGroupName="occupancy">
                                     <div #occupancyLineForm class="line-form"
                                         (click)="toggleOccupancy(occupancyLineForm)">
                                         <div class="icon__wrapper">
@@ -200,50 +306,81 @@
                                         <div class="occupancy-selection">
                                             <div class="info-group">
                                                 <p>
-                                                    {{ occupancy.value.adult }} người lớn
-                                                    <span *ngIf="occupancy.value.children.length > 0">,
-                                                        {{ occupancy.value.children.length  }}
+                                                    {{ occupancy.value.adult }}
+                                                    người lớn
+                                                    <span
+                                                        *ngIf="occupancy.value.children.length>
+                                                        0">,
+                                                        {{
+                                                        occupancy.value.children.length
+                                                        }}
                                                         trẻ em</span>
                                                 </p>
-                                                <span>{{ occupancy.value.room }} phòng</span>
+                                                <span>{{ occupancy.value.room }}
+                                                    phòng</span>
                                             </div>
-                                            <div class="arrow-down__wrapper" [class.toggle]="isEnableOccupancy">
-                                                <i class="fa-solid fa-angle-down"></i>
+                                            <div class="arrow-down__wrapper"
+                                                [class.toggle]="isEnableOccupancy">
+                                                <i class="fa-solid
+                                                    fa-angle-down"></i>
                                             </div>
                                         </div>
                                     </div>
-                                    <div #occupancyPopup class="occupancy__popup" *ngIf="isEnableOccupancy">
+                                    <div #occupancyPopup
+                                        class="occupancy__popup"
+                                        *ngIf="isEnableOccupancy">
                                         <div class="occupancy-option__list">
                                             <div class="overlay"></div>
                                             <div class="occupancy-option__item"
-                                                *ngFor="let i of occupancyOptions; index as idx">
+                                                *ngFor="let i of
+                                                occupancyOptions; index as idx">
                                                 <div class="info-group">
-                                                    <div class="label">{{ i.label }}</div>
-                                                    <span class="sub-label">{{ i.subLabel }}</span>
+                                                    <div class="label">{{
+                                                        i.label }}</div>
+                                                    <span class="sub-label">{{
+                                                        i.subLabel }}</span>
                                                 </div>
                                                 <div class="control-group">
-                                                    <div class="control-button" (click)="i.remove(i)">
-                                                        <i class="fa-solid fa-minus"></i>
+                                                    <div class="control-button"
+                                                        (click)="i.remove(i)">
+                                                        <i class="fa-solid
+                                                            fa-minus"></i>
                                                     </div>
                                                     <h3>{{ i.value }}</h3>
-                                                    <div class="control-button" (click)="i.add(i)">
-                                                        <i class="fa-solid fa-plus"></i>
+                                                    <div class="control-button"
+                                                        (click)="i.add(i)">
+                                                        <i class="fa-solid
+                                                            fa-plus"></i>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <ng-container formArrayName="children" *ngIf="children.controls.length > 0">
-                                                <div class="occupancy-option__item child-option"
-                                                    *ngFor="let c of children.controls; index as idx">
+                                            <ng-container
+                                                formArrayName="children"
+                                                *ngIf="children.controls.length>
+                                                0">
+                                                <div
+                                                    class="occupancy-option__item
+                                                    child-option"
+                                                    *ngFor="let c of
+                                                    children.controls; index as
+                                                    idx">
                                                     <ul class="info-group">
                                                         <div class="dot"></div>
                                                         <li class="label">
-                                                            Tuổi của trẻ em {{ idx + 1 }}
+                                                            Tuổi của trẻ em {{
+                                                            idx + 1 }}
                                                         </li>
                                                     </ul>
                                                     <div class="control-group">
-                                                        <mat-form-field class="w-fit">
-                                                            <mat-select [formControlName]="idx">
-                                                                <mat-option [value]="age" *ngFor="let age of ageOptions">
+                                                        <mat-form-field
+                                                            class="w-fit">
+                                                            <mat-select
+                                                                [formControlName]="idx">
+                                                                <mat-option
+                                                                    [value]="age"
+                                                                    *ngFor="let
+                                                                    age of
+                                                                    ageOptions">
                                                                     {{ age }}
                                                                 </mat-option>
                                                             </mat-select>
@@ -264,7 +401,8 @@
             </div>
         </div>
     </div>
-    <div class="overlay-bh" #overlay *ngIf="overlayState.isShow"></div>
+    <div class="overlay-bh" *ngIf="overlayState.isShow"
+        (click)="onClickOverlay()"></div>
 </div>
 
 <ng-template #hotelAndHomeSvg>
