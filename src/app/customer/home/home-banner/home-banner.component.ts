@@ -234,7 +234,6 @@ export class HomeBannerComponent implements OnInit {
     if(this.occupancyPopup){
       const occupancyPopupTop =
       this.occupancyPopup.nativeElement.getBoundingClientRect().top;
-      console.log(occupancyPopupTop);
       if(occupancyPopupTop < 0){
         this.overlayState.currElement = undefined;
         this.overlayState.isShow = false
@@ -242,7 +241,6 @@ export class HomeBannerComponent implements OnInit {
       }
     }
     const homeBannerBottom = this.homeBanner.nativeElement.getBoundingClientRect().bottom
-    console.log(homeBannerBottom);
     
     if(homeBannerBottom < 0){
       this.isShowFilterBar = true

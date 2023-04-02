@@ -8,6 +8,7 @@ import { AngularMaterialModule } from 'src/app/shared/angular-material/angular-m
 import { HomeBannerComponent } from './home-banner/home-banner.component';
 import { SvgAsTemplateModule } from 'src/app/shared/svg-as-template/svg-as-template.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SvgAsTemplateModule,
     FormsModule,
     ReactiveFormsModule,
-    FilterBarModule
+    FilterBarModule,
+    RouterModule
   ]
 })
 export class HomeModule { }
