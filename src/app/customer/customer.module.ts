@@ -6,6 +6,7 @@ import { CustomerComponent } from './customer.component';
 import { CustomerLayoutModule } from '../shared/layout/customer-layout/customer-layout.module';
 import { AngularMaterialModule } from '../shared/angular-material/angular-material.module';
 import { DemoComponent } from './demo/demo.component';
+import { FilterBarModule } from '../shared/layout/customer-layout/filter-bar/filter-bar.module';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { DemoComponent } from './demo/demo.component';
     CommonModule,
     CustomerRoutingModule,
     CustomerLayoutModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    FilterBarModule
   ]
 })
 export class CustomerModule { }

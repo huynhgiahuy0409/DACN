@@ -1,5 +1,5 @@
 .header-container{
-    height: 65px;
+    height: var(--header-height);
     background-color: #fff;
     display: flex;
     align-items: center;
@@ -7,7 +7,7 @@
     padding:  0 16px;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 9999;
 }
 .header-container .logo-wrapper{
     width: 150px;

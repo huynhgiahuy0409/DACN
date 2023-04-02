@@ -665,63 +665,31 @@ svg.booking-oto-rating-stars__hollow-star {
     font-weight: bold;
 }
 
-// form
-.form-default {}
-
-.form-default.form--s {
-    max-width: 420px;
-    margin: 0 auto;
+//material
+.mat-form-field{
+    display:  block;
+    width: 100%;
+}
+.filter-form .mat-form-field-underline {
+    display: none;
 }
 
-.form-default .line-form {
-    margin-bottom: 20px;
+.filter-form .mat-form-field-wrapper {
+    padding: 0;
 }
 
-.form-default .line-form label.label {
-    font-size: 1.4rem;
-    font-weight: 500;
-    margin-bottom: 10px;
-    display: inline-block;
+.filter-form .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: transparent;
 }
 
-.form-default .line-form p.info {
-    margin-top: 10px;
-    margin-bottom: 0;
-    font-size: 1.3rem;
-    color: #a9aaad;
+.filter-form .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-datepicker-toggle-default-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--icon-color)
 }
 
-.form-default .line-form .wrap-input {
-    background-color: #fff;
-    height: 45px;
-    border: 1px solid #e8eaef;
-    border-radius: 3px;
-}
-
-.form-default .line-form .wrap-input input {
-    background-color: initial;
-    line-height: 1rem;
-}
-
-//modal
-.modal-container {
-    min-width: 570px;
-}
-
-.modal-header {
-    padding: 60px 20px 40px;
-}
-
-.modal-header h1 {
-    font-weight: 700;
-    font-size: 3rem;
-    text-align: center;
-}
-
-.modal-bhdy {
-    padding: 0 20px 48px;
-}
-
-.model-actions {
-    padding: 0 20px 20px;
+.filter-form mat-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--icon-color)
 }
