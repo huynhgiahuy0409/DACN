@@ -11,7 +11,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
-
+import {MatRadioModule} from '@angular/material/radio';
 @NgModule({
   declarations: [],
   exports: [
@@ -23,7 +23,9 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatNativeDateModule,
     MatIconModule,
     MatStepperModule,
-    MatSelectModule
+    MatSelectModule,
+    MatCheckboxModule,
+    MatRadioModule
   ]
 })
 export class AngularMaterialModule { }
