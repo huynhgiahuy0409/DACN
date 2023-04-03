@@ -1,8 +1,8 @@
-<ul class="sidebar-filter__group">
+<ul class="sidebar-filter__group" [formGroup]="filterFormGroup">
     <ng-container *ngFor="let filterField of filterFields">
-        <app-field-builder [field]="filterField"></app-field-builder>
+        <app-field-builder [field]="filterField" [form]="filterFormGroup"></app-field-builder>
     </ng-container>
-    <p>{{
-        filterFields | json
-    }}</p>
+    <p >
+        {{filterFormGroup.valueChanges | async | json}}
+    </p>
 </ul>

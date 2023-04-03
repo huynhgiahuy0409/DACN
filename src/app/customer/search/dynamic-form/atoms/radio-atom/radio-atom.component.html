@@ -1,11 +1,12 @@
-<mat-radio-group
-    [(ngModel)]="field.value">
-    <ng-container *ngFor="let radioOption of
-        field.radioOptions">
-        <p>
-            <mat-radio-button color="primary" [value]="radioOption.code">
-                {{radioOption.label}}
-            </mat-radio-button>
-        </p>
-    </ng-container>
-</mat-radio-group>
+<ng-container [formGroup]="form">
+    <mat-radio-group [formControlName]="field.name">
+        <ng-container *ngFor="let radioOption of
+            field.radioOptions">
+            <p>
+                <mat-radio-button color="primary" [value]="radioOption.code">
+                    {{radioOption.label}}
+                </mat-radio-button>
+            </p>
+        </ng-container>
+    </mat-radio-group>
+</ng-container>

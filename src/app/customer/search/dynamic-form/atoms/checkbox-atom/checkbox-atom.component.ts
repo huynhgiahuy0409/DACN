@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { FilterField } from '../../../components/side-bar-filter/side-bar-filter.component';
 
 @Component({
@@ -9,9 +10,17 @@ import { FilterField } from '../../../components/side-bar-filter/side-bar-filter
 export class CheckboxAtomComponent implements OnInit {
   @Input()
   field!: FilterField
-  constructor() { }
+  @Input()
+  form!: FormGroup
+  constructor(private __fb: FormBuilder) { }
+  ngOnChanges(){
+    this.form.addControl(this.field.name, this.__fb.control(''))
+  }
 
   ngOnInit(): void {
   }
-
+  updateChange(){
+    const filters = this.field.checkOptions?.filter(option => option.checked === true).map(filter => filter.code)
+    this.form.get(this.field.name)?.patchValue(filters)
+  }
 }

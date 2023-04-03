@@ -1,5 +1,5 @@
 import { KeyValue } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { forkJoin, Observable, of, take, timeout } from 'rxjs';
 import { OptionResponse } from 'src/app/models/response';
@@ -26,12 +26,13 @@ export interface FilterField {
   templateUrl: './side-bar-filter.component.html',
   styleUrls: ['./side-bar-filter.component.scss'],
 })
-export class SideBarFilterComponent implements OnInit {
+export class SideBarFilterComponent implements OnInit, OnChanges {
   filterFields: FilterField[] = [
     {
       type: 'checkbox',
       name: 'propertyType',
       label: 'Hình thức',
+      
       checkOptions: [],
     },
     {
@@ -51,10 +52,12 @@ export class SideBarFilterComponent implements OnInit {
   filterFormGroup!: FormGroup;
   constructor(private __fb: FormBuilder) {
     this.filterFormGroup = this.__fb.group({
-      propertyType: this.__fb.array([]),
-      startRating: this.__fb.array([]),
-      guestRating: '',
     });
+    this.filterFormGroup.valueChanges.subscribe(value => console.log(value)
+    )
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    
   }
   ngOnInit(): void {
     let obsA$: Observable<OptionResponse[]> = of([

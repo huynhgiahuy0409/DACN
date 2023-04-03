@@ -1,8 +1,12 @@
 <section>
-    <ng-container *ngFor="let checkOption of field.checkOptions">
+    <ng-container *ngFor="let checkOption of field.checkOptions; index as i">
         <p>
-            <mat-checkbox color="primary"
-                [(ngModel)]="checkOption.checked">{{checkOption.label}}</mat-checkbox>
+            <mat-checkbox 
+                [(ngModel)]="checkOption.checked"
+                (ngModelChange)="updateChange()"
+                >
+                {{checkOption.label}}
+            </mat-checkbox>
         </p>
     </ng-container>
 </section>

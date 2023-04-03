@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { AbstractControl, FormGroup } from '@angular/forms';
 import { FilterField } from '../../components/side-bar-filter/side-bar-filter.component';
 
 @Component({
@@ -9,6 +10,8 @@ import { FilterField } from '../../components/side-bar-filter/side-bar-filter.co
 export class FieldBuilderComponent implements OnInit {
   @Input()
   field!: FilterField
+  @Input()
+  form!: FormGroup
   constructor() { }
 
   ngOnInit(): void {
