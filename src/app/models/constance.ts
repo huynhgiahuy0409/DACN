@@ -67,3 +67,5 @@ export const cart: Cart = {
         },
     ]
 };
+
+export const ONE_DOLLAR_IN_USD = 23456;

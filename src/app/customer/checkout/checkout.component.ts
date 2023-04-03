@@ -1,9 +1,11 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { cart } from 'src/app/models/constance';
 import { Cart } from 'src/app/models/model';
 import { getDateNoYearTitle, getNightNumber } from 'src/app/shared/utils/DateUtils';
 import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
+import { PaymentService } from '../services/payment.service';
 
 @Component({
   selector: 'app-checkout',
@@ -23,7 +25,7 @@ export class CheckoutComponent implements OnInit {
     phone: ['', Validators.required],
   });
 
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(private _formBuilder: FormBuilder, private paymentService: PaymentService) {
   }
 
   ngOnInit(): void {
@@ -68,6 +70,22 @@ export class CheckoutComponent implements OnInit {
       return total + item.price;
     }
       , 0);
-    return totalPrice + (totalPrice*10/100);
+    return totalPrice + (totalPrice * 10 / 100);
   }
+
+  onProceedToPayment() {
+    this.paymentService.createToken().subscribe(data => {
+      if (data.access_token && data.token_type) {
+        localStorage.setItem("payment_token", data.access_token);
+        this.paymentService.createPayment(data.access_token, data.token_type, this.cart).subscribe(data => {
+          if (data.links) {
+            localStorage.setItem("payment_id", data.id);
+            window.location.href = data.links[1].href;
+          }
+        });
+      }
+    });
+  }
+
+  // getPaymentStatus()
 }
