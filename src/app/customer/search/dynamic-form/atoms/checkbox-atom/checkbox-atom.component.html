@@ -4,6 +4,7 @@
             <mat-checkbox 
                 [(ngModel)]="checkOption.checked"
                 (ngModelChange)="updateChange()"
+                [color] = "field.color"
                 >
                 {{checkOption.label}}
             </mat-checkbox>

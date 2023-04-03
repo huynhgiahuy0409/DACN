@@ -8,12 +8,15 @@ import { AngularMaterialModule } from 'src/app/shared/angular-material/angular-m
 import { SideBarFilterComponent } from './components/side-bar-filter/side-bar-filter.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DynamicFormModule } from './dynamic-form/dynamic-form.module';
+import { NavBarFilterComponent } from './components/nav-bar-filter/nav-bar-filter.component';
+import { ProductListModule } from './components/product-list/product-list.module';
 
 
 @NgModule({
   declarations: [
     SearchComponent,
-    SideBarFilterComponent
+    SideBarFilterComponent,
+    NavBarFilterComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +25,8 @@ import { DynamicFormModule } from './dynamic-form/dynamic-form.module';
     AngularMaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    DynamicFormModule
+    DynamicFormModule,
+    ProductListModule
   ]
 })
 export class SearchModule { }

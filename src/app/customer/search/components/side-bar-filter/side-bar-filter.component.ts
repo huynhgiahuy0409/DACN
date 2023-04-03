@@ -17,6 +17,7 @@ export interface FilterField {
   name: string;
   label: string;
   value?: string[] | string;
+  color: 'primary' | 'accent';
   validation?: any;
   radioOptions?: RadioOption[];
   checkOptions?: CheckBoxOption[];
@@ -32,14 +33,15 @@ export class SideBarFilterComponent implements OnInit, OnChanges {
       type: 'checkbox',
       name: 'propertyType',
       label: 'Hình thức',
-      
       checkOptions: [],
+      color: 'primary',
     },
     {
       type: 'checkbox',
       name: 'startRating',
       label: 'Đánh giá sao',
       checkOptions: [],
+      color: 'primary',
     },
     {
       type: 'radio',
@@ -47,18 +49,15 @@ export class SideBarFilterComponent implements OnInit, OnChanges {
       label: 'Khách đánh giá',
       value: '',
       radioOptions: [],
+      color: 'primary',
     },
   ];
   filterFormGroup!: FormGroup;
   constructor(private __fb: FormBuilder) {
-    this.filterFormGroup = this.__fb.group({
-    });
-    this.filterFormGroup.valueChanges.subscribe(value => console.log(value)
-    )
+    this.filterFormGroup = this.__fb.group({});
+    this.filterFormGroup.valueChanges.subscribe((value) => console.log(value));
   }
-  ngOnChanges(changes: SimpleChanges): void {
-    
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
   ngOnInit(): void {
     let obsA$: Observable<OptionResponse[]> = of([
       {

@@ -3,7 +3,7 @@
         <ng-container *ngFor="let radioOption of
             field.radioOptions">
             <p>
-                <mat-radio-button color="primary" [value]="radioOption.code">
+                <mat-radio-button [color] = "field.color" [value]="radioOption.code">
                     {{radioOption.label}}
                 </mat-radio-button>
             </p>

@@ -1,0 +1,161 @@
+<div class="product-item__wrapper grid">
+    <div class="product__item">
+        <div class="product__item__header">
+        </div>
+        <div class="product__item__body">
+            <div class="row no-gutters">
+                <div class="col l-4">
+                    <div class="left__wrapper">
+                        <div class="product-image__wrapper">
+                            <div class="product-image__thumbnail">
+                                <img
+                                    src="https://pix8.agoda.net/hotelImages/594/5940302/5940302_19031215540072930735.jpg?ca=8&ce=1&s=1024x768"
+                                    alt="">
+                            </div>
+                            <div class="product-image__review-list">
+                                <div class="row no-gutters">
+                                    <div class="col l-3
+                                        product-image__review-item" *ngFor="let
+                                        image of [1,1,1,1]; last as lastIdx"
+                                        (mouseenter)="isHoverReviewItem= true"
+                                        (mouseleave)="isHoverReviewItem= false">
+                                        <img
+                                            src="https://pix8.agoda.net/hotelImages/594/5940302/5940302_19031215540072930735.jpg?ca=8&ce=1&s=1024x768"
+                                            alt="">
+                                        <div class="overlay" *ngIf="lastIdx">
+                                            <span>see all</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="image-zoom"
+                                    *ngIf="isHoverReviewItem">
+                                    <div class="image__wrapper">
+                                        <img
+                                            src="https://pix8.agoda.net/hotelImages/594/5940302/5940302_19031215540072930735.jpg?ca=8&ce=1&s=1024x768"
+                                            alt="">
+                                        <div class="description__wrapper">
+                                            <span>Bed room</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col l-5">
+                    <div class="center__wrapper">
+                        <div class="product-info">
+                            <div class="product-info__header">
+                                <h3 class="product__name">
+                                    {{product.name}}
+                                </h3>
+                                <div class="d-flex-bh align-items-center-bh"
+                                    [style.flex-wrap]="'wrap'">
+                                    <span class="star-rating__wrapper">
+                                        <app-star-svg *ngFor="let i of
+                                            [1,1,1,1]"
+                                            [fillColor]="'var(--star-color)'"></app-star-svg>
+                                    </span>
+                                    <div class="address__wrapper">
+                                        <i class="mr-r-5 fa-solid
+                                            fa-location-dot"></i>
+                                        <span>{{product.address}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="benefits__group">
+                                <div class="benefit__item" *ngFor="let benefit
+                                    of product.benefits">
+                                    <span>{{benefit}}</span>
+                                </div>
+                            </div>
+                            <div class="top-badges">
+                                <div class="top-badge__item" *ngFor="let
+                                    topBadge of product.topBadges"
+                                    [class.sea-view]="topBadge.icon ===
+                                    'sea-view'"
+                                    [class.sustainable]="topBadge.icon ===
+                                    'sustainable'">
+                                    <div class="icon__wrapper"
+                                        [ngSwitch]="topBadge.icon">
+                                        <img *ngSwitchCase="'preferred'"
+                                            src="https://cdn6.agoda.net/images/icons/agoda-preferred.svg?s=16x"
+                                            alt="">
+                                        <i *ngSwitchCase="'sea-view'"
+                                            class="see-view fa-solid
+                                            fa-umbrella-beach"></i>
+                                        <i *ngSwitchCase="'sustainable'"
+                                            class="sustainable fa-solid
+                                            fa-leaf"></i>
+                                    </div>
+                                    <span>
+                                        {{topBadge.name}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="property-cards">
+                                <div class="property-card__item" *ngFor="let
+                                    propertyCard of product.propertyCards"
+                                    [class.online-payment]="propertyCard.icon
+                                    ===
+                                    'online-payment'"
+                                    [class.domestic-deal]="propertyCard.icon ===
+                                    'domestic-deal'">
+                                    <div class="icon__wrapper"
+                                        [ngSwitch]="propertyCard.icon">
+                                        <app-credit-card
+                                            *ngSwitchCase="'online-payment'"
+                                            [fillColor]="'var(--primary-color)'"></app-credit-card>
+                                        <app-domestic-svg
+                                            *ngSwitchCase="'domestic-deal'"
+                                            [fillColor]="'rgb(40, 115, 50)'"></app-domestic-svg>
+                                    </div>
+                                    <span>{{propertyCard.name}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col l-3">
+                    <div class="right__wrapper">
+                        <div class="average-rating__wrapper">
+                            <div class="average-rating__points-wrapper">
+                                <svg width="1em" height="1em" viewBox="0 0 24
+                                    24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    style="transform: none;"><path d="M23.25
+                                        12C23.25 5.787 18.213.75 12 .75S.75
+                                        5.787.75 12v11.25H12c6.213 0 11.25-5.037
+                                        11.25-11.25z"
+                                        fill="var(--primary-color)"></path></svg>
+                                <div class="points__wrapper">
+                                    <p>{{product.averageRating.points}}</p>
+                                </div>
+                            </div>
+                            <div class="average-rating__content">
+                                <p>{{product.averageRating.name}}</p>
+                                <span>{{product.averageRating.reviews}} lượt
+                                    đánh giá</span>
+                            </div>
+                        </div>
+                        <div class="price__wrapper">
+                            <div class="price__item">
+                                <div class="origin-price__wrapper">
+                                    <span>{{product.originalPrice | currency: 'VND'}}</span>
+                                </div>
+                            </div>
+                            <div class="price__item">
+                                <div class="rental-price__wrapper">
+                                    <span>{{product.rentalPrice | currency: 'VND'}}</span>
+                                </div>
+                            </div>
+                            <div class="free-cancellation">
+                               + Miễn phí huỷ phòng
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
