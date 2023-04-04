@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./lease.component.scss']
 })
 export class LeaseComponent implements OnInit {
-
+  opened=true;
   constructor() { }
 
   ngOnInit(): void {
