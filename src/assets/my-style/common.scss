@@ -682,6 +682,14 @@ svg.booking-oto-rating-stars__hollow-star {
   color: green;
 }
 
+.mg-0 {
+  margin: 0 !important;
+}
+
+.mx-auto {
+  margin: 0 auto;
+}
+
 //end hieu custom
 
 // form
@@ -748,4 +756,32 @@ svg.booking-oto-rating-stars__hollow-star {
 
 .hide {
   display: none;
+}
+//material
+.mat-form-field{
+    display:  block;
+    width: 100%;
+}
+.filter-form .mat-form-field-underline {
+    display: none;
+}
+
+.filter-form .mat-form-field-wrapper {
+    padding: 0;
+}
+
+.filter-form .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: transparent;
+}
+
+.filter-form .mat-form-field:not(.mat-form-field-appearance-legacy) .mat-form-field-suffix .mat-datepicker-toggle-default-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--icon-color)
+}
+
+.filter-form mat-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--icon-color)
 }

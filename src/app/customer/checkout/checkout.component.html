@@ -73,7 +73,7 @@
             </div>
         </div>
         <div class="d-flex-bh flex-wrap-bh justify-content-end process-payment">
-            <button class="btn btn-primary bx__shadow">Tiến hành thanh toán</button>
+            <button class="btn btn-primary bx__shadow" (click)="onProceedToPayment()">Tiến hành thanh toán</button>
         </div>
     </div>
     <div class="checkout-column order-summary bx__shadow">
@@ -152,12 +152,13 @@
             </div>
             <div class="item-amenities" *ngIf="isShowAmenitiesItem(ind)">
                 <div class="divider-line"></div>
-                <div class="amenity-check" *ngFor="let item of [1,1,1]">
+                <div class="amenity-check" *ngFor="let amenity of item.rooms[0].amenities">
                     <div class="amenity-icon">
-                        <check-svg></check-svg>
+                        <wifi-svg *ngIf="amenity.name==='Wifi'"></wifi-svg>
+                        <check-svg *ngIf="amenity.name!=='Wifi'"></check-svg>
                     </div>
                     <div class="amenity-name">
-                        <p class="text-check">Bãi đậu xe</p>
+                        <p class="text-check">{{amenity.name}}</p>
                     </div>
                 </div>
             </div>
@@ -178,6 +179,45 @@
                     </svg></p>
             </div>
             <div class="divider-line"></div>
+        </div>
+    </div>
+    <div class="checkout-price">
+        <div class="details-price__container">
+            <p class="item-price__title">Chi Tiết Giá</p>
+            <div class="d-flex-bh flex-wrap-bh details-price">
+                <div class="price-column__first">
+                    <p class="text-check">Tiết kiệm gói</p>
+                </div>
+                <div class="price-column__second">
+                    <p class="text-end text-check">- {{formatPrice(getTotalPrice()*10/100)}}</p>
+                </div>
+                <div class="divider-line w-fit"></div>
+
+                <div class="price-column__first">
+                    <p>Tổng cộng thuế và phí</p>
+                </div>
+                <div class="price-column__second">
+                    <p class="text-end">{{formatPrice(getTotalPrice())}}</p>
+                </div>
+                <div class="divider-line w-fit"></div>
+
+                <div class="price-column__first">
+                    <p>Tổng quý khách trả</p>
+                </div>
+                <div class="price-column__second">
+                    <p class="text-end">{{formatPrice(getTotalPrice())}}</p>
+                </div>
+
+                <div class="d-flex-bh w-fit" *ngFor="let item of cart.items">
+                    <div class="price-column__first">
+                        <p class="mg-0">Tổng phải trả khi nhận phòng</p>
+                        <p class="item-name">{{item.name}}</p>
+                    </div>
+                    <div class="price-column__second">
+                        <p class="text-end">{{formatPrice(item.price)}}</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

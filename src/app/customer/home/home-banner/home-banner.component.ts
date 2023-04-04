@@ -14,22 +14,14 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { filter } from 'rxjs';
-import { RedirectInfo } from 'src/app/models/model';
+import { Occupancy, RedirectInfo } from 'src/app/models/model';
 interface Tab {
   idx: number;
   label: string;
   title: string;
   subtitle: string;
 }
-interface Occupancy {
-  idx: number;
-  label: string;
-  subLabel?: string;
-  value: number;
-  childOptions?: string[];
-  add(occupancy: Occupancy): void;
-  remove(occupancy: Occupancy): void;
-}
+
 interface StayType {
   idx: number;
   label: string;
@@ -47,6 +39,7 @@ export class HomeBannerComponent implements OnInit {
   occupancyBox!: ElementRef<HTMLDivElement>;
   @ViewChild('homeBanner')
   homeBanner!: ElementRef<HTMLDivElement>;
+  isShowFilterBar: boolean = false
   enableOverlay: boolean = false;
   isEnableOccupancy = false;
   selectedTab!: Tab;
@@ -211,6 +204,11 @@ export class HomeBannerComponent implements OnInit {
       this.isEnableOccupancy = false;
     }
   }
+  onClickOverlay(){
+    this.overlayState.isShow = false
+    this.overlayState.currElement = undefined
+    this.isEnableOccupancy = false
+  }
   toggleOccupancy(element: any) {
     if (this.overlayState.currElement !== element) {
       this.overlayState.currElement = element;
@@ -229,5 +227,25 @@ export class HomeBannerComponent implements OnInit {
       result.push(index + '');
     }
     return result;
+  }
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: Event) {
+    // Gọi hàm xử lý sự kiện scroll ở đây
+    if(this.occupancyPopup){
+      const occupancyPopupTop =
+      this.occupancyPopup.nativeElement.getBoundingClientRect().top;
+      if(occupancyPopupTop < 0){
+        this.overlayState.currElement = undefined;
+        this.overlayState.isShow = false
+        this.isEnableOccupancy = false
+      }
+    }
+    const homeBannerBottom = this.homeBanner.nativeElement.getBoundingClientRect().bottom
+    
+    if(homeBannerBottom < 0){
+      this.isShowFilterBar = true
+    }else{
+      this.isShowFilterBar = false
+    }
   }
 }

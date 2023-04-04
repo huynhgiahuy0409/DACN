@@ -1,0 +1,28 @@
+.filter-bar{
+    height: 70px;
+    padding: 11px 0;
+    background-color: var(--filter-bar-color);
+    position: sticky;
+    top: var(--header-height);
+    z-index: 9999;
+}
+
+
+// form
+.filter-form .line-form {
+    height: 48px;
+    margin: 0
+}
+.filter-form .line-form .line-form__fit-item .date-picker__wrapper{
+    padding: 0
+}
+.search-button__wrapper{
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1000;
+}
+.search-button__wrapper button{
+    display: block;
+    height: 100%;
+}

@@ -98,13 +98,13 @@
               .rating-title {
                 position: relative;
                 top: -13px;
-                left: -5px;
+                left: -1px;
                 font-size: 90%;
               }
               .rating-quantity {
                 font-weight: normal;
                 position: relative;
-                left: 23%;
+                left: 20%;
                 font-size: 80%;
                 color: var(--secondary-text);
               }
@@ -180,6 +180,45 @@
       font-size: 190%;
       font-weight: 600;
       padding: 10px 0 10px;
+    }
+  }
+  &-price {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: end;
+    align-items: end;
+    align-self: end;
+    .details-price__container {
+      background-color: white;
+      width: 25%;
+      position: relative;
+      right: 6%;
+      margin-top: 1em;
+      margin-bottom: 1em;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+      padding: 15px;
+      .item-price__title {
+        font-size: 150%;
+        font-weight: 500;
+      }
+      .price-column {
+        &__first {
+          flex: 0 0 70%;
+          padding: 10px;
+          padding-left: 1px;
+          .item-name {
+            font-size: 85%;
+            color: var(--secondary-text);
+          }
+        }
+        &__second {
+          flex: 0 0 30%;
+          padding: 10px;
+          padding-left: 1px;
+        }
+      }
     }
   }
 }
