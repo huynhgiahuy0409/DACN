@@ -26,12 +26,27 @@
 
           <!--          <a routerLink="location" routerLinkActive="active">Vị trí</a>-->
         </mat-list-item>
-        <mat-list-item><a routerLink="home" routerLinkActive="active">Mô tả</a></mat-list-item>
-        <mat-list-item><a routerLink="home" routerLinkActive="active">Tiện nghi</a></mat-list-item>
-        <mat-list-item><a routerLink="home" routerLinkActive="active">Định giá</a></mat-list-item>
-        <mat-list-item><a routerLink="home" routerLinkActive="active">Ảnh</a></mat-list-item>
-        <mat-list-item><a routerLink="home" routerLinkActive="active">Hồ sơ</a></mat-list-item>
-        <mat-list-item><a routerLink="home" routerLinkActive="active">Đăng</a></mat-list-item>
+        <mat-list-item><a routerLink="description" routerLinkActive="active"
+                          [routerLinkActiveOptions]="{exact:true}"
+        >
+          <mat-icon class="icon-no-active">check_circle_outline</mat-icon>
+          Mô tả</a></mat-list-item>
+        <mat-list-item><a routerLink="amenities" routerLinkActive="active">
+          <mat-icon class="icon-no-active">check_circle_outline</mat-icon>
+          Tiện nghi</a></mat-list-item>
+        <mat-list-item><a routerLink="pricing" routerLinkActive="active">
+          <mat-icon class="icon-no-active">check_circle_outline</mat-icon>
+
+          Định giá</a></mat-list-item>
+
+        <mat-list-item><a routerLink="photos" routerLinkActive="active">
+          <mat-icon class="icon-no-active">check_circle_outline</mat-icon>
+          Ảnh</a></mat-list-item>
+        <mat-list-item><a routerLink="profile" routerLinkActive="active">
+          <mat-icon class="icon-no-active">check_circle_outline</mat-icon>
+
+          Hồ sơ</a></mat-list-item>
+<!--        <mat-list-item><a routerLink="home" routerLinkActive="active">Đăng</a></mat-list-item>-->
 
 
       </mat-list>

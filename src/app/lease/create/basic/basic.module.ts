@@ -5,6 +5,7 @@ import { BasicRoutingModule } from './basic-routing.module';
 import { BasicComponent } from './basic.component';
 import {FormsModule} from "@angular/forms";
 import {MatIconModule} from '@angular/material/icon'
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import {MatIconModule} from '@angular/material/icon'
     CommonModule,
     BasicRoutingModule,
     FormsModule,
-    MatIconModule
+    MatIconModule,
+    RouterModule
   ]
 })
 export class BasicModule { }

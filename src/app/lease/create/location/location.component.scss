@@ -162,8 +162,12 @@
 .action-btn{
   display: flex;
 }
-
-.btn-basic-submit{
+.btn-location-submit{
+  background: transparent;
+  border: none;
+  outline: none;
+}
+.btn-location-submit a{
   display: inline-block;
   min-width: 180px;
   font-weight: 600;
@@ -187,7 +191,7 @@
     border-color: #0b4d6e;
   }
 }
-.btn-basic-return{
+.btn-location-return{
   margin-right: 10px;
   color: #1174a6;
   background-color: #fff;

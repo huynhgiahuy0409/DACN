@@ -23,19 +23,20 @@ mat-sidenav{
 mat-list-item a{
   display: flex;
   align-items: center;
-
+  font-size: 15px;
 }
 .icon-no-active{
   display: block;
-  margin-right: 5px;
+  margin-right: 15px;
   color: #1174a6;
+
 
 }
 .active{
   display: flex;
   align-items: center;
   color: #1174a6;
-  font-weight: 700;
+  font-weight: 500;
   & .icon-no-active{
 
     color: #32a923;

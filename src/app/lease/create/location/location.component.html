@@ -60,8 +60,13 @@
 <div class="action-location">
   <a href="#">LƯU VÀ THOÁT</a>
   <div class="action-btn">
-    <button class="btn-basic-return">TRƯỚC</button>
+    <button class="btn-location-return">
+      <a [routerLink]="['/lease/create/basic']">TRƯỚC</a>
 
-    <button class="btn-basic-submit">TIẾP THEO</button>
+    </button>
+
+    <button class="btn-location-submit">
+      <a [routerLink]="['/lease/create/description']">TIẾP THEO</a>
+    </button>
   </div>
 </div>

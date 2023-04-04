@@ -3,8 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { BasicComponent } from './basic.component';
 import {LocationComponent} from "../location/location.component";
 
-const routes: Routes = [{ path: '', component: BasicComponent },
-  { path: 'location', component: LocationComponent }];
+
+const routes: Routes = [{ path: '', component: BasicComponent,},
+
+  ];
+
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
