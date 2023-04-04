@@ -13,17 +13,20 @@ export class CheckPaymentStatusComponent implements OnInit {
   constructor(private paymentService: PaymentService) { }
 
   isPaid = true;
+  showWaitingOverlay: boolean = false;
 
   ngOnInit(): void {
+    this.showWaitingOverlay = true;
     const access_token = localStorage.getItem('payment_token') || '';
     this.payment_id = localStorage.getItem('payment_id') || '';
     this.paymentService.getPaymentStatus(access_token, this.payment_id).subscribe((res) => {
-      if (res.payer.status !== "VERIFIED") {
+      if (res.status != "APPROVED") {
         this.isPaid = false;
       }
     });
     this.headerComponent = document.getElementsByClassName('header-container').item(0) as HTMLElement;
     this.headerComponent.style.display = "none";
+    this.showWaitingOverlay = false;
   }
   ngOnDestroy(): void {
     this.headerComponent.style.display = "flex";

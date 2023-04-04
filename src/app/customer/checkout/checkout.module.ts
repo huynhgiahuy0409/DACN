@@ -9,10 +9,11 @@ import { SvgAsTemplateModule } from 'src/app/shared/svg-as-template/svg-as-templ
 import { PaymentService } from '../services/payment.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CheckPaymentStatusComponent } from './check-payment-status/check-payment-status.component';
+import { LoadingOverlayComponent } from './loading-overlay/loading-overlay.component';
 
 
 @NgModule({
-  declarations: [CheckoutComponent, CheckPaymentStatusComponent],
+  declarations: [CheckoutComponent, CheckPaymentStatusComponent, LoadingOverlayComponent],
   imports: [
     CommonModule,
     CheckoutRoutingModule,

@@ -62,15 +62,12 @@ export interface PaymentResponse {
     transactions: PaymentTransaction[];
 }
 
-export interface PaymentResultResponse{
+export interface PaymentResultResponse {
     cart: string;
     create_time: string;
     intent: string;
     links: PaymentLink[];
-    payer: {
-        payment_method: string,
-        status: string,
-    };
+    status: string;
 }
 
 export interface RedirectInfo {
