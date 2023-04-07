@@ -49,68 +49,50 @@
                                 <h3 class="product__name">
                                     {{product.name}}
                                 </h3>
-                                <div class="d-flex-bh align-items-center-bh"
-                                    [style.flex-wrap]="'wrap'">
-                                    <span class="star-rating__wrapper">
-                                        <app-star-svg *ngFor="let i of
-                                            [1,1,1,1]"
-                                            [fillColor]="'var(--star-color)'"></app-star-svg>
-                                    </span>
-                                    <div class="address__wrapper">
-                                        <i class="mr-r-5 fa-solid
-                                            fa-location-dot"></i>
-                                        <span>{{product.address}}</span>
-                                    </div>
+                                <div class="star-rating__wrapper">
+                                    <app-start-rating></app-start-rating>
+                                </div>
+                                <div class="address__wrapper">
+                                    <app-location-maker-svg class="mr-r-5"></app-location-maker-svg>
+                                    <span>{{product.address}}</span>
                                 </div>
                             </div>
-                            <div class="benefits__group">
-                                <div class="benefit__item" *ngFor="let benefit
-                                    of product.benefits">
-                                    <span>{{benefit}}</span>
+                            <div class="product-info__body">
+                                <div class="benefits__group">
+                                    <ng-container  *ngFor="let benefit
+                                    of product.benefits.slice(0,3); index as idx">
+                                        <div class="benefit__item" *ngIf="idx < 2; else lastIdx">
+                                            <span>{{benefit}}</span>
+                                        </div>
+                                        <ng-template #lastIdx>
+                                            <div class="benefit__item">
+                                                <span>+{{product.benefits.length - 2}}</span>
+                                            </div>
+                                        </ng-template>
+                                    </ng-container>
                                 </div>
                             </div>
-                            <div class="top-badges">
-                                <div class="top-badge__item" *ngFor="let
-                                    topBadge of product.topBadges"
-                                    [class.sea-view]="topBadge.icon ===
-                                    'sea-view'"
-                                    [class.sustainable]="topBadge.icon ===
-                                    'sustainable'">
-                                    <div class="icon__wrapper"
-                                        [ngSwitch]="topBadge.icon">
-                                        <img *ngSwitchCase="'preferred'"
-                                            src="https://cdn6.agoda.net/images/icons/agoda-preferred.svg?s=16x"
-                                            alt="">
-                                        <i *ngSwitchCase="'sea-view'"
-                                            class="see-view fa-solid
-                                            fa-umbrella-beach"></i>
-                                        <i *ngSwitchCase="'sustainable'"
-                                            class="sustainable fa-solid
-                                            fa-leaf"></i>
+                            <div class="product-info__footer">
+                                <div class="vip-member__wrapper">
+                                    <div class="vip-member">
+                                        <div class="left">
+                                            <app-star-svg [fillColor]="'#fff'"></app-star-svg>
+                                            <span>VIP</span>
+                                        </div>
+                                        <div class="right">
+                                            <span>Spring Deals</span>
+                                        </div>
+                                        <div class="right-line">
+                                        </div>
                                     </div>
-                                    <span>
-                                        {{topBadge.name}}
-                                    </span>
                                 </div>
-                            </div>
-                            <div class="property-cards">
-                                <div class="property-card__item" *ngFor="let
-                                    propertyCard of product.propertyCards"
-                                    [class.online-payment]="propertyCard.icon
-                                    ===
-                                    'online-payment'"
-                                    [class.domestic-deal]="propertyCard.icon ===
-                                    'domestic-deal'">
-                                    <div class="icon__wrapper"
-                                        [ngSwitch]="propertyCard.icon">
-                                        <app-credit-card
-                                            *ngSwitchCase="'online-payment'"
-                                            [fillColor]="'var(--primary-color)'"></app-credit-card>
-                                        <app-domestic-svg
-                                            *ngSwitchCase="'domestic-deal'"
-                                            [fillColor]="'rgb(40, 115, 50)'"></app-domestic-svg>
-                                    </div>
-                                    <span>{{propertyCard.name}}</span>
+                                <div class="online-payment__wrapper">
+                                    <app-credit-card class="mr-r-5"></app-credit-card>
+                                    Thanh toán online
+                                </div>
+                                <div class="discount__wrapper">
+                                    <app-tag-svg class="mr-r-5"></app-tag-svg>
+                                    Mã giảm giá 24HOURSALE đã được áp dụng - 20%
                                 </div>
                             </div>
                         </div>
@@ -141,16 +123,19 @@
                         <div class="price__wrapper">
                             <div class="price__item">
                                 <div class="origin-price__wrapper">
-                                    <span>{{product.originalPrice | currency: 'VND'}}</span>
+                                    <span>{{product.originalPrice | currency:
+                                        'VND'}}</span>
                                 </div>
                             </div>
+                            <span class="fs-12 mr-b-5">Thuê phòng ngay, giá chỉ từ</span>
                             <div class="price__item">
                                 <div class="rental-price__wrapper">
-                                    <span>{{product.rentalPrice | currency: 'VND'}}</span>
+                                    <span>{{product.rentalPrice | currency:
+                                        'VND'}}</span>
                                 </div>
                             </div>
                             <div class="free-cancellation">
-                               + Miễn phí huỷ phòng
+                                + Miễn phí huỷ phòng
                             </div>
                         </div>
                     </div>

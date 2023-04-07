@@ -7,8 +7,17 @@ export interface ImageResponse{
     isThumbnail: boolean;
 }
 export interface SearchedHotelResponse {
-    hotelName: string;
-
+    previewImages: ImageResponse[],
+    hotelName: string,
+    district: DistrictResponse,
+    province: ProvinceResponse,
+    averageRating: AverageRatingResponse,
+    benefits: string[],
+    discount: DiscountResponseEntity
+}
+export interface DiscountResponseEntity{
+    name: string,
+    icon: string,
 }
 export interface AddressResponse{
 
@@ -19,10 +28,12 @@ export interface ProvinceResponse{
     code: string,
 }
 export interface DistrictResponse{
-    id: number
+    id: number,
     name: string,
-    code: string
+    prefix: string,
 }
+
+
 // export interface Product {
 //     name: string;
 //     address: string;
@@ -37,11 +48,11 @@ export interface DistrictResponse{
 //   }
 //   export interface SearchedHotelResponse {
 //   }
-//   interface AverageRating {
-//     name: string;
-//     points: number;
-//     reviews: number;
-//   }
+  interface AverageRatingResponse {
+    name: string;
+    points: number;
+    reviews: number;
+  }
 //   interface TopBadge {
 //     name: string;
 //     icon: string

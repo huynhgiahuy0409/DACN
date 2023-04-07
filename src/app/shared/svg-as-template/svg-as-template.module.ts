@@ -8,6 +8,9 @@ import { WifiSvgComponent } from './wifi-svg/wifi-svg.component';
 import { StarSvgComponent } from './star-svg/star-svg.component';
 import { CreditCardComponent } from './credit-card/credit-card.component';
 import { DomesticSvgComponent } from './domestic-svg/domestic-svg.component';
+import { StartRatingComponent } from './start-rating/start-rating.component';
+import { LocationMakerSvgComponent } from './location-maker-svg/location-maker-svg.component';
+import { TagSvgComponent } from './tag-svg/tag-svg.component';
 
 
 
@@ -20,7 +23,10 @@ import { DomesticSvgComponent } from './domestic-svg/domestic-svg.component';
     WifiSvgComponent,
     StarSvgComponent,
     CreditCardComponent,
-    DomesticSvgComponent
+    DomesticSvgComponent,
+    StartRatingComponent,
+    LocationMakerSvgComponent,
+    TagSvgComponent
   ],
   imports: [
     CommonModule
@@ -33,7 +39,10 @@ import { DomesticSvgComponent } from './domestic-svg/domestic-svg.component';
     WifiSvgComponent,
     StarSvgComponent,
     CreditCardComponent,
-    DomesticSvgComponent
+    DomesticSvgComponent,
+    StartRatingComponent,
+    LocationMakerSvgComponent,
+    TagSvgComponent
   ]
 })
 export class SvgAsTemplateModule { }
