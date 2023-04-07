@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductListComponent } from './product-list.component';
 import { ProductItemComponent } from './product-item/product-item.component';
+import { AngularMaterialModule } from 'src/app/shared/angular-material/angular-material.module';
 
 
 
@@ -13,7 +14,8 @@ import { ProductItemComponent } from './product-item/product-item.component';
   ],
   imports: [
     CommonModule,
-    SvgAsTemplateModule
+    SvgAsTemplateModule,
+    AngularMaterialModule
   ],
   exports: [
     ProductListComponent,
