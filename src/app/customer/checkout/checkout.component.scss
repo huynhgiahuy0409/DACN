@@ -186,9 +186,9 @@
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    justify-content: end;
-    align-items: end;
-    align-self: end;
+    justify-content: flex-end;
+    align-items: flex-end;
+    align-self: flex-end;
     .details-price__container {
       background-color: white;
       width: 25%;

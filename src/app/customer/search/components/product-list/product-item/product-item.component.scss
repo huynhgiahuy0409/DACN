@@ -75,7 +75,7 @@
     right: 0;
     width: 100%;
     display: flex;
-    align-items: end;
+    align-items: flex-end;
 }
 
 .product__item__body .left__wrapper .product-image__wrapper .product-image__review-list .image-zoom .description__wrapper span {
@@ -371,7 +371,7 @@
 }
 
 .average-rating__content {
-    text-align: end;
+    text-align: flex-end;
 
 }
 
@@ -386,11 +386,11 @@
     color: #a09e9e;
     font-size: 1.2rem;
     text-transform: capitalize;
-    text-align: end;
+    text-align: flex-end;
 }
 
 .product__item__body .right__wrapper .price__wrapper {
-    text-align: end;
+    text-align: flex-end;
     display: flex;
     flex-direction: column;
 }
