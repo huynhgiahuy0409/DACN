@@ -292,7 +292,7 @@
 .product__item__body .center__wrapper .product-info .property-cards {
     display: flex;
     flex-direction: column;
-    align-items: start;
+    align-items: flex-start;
 }
 
 .product__item__body .center__wrapper .product-info .property-cards .property-card__item {
@@ -371,7 +371,7 @@
 }
 
 .average-rating__content {
-    text-align: flex-end;
+    text-align: end;
 
 }
 
@@ -386,11 +386,11 @@
     color: #a09e9e;
     font-size: 1.2rem;
     text-transform: capitalize;
-    text-align: flex-end;
+    text-align: end;
 }
 
 .product__item__body .right__wrapper .price__wrapper {
-    text-align: flex-end;
+    text-align: end;
     display: flex;
     flex-direction: column;
 }
