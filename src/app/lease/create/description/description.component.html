@@ -1,0 +1,124 @@
+<form class="content-description" [formGroup]="rfDescription">
+  <div class="card-header">
+    <div class="card-header-left">
+      <p class="content-header-one">Những ưu điểm và nét độc đáo tại chỗ ở của bạn là gì?</p>
+      <p>Mỗi căn phòng, mỗi ngôi nhà đều có những nét độc đáo riêng. Hãy giới thiệu các đặc điểm nổi bật tại nơi ở của
+        bạn.</p>
+    </div>
+    <div class="card-header-right">
+      <img src="https://img.agoda.net/images/header/ec-description@2x.png" alt="">
+    </div>
+  </div>
+  <div class="panel-description">
+    <p>Đặt tên cho nhà</p>
+    <span>Hãy tận dụng, và làm cho nó nghe có vẻ hấp dẫn. Đừng lo lắng, chúng tôi sẽ tạo các ngôn ngữ khác bằng mẫu dịch chuẩn</span>
+    <div class="panel-description-form">
+      <input type="text"
+             formControlName="nameHouse"
+             placeholder="Ví dụ: Romantic beach getaway, perfect for honeymooners" >
+      <small>
+        50
+      </small>
+    </div>
+  </div>
+  <div class="panel-description">
+    <p>Mô tả nhà của bạn</p>
+    <span>Những đặc điểm nổi bật của căn hộ để thu hút du khách</span>
+    <div class="panel-description-form">
+      <textarea
+        rows="5"
+        formControlName="descHouse"
+
+        placeholder="Ví dụ:
+• Cách phương tiện công cộng 5 phút đi bộ
+• Phù hợp cho gia đình
+• Không gian thoáng đãng với tầm nhìn đẹp và tràn đây ánh sáng tự nhiên"></textarea>
+      <small>
+        5000
+      </small>
+    </div>
+  </div>
+
+  <div class="panel-description">
+    <p>Gợi ý vui chơi ăn uống tại địa phương (không bắt buộc)</p>
+    <span>Ngợi ý vui chơi ăn uống tại địa phương (không bắt buộc)</span>
+    <div class="panel-description-form">
+      <textarea
+        rows="5"
+        formControlName="suggest"
+
+        placeholder="Ví dụ:
+• 5 phút đi bộ đến điểm tham quan phổ biến
+• Cách quán ăn nổi tiếng 10 phút đi bộ
+• Chỉ 5 phút đi bộ đến quán bar nhộn nhịp"></textarea>
+      <small>
+        5000
+      </small>
+    </div>
+  </div>
+  <div class="panel-description">
+    <p>Quy tắc của chỗ nghỉ (tùy chọn)</p>
+    <span>Báo trước cho du khách những quy định cụ thể trong nhà</span>
+    <div class="panel-description-form">
+      <textarea
+        rows="5"
+        formControlName="rule"
+
+        placeholder="Ví dụ:
+• Không tụ tập hay tổ chức tiệc tùng
+• Giữ yên lặng sau 11:00 PM
+• Không xả rác xuống đường ống"></textarea>
+      <small>
+        5000
+      </small>
+    </div>
+  </div>
+
+  <div class="panel-description">
+    <p>Khách có thể đến chỗ nghỉ bằng cách nào?</p>
+    <span>Hãy giúp khách dễ dàng tìm được chỗ nghỉ và giảm khả năng hủy bỏ và các vấn đề vào ngày nhận phòng. Chúng tôi sẽ gửi những hướng dẫn này cho khách sau khi xác nhận đặt phòng cùng với địa chỉ của quý đối tác và đường dẫn đến bản đồ Google. Quý đối tác cũng</span>
+    <div class="panel-description-form">
+      <textarea
+        rows="5"
+        formControlName="move"
+
+        placeholder="Ví dụ:
+• Đi tàu tuyến sân bay đến... (từ sân bay ra thành phố)
+• Chuyển tuyến tàu lửa hướng đi đến ga... (đi lại trong thành phố)
+• Vui lòng gửi tin nhắn cho tôi sau khi chuyển tàu (hướng dẫn cá nhân)"></textarea>
+      <small>
+        5000
+      </small>
+    </div>
+  </div>
+
+  <div class="panel-description">
+    <p>Xếp hạng sao</p>
+    <span>Đánh giá để giúp khách hàng hình dung cụ thể hơn về nơi ở.
+    <a href="#">Bạn cần trợ giúp?</a>
+    </span>
+    <div class="panel-description-star">
+      <ng-container *ngFor="let i of stars">
+        <a class="star-rate" [ngClass]="{'star-active':i<=rating}"
+           (click)="updateRating(i)"
+        >★</a>
+      </ng-container>
+
+
+    </div>
+  </div>
+</form>
+<div class="action-description">
+  <a>LƯU VÀ THOÁT</a>
+  <div class="action-btn">
+    <button class="btn-description-return">
+      <a [routerLink]="['/lease/create/location']">TRƯỚC</a>
+    </button>
+
+    <button class="btn-description-submit">
+      <a [routerLink]="['/lease/create/amenities']"
+      (click)="submitForm()"
+      >TIẾP THEO</a>
+    </button>
+  </div>
+</div>
