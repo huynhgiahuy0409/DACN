@@ -67,10 +67,7 @@ export interface PaymentResultResponse {
   create_time: string;
   intent: string;
   links: PaymentLink[];
-  payer: {
-    payment_method: string,
-    status: string,
-  };
+  status: string;
 }
 
 export interface RedirectInfo {
@@ -78,16 +75,13 @@ export interface RedirectInfo {
   path: string,
   icon?: string
 }
-
 export interface Occupancy {
   idx: number;
   label: string;
   subLabel?: string;
   value: number;
   childOptions?: string[];
-
   add(occupancy: Occupancy): void;
-
   remove(occupancy: Occupancy): void;
 }
 
