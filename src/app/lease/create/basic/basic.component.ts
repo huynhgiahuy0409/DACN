@@ -200,7 +200,7 @@ export class BasicComponent implements OnInit {
 
 
     this.hotelProfileService.createHotelProfile(this.hp).subscribe(value => {
-      console.log(value)
+
       this.hotelProfileService.id_lock=value.id;
       this.hotelProfileService.basic=value.basic;
       console.log('id lock')

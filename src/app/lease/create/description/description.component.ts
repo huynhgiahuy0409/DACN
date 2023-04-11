@@ -58,6 +58,8 @@ export class DescriptionComponent implements OnInit {
     this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock,this.hp).subscribe(value => {
 
       this.hotelProfileService.description=value.description;
+      console.log('description')
+      console.log(this.hotelProfileService.description)
     })
 
 

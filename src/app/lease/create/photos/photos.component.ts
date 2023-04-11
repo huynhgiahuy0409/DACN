@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HotelProfileService} from "../../../services/lease/hotel-profile.service";
 import {HotelProfile} from "../../../models/model";
@@ -10,20 +10,23 @@ import {HotelProfile} from "../../../models/model";
 })
 export class PhotosComponent implements OnInit {
 
-  rfPhotos!:FormGroup;
-  constructor(private formBuilder: FormBuilder,private hotelProfileService:HotelProfileService) {
+  rfPhotos!: FormGroup;
+
+  constructor(private formBuilder: FormBuilder, private hotelProfileService: HotelProfileService) {
   }
+
   hp!: HotelProfile;
-  submitForm(){
+
+  submitForm() {
 
     this.hp =
       {
         id: 0,
         basic: this.hotelProfileService.basic
         ,
-        location:this.hotelProfileService.location,
+        location: this.hotelProfileService.location,
         description: this.hotelProfileService.description,
-        amenities:this.hotelProfileService.amenities,
+        amenities: this.hotelProfileService.amenities,
         pricing: this.hotelProfileService.pricing,
         photos: this.rfPhotos.value,
         profile: {
@@ -40,38 +43,40 @@ export class PhotosComponent implements OnInit {
           }
         },
       }
-    this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock,this.hp).subscribe(value => {
+    this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock, this.hp).subscribe(value => {
 
-      this.hotelProfileService.photos=value.photos;
+      this.hotelProfileService.photos = value.photos;
       console.log('photos')
       console.log(this.hotelProfileService.photos)
-      console.log(this.rfPhotos.value)
+
     })
-    console.log(this.hp)
+
   }
-  show :boolean = false;
+
+  show: boolean = false;
+
   ngOnInit(): void {
 
-    this.rfPhotos= this.formBuilder.group({
+    this.rfPhotos = this.formBuilder.group({
 
 
-
-      file : ['',Validators.required],
-      fileSource : ['',Validators.required],
+      file: ['', Validators.required],
+      fileSource: ['', Validators.required],
 
 
     });
   }
 
-  urls :string[]=[];
-  onSelect(event:any){
-    this.show=true;
+  urls: string[] = [];
+
+  onSelect(event: any) {
+    this.show = true;
     if (event.target.files && event.target.files[0]) {
       var filesAmount = event.target.files.length;
       for (let i = 0; i < filesAmount; i++) {
         var reader = new FileReader();
 
-        reader.onload = (event:any) => {
+        reader.onload = (event: any) => {
 
           this.urls.push(event.target.result);
 

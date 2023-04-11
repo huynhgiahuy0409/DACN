@@ -87,9 +87,10 @@ export class LocationComponent implements OnInit {
 
 
     this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock,this.hp).subscribe(value => {
-      console.log(value)
-      console.log(value.id)
+
       this.hotelProfileService.location=value.location;
+      console.log('location')
+      console.log(this.hotelProfileService.location)
     })
 
   }
