@@ -1,4 +1,4 @@
-<div class="content-description">
+<form class="content-description" [formGroup]="rfDescription">
   <div class="card-header">
     <div class="card-header-left">
       <p class="content-header-one">Những ưu điểm và nét độc đáo tại chỗ ở của bạn là gì?</p>
@@ -13,7 +13,9 @@
     <p>Đặt tên cho nhà</p>
     <span>Hãy tận dụng, và làm cho nó nghe có vẻ hấp dẫn. Đừng lo lắng, chúng tôi sẽ tạo các ngôn ngữ khác bằng mẫu dịch chuẩn</span>
     <div class="panel-description-form">
-      <input type="text" placeholder="Ví dụ: Romantic beach getaway, perfect for honeymooners">
+      <input type="text"
+             formControlName="nameHouse"
+             placeholder="Ví dụ: Romantic beach getaway, perfect for honeymooners" >
       <small>
         50
       </small>
@@ -25,6 +27,8 @@
     <div class="panel-description-form">
       <textarea
         rows="5"
+        formControlName="descHouse"
+
         placeholder="Ví dụ:
 • Cách phương tiện công cộng 5 phút đi bộ
 • Phù hợp cho gia đình
@@ -37,10 +41,12 @@
 
   <div class="panel-description">
     <p>Gợi ý vui chơi ăn uống tại địa phương (không bắt buộc)</p>
-    <span>NGợi ý vui chơi ăn uống tại địa phương (không bắt buộc)</span>
+    <span>Ngợi ý vui chơi ăn uống tại địa phương (không bắt buộc)</span>
     <div class="panel-description-form">
       <textarea
         rows="5"
+        formControlName="suggest"
+
         placeholder="Ví dụ:
 • 5 phút đi bộ đến điểm tham quan phổ biến
 • Cách quán ăn nổi tiếng 10 phút đi bộ
@@ -56,6 +62,8 @@
     <div class="panel-description-form">
       <textarea
         rows="5"
+        formControlName="rule"
+
         placeholder="Ví dụ:
 • Không tụ tập hay tổ chức tiệc tùng
 • Giữ yên lặng sau 11:00 PM
@@ -72,6 +80,8 @@
     <div class="panel-description-form">
       <textarea
         rows="5"
+        formControlName="move"
+
         placeholder="Ví dụ:
 • Đi tàu tuyến sân bay đến... (từ sân bay ra thành phố)
 • Chuyển tuyến tàu lửa hướng đi đến ga... (đi lại trong thành phố)
@@ -97,7 +107,7 @@
 
     </div>
   </div>
-</div>
+</form>
 <div class="action-description">
   <a>LƯU VÀ THOÁT</a>
   <div class="action-btn">
@@ -106,7 +116,9 @@
     </button>
 
     <button class="btn-description-submit">
-      <a [routerLink]="['/lease/create/amenities']">TIẾP THEO</a>
+      <a [routerLink]="['/lease/create/amenities']"
+      (click)="submitForm()"
+      >TIẾP THEO</a>
     </button>
   </div>
 </div>

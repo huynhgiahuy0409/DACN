@@ -1,4 +1,8 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {HotelProfileService} from "../../../services/lease/hotel-profile.service";
+import {BasicComponent} from "../basic/basic.component";
+import {HotelProfile} from "../../../models/model";
 
 @Component({
   selector: 'app-location',
@@ -34,10 +38,71 @@ export class LocationComponent implements OnInit {
 
   }
 
-  constructor() {
+  rfLocation!:FormGroup;
+  constructor(private formBuilder: FormBuilder,private hotelProfileService:HotelProfileService) {
   }
+  hp!: HotelProfile;
+  submitForm(){
 
+    this.hp =
+      {
+        id: 0,
+        basic: this.hotelProfileService.basic
+        ,
+        location: this.rfLocation.value,
+        description: {
+          move: "",
+          descHouse: "",
+          nameHouse: "",
+          rule: "",
+          suggest: "",
+          star: 0
+        },
+        amenities: {
+          recomendation: []
+        },
+        pricing: {
+          price: 0,
+          payment: "",
+          managerChannel: ""
+        },
+        photos: {
+          file: "",
+          fileSource: []
+        },
+        profile: {
+          typeHost: "",
+          company: {
+            addressCompany: "",
+            nameCompany: "",
+            codeAreaCompany: ""
+          },
+          mySelf: {
+            date: "",
+            firstName: "",
+            lastName: ""
+          }
+        },
+      }
+
+
+    this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock,this.hp).subscribe(value => {
+      console.log(value)
+      console.log(value.id)
+      this.hotelProfileService.location=value.location;
+    })
+
+  }
   ngOnInit(): void {
+    this.rfLocation= this.formBuilder.group({
+      address : ['',Validators.required],
+
+      house : ['',Validators.required],
+      country : ['',Validators.required],
+      city : ['',Validators.required],
+
+
+    });
   }
 
 }

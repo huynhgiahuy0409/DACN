@@ -252,6 +252,7 @@
       width: 40px;
       height: 40px;
     }
+
     &:hover{
       color: #fff;
       background-color: #1174a6;
@@ -260,6 +261,26 @@
       box-shadow: 0 4px 10px 0 rgba(0,0,0,.3);
 
       & mat-icon{      color: #fff;
+      }
+      & input{
+        color: #fff;
+        background-color: #1174a6;
+      }
+
+
+    }
+    &:focus{
+      color: #fff;
+      background-color: #1174a6;
+      border-color: #1174a6;
+      outline: none;
+      box-shadow: 0 4px 10px 0 rgba(0,0,0,.3);
+
+      & mat-icon{      color: #fff;
+      }
+      & input{
+        color: #fff;
+        background-color: #1174a6;
       }
 
     }
@@ -447,4 +468,12 @@
     border-color: #0b4d6e;
   }
 }
+.errorMessage{
+  color: red;
 
+}
+.is-invalid{
+  border: 1px solid red ;
+  color: red;
+  background: red;
+}

@@ -1,4 +1,4 @@
-<div class="content-photos">
+<form class="content-photos" [formGroup]="rfPhotos">
   <div class="card-header">
     <div class="card-header-left">
       <p class="content-header-one">Cho khách hàng xem những gì họ đang bỏ lỡ..</p>
@@ -12,36 +12,51 @@
   <div class="panel-photos">
     <div class="panel-photos-left">
       <mat-icon>cloud_upload</mat-icon>
-      <strong>Kéo và thả ảnh của bạn vào đây</strong>
-      <button >
-        <a routerLink="">chọn ảnh</a>
-      </button>
+
+
+        <input
+          formControlName="file"
+          class="input-file"
+          type="file" (change)="onSelect($event)" multiple>
+
+
     </div>
     <div class="panel-photos-divider"></div>
     <div class="panel-photos-right">
-      <div class="panel-photos-right-item">
-        <img src="https://img.agoda.net/images/agoda-homes/photo-uploader/icon/picture-sun.svg" alt="">
-        <small>Vui lòng tải ít nhất 3 ảnh lên.</small>
-      </div>
-      <div class="panel-photos-right-item">
-        <img src="https://img.agoda.net/images/agoda-homes/photo-uploader/icon/image-file-info.svg" alt="">
-        <small>Dạng thức tệp được hỗ trợ là .jpg và .png</small>
-      </div>
-      <div class="panel-photos-right-item">
-        <img src="https://img.agoda.net/images/agoda-homes/photo-uploader/icon/expand-horizontal-4.svg" alt="">
-        <small>Kích thước ảnh tối thiểu là 800 x 600px</small>
-      </div>
-      <div class="panel-photos-right-item">
-        <img src="https://img.agoda.net/images/agoda-homes/photo-uploader/icon/download-arrow-2.svg" alt="">
-        <small>Kích thước ảnh tối đa là 10MB</small>
-      </div>
-      <div class="panel-photos-right-item">
-        <img src="https://img.agoda.net/images/agoda-homes/photo-uploader/icon/picture-stack-landscape.svg" alt="">
-        <small>Tải lên hàng loạt được giới hạn tới 100MB</small>
-      </div>
+     <ng-container *ngIf="show ==false">
+       <div class="panel-photos-right-item">
+         <img src="https://img.agoda.net/images/agoda-homes/photo-uploader/icon/picture-sun.svg" alt="">
+         <small>Vui lòng tải ít nhất 3 ảnh lên.</small>
+       </div>
+       <div class="panel-photos-right-item">
+         <img src="https://img.agoda.net/images/agoda-homes/photo-uploader/icon/image-file-info.svg" alt="">
+         <small>Dạng thức tệp được hỗ trợ là .jpg và .png</small>
+       </div>
+       <div class="panel-photos-right-item">
+         <img src="https://img.agoda.net/images/agoda-homes/photo-uploader/icon/expand-horizontal-4.svg" alt="">
+         <small>Kích thước ảnh tối thiểu là 800 x 600px</small>
+       </div>
+       <div class="panel-photos-right-item">
+         <img src="https://img.agoda.net/images/agoda-homes/photo-uploader/icon/download-arrow-2.svg" alt="">
+         <small>Kích thước ảnh tối đa là 10MB</small>
+       </div>
+       <div class="panel-photos-right-item">
+         <img src="https://img.agoda.net/images/agoda-homes/photo-uploader/icon/picture-stack-landscape.svg" alt="">
+         <small>Tải lên hàng loạt được giới hạn tới 100MB</small>
+       </div>
+     </ng-container>
+      <ng-container *ngIf="show==true">
+        <div class="show-img">
+          <img
+            *ngFor="let url of urls"
+            [src]="url" alt=""
+           >
+        </div>
+
+      </ng-container>
     </div>
   </div>
-</div>
+</form>
 <div class="action-photos">
   <a>LƯU VÀ THOÁT</a>
   <div class="action-btn">
@@ -50,7 +65,10 @@
     </button>
 
     <button class="btn-photos-submit">
-      <a [routerLink]="['/lease/create/profile']">TIẾP THEO</a>
+      <a
+        [routerLink]="['/lease/create/profile']"
+      (click)="submitForm()"
+      >TIẾP THEO</a>
     </button>
   </div>
 </div>

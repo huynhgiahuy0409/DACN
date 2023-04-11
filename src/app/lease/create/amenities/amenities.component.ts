@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {HotelProfileService} from "../../../services/lease/hotel-profile.service";
+import {HotelProfile} from "../../../models/model";
 
 @Component({
   selector: 'app-amenities',
@@ -27,12 +30,81 @@ export class AmenitiesComponent implements OnInit {
     ]
 
   }
+  onCheckboxChange(e:any){
+  const checkArray :FormArray= this.rfAmenities.get('recomendation') as FormArray;
+  if(e.target.checked){
+    checkArray.push(new FormControl(e.target.name))
+  }else{
+    var i=0;
+    checkArray.controls.forEach((item:any)=>{
+      if(item.value == e.target.name){
+        checkArray.removeAt(i);
+        return;
+      }
+      i++;
+    });
 
-  constructor() { }
+  }
 
+  }
+  rfAmenities!:FormGroup;
+  constructor(private formBuilder: FormBuilder,private hotelProfileService:HotelProfileService ) {
+  }
+  hp!: HotelProfile;
+  submitForm(){
+    console.log(this.rfAmenities.value)
+    this.hp =
+      {
+        id: 0,
+        basic: this.hotelProfileService.basic
+        ,
+        location:this.hotelProfileService.location,
+        description: this.hotelProfileService.description,
+        amenities:this.rfAmenities.value,
+        pricing: {
+          price: 0,
+          payment: "",
+          managerChannel: ""
+        },
+        photos: {
+          file: "",
+          fileSource: []
+        },
+        profile: {
+          typeHost: "",
+          company: {
+            addressCompany: "",
+            nameCompany: "",
+            codeAreaCompany: ""
+          },
+          mySelf: {
+            date: "",
+            firstName: "",
+            lastName: ""
+          }
+        },
+      }
+    this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock,this.hp).subscribe(value => {
+
+      this.hotelProfileService.amenities=value.amenities;
+      console.log('amenities')
+      console.log(this.hotelProfileService.amenities)
+    })
+  }
   ngOnInit(): void {
     this.getAll();
+    this.rfAmenities= this.formBuilder.group({
+      recomendation : this.formBuilder.array([
+
+      ]),
+
+
+    });
   }
+
+
+
+
 
 }
 class amenities{

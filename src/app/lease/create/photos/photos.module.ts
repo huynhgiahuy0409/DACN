@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { PhotosRoutingModule } from './photos-routing.module';
 import { PhotosComponent } from './photos.component';
 import {MatIconModule} from "@angular/material/icon";
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import {MatIconModule} from "@angular/material/icon";
     imports: [
         CommonModule,
         PhotosRoutingModule,
-        MatIconModule
+        MatIconModule,
+        ReactiveFormsModule
     ]
 })
 export class PhotosModule { }

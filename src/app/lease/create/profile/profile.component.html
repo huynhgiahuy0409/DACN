@@ -1,4 +1,4 @@
-<div class="content-profile">
+<form class="content-profile" [formGroup]="rfProfile">
   <div class="card-header">
     <div class="card-header-left">
       <p class="content-header-one">Cho chúng tôi biết bạn là ai</p>
@@ -14,8 +14,11 @@
 
       <div class="home-item" *ngFor="let item of _homes">
         <input type="radio"
-               name="home"
-               value="{{item.id}}" (change)="changeValue($event)">
+
+               value="{{item.title}}" (change)="changeValue(item.id)"
+               formControlName="typeHost"
+
+        >
         <div class="home-name">
           <p>
             {{item.title}}
@@ -28,7 +31,7 @@
       </div>
 
     </div>
-    <div *ngIf="value==1">
+    <div *ngIf="value==1" formGroupName="mySelf">
       <div class="panel-host">
         <div class="panel-host-title">
           Chi tiết chủ nhà
@@ -39,11 +42,13 @@
             <div class="panel-host-form-input-box">
              <div class="panel-host-form-input-item-three">
                <p>Tên</p>
-               <input type="text">
+               <input type="text"
+                      formControlName="firstName"
+               >
              </div>
               <div class="panel-host-form-input-item-three">
                 <p>Họ</p>
-                <input type="text">
+                <input type="text"  formControlName="lastName">
               </div>
             </div>
             <div class="panel-host-form-input-item-one">
@@ -54,13 +59,13 @@
             <div class="panel-host-form-input-item-one">
               <p>Ngày sinh</p>
 
-              <input type="date">
+              <input type="date"  formControlName="date">
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div *ngIf="value==2">
+    <div *ngIf="value==2" formGroupName="company">
       <div class="panel-city">
         <div class="panel-city-title">
           Chi tiết công ty
@@ -72,21 +77,21 @@
             <div class="panel-city-form-input-box">
               <div class="panel-city-form-input-item-three">
                 <p>Tên pháp lý của công ty</p>
-                <input type="text">
+                <input type="text"  formControlName="nameCompany">
               </div>
 
             </div>
             <div class="panel-city-form-input-box">
               <div class="panel-city-form-input-item-two">
                 <p>Địa chỉ công ty</p>
-                <input type="text">
+                <input type="text"  formControlName="addressCompany">
               </div>
 
             </div>
             <div class="panel-city-form-input-box">
               <div class="panel-city-form-input-item-three">
                 <p>Mã vùng</p>
-                <input type="text">
+                <input type="text"  formControlName="codeAreaCompany">
               </div>
 
             </div>
@@ -98,7 +103,7 @@
   </div>
 
 
-</div>
+</form>
 <div class="action-profile">
   <a>LƯU VÀ THOÁT</a>
   <div class="action-btn">
@@ -107,7 +112,7 @@
     </button>
 
     <button class="btn-profile-submit">
-      <a [routerLink]="['/home']">TIẾP THEO</a>
+      <a (click)="submitForm()">TIẾP THEO</a>
     </button>
   </div>
 </div>

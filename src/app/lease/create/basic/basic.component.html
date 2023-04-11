@@ -1,4 +1,5 @@
-<div class="content-basic">
+<form class="content-basic" [formGroup]="rfBasic">
+
   <div class="card-header">
     <div class="card-header-left">
       <p class="content-header-one">Giúp bạn tiếp cận đối tượng khách hàng phù hợp nhất.</p>
@@ -31,39 +32,35 @@
       </a>
     </div>
   </div>
+
   <div class="panel-business">
     <p>Cơ sở kinh doanh</p>
     <div class="panel-business-form">
       <label>Loại hình</label>
       <p>Chọn một loại hình chỗ nghỉ</p>
       <ul class="list-business">
-        <li class="item-business">
+        <li class="item-business" *ngFor="let i of _listComparisonBusiness">
           <button>
-            <mat-icon>home</mat-icon>
-            <span>Toàn bộ căn hộ</span>
+            <mat-icon>{{i.icon}}</mat-icon>
+
+            <span (click)="changValueComparisonBusiness(i.name)">
+                {{i.name}}
+              </span>
           </button>
         </li>
-        <li class="item-business">
-          <button> <mat-icon>home</mat-icon>
-            <span>Toàn bộ nhà trệt</span>
-          </button>
-        </li>
-        <li class="item-business">
-          <button> <mat-icon>home</mat-icon> <span>Toàn bộ nhà riêng</span></button>
-        </li>
-        <li class="item-business">
-          <button> <mat-icon>home</mat-icon> <span>Biệt thự</span></button>
-        </li>
+
 
       </ul>
       <label>Bạn không thấy loại hình lưu trú cần có? Muốn đăng mặt bằng riêng hoặc phòng ở chung?</label>
-      <a href="#">Hãy đăng lên Agoda YCS</a>
+      <a>Hãy đăng lên Agoda YCS</a>
       <div class="panel-business-form-input">
-        <input type="text">
+        <input type="text" formControlName="numComparisionBusiness" >
         <span>mét vuông</span>
       </div>
+
     </div>
   </div>
+
   <div class="panel-detail-room">
     <p>Chi tiết phòng ở</p>
     <div class="panel-detail-room-form">
@@ -75,7 +72,7 @@
             <p>-</p>
 
           </button>
-          <input type="text" min="1" max="30" [(ngModel)]="numAccommodations">
+          <input type="text" min="1" max="30" formControlName="numAccommodations" [(ngModel)]="numAccommodations">
           <button (click)="plusAccommodations()">
             <p>+</p>
           </button>
@@ -91,7 +88,7 @@
             <p>-</p>
 
           </button>
-          <input type="text" min="1" max="30" [(ngModel)]="numBathroom">
+          <input type="text" min="1" max="30" formControlName="numBathroom" [(ngModel)]="numBathroom">
           <button (click)="plusBathroom()">
             <p>+</p>
           </button>
@@ -107,7 +104,7 @@
             <p>-</p>
 
           </button>
-          <input type="text" min="1" max="30" [(ngModel)]="numBedroom">
+          <input type="text" min="1" max="30" formControlName="numBedroom" [(ngModel)]="numBedroom">
           <button (click)="plusBedroom()">
             <p>+</p>
           </button>
@@ -127,14 +124,14 @@
               <p>-</p>
 
             </button>
-            <input type="text" min="1" max="30" [(ngModel)]="numberRoomOne">
+            <input type="text" min="1" max="30" formControlName="numRoomOne" [(ngModel)]="numberRoomOne">
             <button (click)="plusRoomOne()">
               <p>+</p>
             </button>
           </div>
           <div class="panel-detail-room-form-input-right">
-            <select>
-              <option>Giường đơn</option>
+            <select formControlName="typeRoomOne" [(ngModel)]="defaultTypeRoomOne">
+              <option selected>Giường đơn</option>
               <option>Giường đôi nhỏ</option>
               <option>Giường đôi</option>
               <option>Giường đôi lớn</option>
@@ -155,14 +152,14 @@
               <p>-</p>
 
             </button>
-            <input type="text" min="1" max="30" [(ngModel)]="numberCommon">
+            <input type="text" min="1" max="30" formControlName="numCommon" [(ngModel)]="numberCommon">
             <button (click)="plusCommon()">
               <p>+</p>
             </button>
           </div>
           <div class="panel-detail-room-form-input-right">
-            <select>
-              <option>Giường đơn</option>
+            <select formControlName="typeCommon" [(ngModel)]="defaultTypeCommon">
+              <option selected>Giường đơn</option>
               <option>Giường đôi nhỏ</option>
               <option>Giường đôi</option>
               <option>Giường đôi lớn</option>
@@ -176,10 +173,19 @@
       </div>
     </div>
   </div>
-</div>
+
+</form>
 <div class="action-basic">
   <a>LƯU VÀ THOÁT</a>
-  <button class="btn-basic-submit">
+  <button class="btn-basic-submit"
 
-    <a [routerLink]="['/lease/create/location']">TIẾP THEO</a></button>
+  >
+        <a
+
+          [routerLink]="['/lease/create/location']"
+          (click)="onSubmit()"
+        >TIẾP THEO</a>
+
+  </button>
 </div>
+

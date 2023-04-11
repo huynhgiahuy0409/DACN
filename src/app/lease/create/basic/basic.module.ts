@@ -3,9 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { BasicRoutingModule } from './basic-routing.module';
 import { BasicComponent } from './basic.component';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatIconModule} from '@angular/material/icon'
 import {RouterModule} from "@angular/router";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,9 @@ import {RouterModule} from "@angular/router";
     BasicRoutingModule,
     FormsModule,
     MatIconModule,
-    RouterModule
+    RouterModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ]
 })
 export class BasicModule { }

@@ -1,4 +1,4 @@
-<div class="content-pricing">
+<form class="content-pricing" [formGroup]="rfPricing" >
   <div class="card-header">
     <div class="card-header-left">
       <p class="content-header-one">Thiết lập mức giá.</p>
@@ -22,8 +22,10 @@
       <div class="channel-item" *ngFor="let cm of _channelManager">
         <input type="radio"
 
-               name="channelManager"
-               value="{{cm.name}}">
+
+               value="{{cm.name}}"
+               formControlName="managerChannel"
+        >
 
         <span>
           {{cm.name}}
@@ -41,7 +43,7 @@
       <div class="panel-price-form-input">
         <p>Giá mỗi đêm</p>
         <div class="panel-price-form-input-price">
-          <input type="number">
+          <input type="number"  formControlName="price">
           <span>EUR</span>
         </div>
       </div>
@@ -55,8 +57,10 @@
 
       <div class="payment-item" *ngFor="let item of _paymentList">
         <input type="radio"
-               name="paymentList"
-               value="{{item.title}}">
+
+               value="{{item.title}}"
+ formControlName="payment"
+>
         <div class="payment-name">
           <p>
             {{item.title}}
@@ -70,7 +74,7 @@
     </div>
   </div>
 
-</div>
+</form>
 <div class="action-pricing">
   <a>LƯU VÀ THOÁT</a>
   <div class="action-btn">
@@ -79,7 +83,12 @@
     </button>
 
     <button class="btn-pricing-submit">
-      <a [routerLink]="['/lease/create/photos']">TIẾP THEO</a>
+      <a
+        [routerLink]="['/lease/create/photos']"
+        (click)="submitForm()"
+
+
+      >TIẾP THEO</a>
     </button>
   </div>
 </div>

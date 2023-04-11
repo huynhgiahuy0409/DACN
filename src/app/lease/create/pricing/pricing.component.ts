@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {HotelProfileService} from "../../../services/lease/hotel-profile.service";
+import {HotelProfile} from "../../../models/model";
 
 @Component({
   selector: 'app-pricing',
@@ -11,7 +14,7 @@ export class PricingComponent implements OnInit {
   _channelManager :chanelManager[]=[
 
   ]
-  constructor() { }
+
 
     getAll(){
     this._paymentList=[
@@ -23,10 +26,59 @@ export class PricingComponent implements OnInit {
         {id:2,name:"Không",isSelected:false},
       ]
     }
+  rfPricing!:FormGroup;
+  constructor(private formBuilder: FormBuilder,private hotelProfileService:HotelProfileService) {
+  }
+  hp!: HotelProfile;
+  submitForm(){
+    console.log(this.rfPricing.value)
+    this.hp =
+      {
+        id: 0,
+        basic: this.hotelProfileService.basic
+        ,
+        location:this.hotelProfileService.location,
+        description: this.hotelProfileService.description,
+        amenities:this.hotelProfileService.amenities,
+        pricing: this.rfPricing.value,
+        photos: {
+          file: "",
+          fileSource: []
+        },
+        profile: {
+          typeHost: "",
+          company: {
+            addressCompany: "",
+            nameCompany: "",
+            codeAreaCompany: ""
+          },
+          mySelf: {
+            date: "",
+            firstName: "",
+            lastName: ""
+          }
+        },
+      }
+    this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock,this.hp).subscribe(value => {
 
+      this.hotelProfileService.pricing=value.pricing;
+      console.log('pricingo')
+      console.log(this.hotelProfileService.pricing)
+    })
+  }
   ngOnInit(): void {
     this.getAll();
+    this.rfPricing= this.formBuilder.group({
+
+      managerChannel : ['',Validators.required],
+
+      price : ['',Validators.required],
+      payment : ['',Validators.required],
+
+
+    });
   }
+
 
 }
 class payment{

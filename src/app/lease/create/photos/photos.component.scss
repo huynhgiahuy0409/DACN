@@ -191,4 +191,22 @@
     }
   }
 }
+.show-img{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  padding-left: 10px;
+   & img{
+     width: 120px;
+     height: 120px;
+     object-fit: cover;
+    border: 1px solid #87b1fb;
+    margin-bottom: 10px;
 
+  }
+}
+.input-file{
+  width: 200px;
+  padding-top: 20px;
+}
