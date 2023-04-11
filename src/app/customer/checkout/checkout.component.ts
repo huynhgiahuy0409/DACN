@@ -15,14 +15,15 @@ import { PaymentService } from '../services/payment.service';
 export class CheckoutComponent implements OnInit {
   headerComponent!: HTMLElement;
 
+  showWaitingOverlay: boolean = false;
   cart: Cart = cart;
   showAmenitiesItem: number[] = [];
 
   customerInformationFormGroup = this._formBuilder.group({
-    fullname: ['', Validators.required],
-    surname: ['', Validators.required],
-    email: ['', Validators.required],
-    phone: ['', Validators.required],
+    family_name: ['', Validators.compose([Validators.required])],
+    surname: ['', Validators.compose([Validators.required])],
+    email: ['', Validators.compose([Validators.required, Validators.email])],
+    phone: ['', Validators.compose([Validators.required, Validators.pattern("^((\\+84?)|0|)?[0-9]{10}$"), Validators.maxLength(10), Validators.minLength(10)])],
   });
 
   constructor(private _formBuilder: FormBuilder, private paymentService: PaymentService) {
@@ -74,17 +75,20 @@ export class CheckoutComponent implements OnInit {
   }
 
   onProceedToPayment() {
-    this.paymentService.createToken().subscribe(data => {
-      if (data.access_token && data.token_type) {
-        localStorage.setItem("payment_token", data.access_token);
-        this.paymentService.createPayment(data.access_token, data.token_type, this.cart).subscribe(data => {
-          if (data.links) {
-            localStorage.setItem("payment_id", data.id);
-            window.location.href = data.links[1].href;
-          }
-        });
-      }
-    });
+    if (this.customerInformationFormGroup.valid) {
+      this.showWaitingOverlay = true;
+      this.paymentService.createToken().subscribe(data => {
+        if (data.access_token && data.token_type) {
+          localStorage.setItem("payment_token", data.access_token);
+          this.paymentService.createPayment(data.access_token, data.token_type, this.cart).subscribe(data => {
+            if (data.links) {
+              localStorage.setItem("payment_id", data.id);
+              window.location.href = data.links[1].href;
+            }
+          });
+        }
+      });
+    }
   }
 
   // getPaymentStatus()

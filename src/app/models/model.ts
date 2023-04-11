@@ -68,6 +68,17 @@ export interface PaymentResultResponse {
   intent: string;
   links: PaymentLink[];
   status: string;
+    payer: { payment_method: string };
+    state: string;
+    transactions: PaymentTransaction[];
+}
+
+export interface PaymentResultResponse {
+    cart: string;
+    create_time: string;
+    intent: string;
+    links: PaymentLink[];
+    status: string;
 }
 
 export interface RedirectInfo {

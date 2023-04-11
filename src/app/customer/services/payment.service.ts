@@ -28,7 +28,8 @@ export class PaymentService {
   createPayment(access_token: string, token_type: string, cart: Cart) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `${token_type} ${access_token}`
+      'Authorization': `${token_type} ${access_token}`,
+      'Paypal-Request-Id': (Math.random() + 1).toString(36).substring(7)
     });
 
     const totalPrice = cart.items.reduce((total, item) => {
@@ -36,22 +37,33 @@ export class PaymentService {
     }, 0);
 
     const data = {
-      intent: 'sale',
-      payer: {
-        payment_method: 'paypal'
-      },
-      transactions: [{
-        amount: {
-          total: convertVNDToUSD(totalPrice + (totalPrice * 10 / 100)),
-          currency: 'USD'
+      "intent": "CAPTURE",
+      "purchase_units": [
+        {
+          "reference_id": "d9f80740-38f0-11e8-b467-0ed5f89f718b",
+          "amount": {
+            "currency_code": "USD",
+            "value": convertVNDToUSD(totalPrice + (totalPrice * 10 / 100)),
+          }
         }
-      }],
-      redirect_urls: {
-        return_url: 'http://localhost:4200/checkout/payment/status',
-        cancel_url: 'http://localhost:4200/checkout/payment/status'
+      ],
+      "payment_source": {
+        "paypal": {
+          "experience_context": {
+            "payment_method_preference": "IMMEDIATE_PAYMENT_REQUIRED",
+            "payment_method_selected": "PAYPAL",
+            "brand_name": "SPRING HOTEL",
+            "locale": "en-US",
+            "landing_page": "LOGIN",
+            "shipping_preference": "SET_PROVIDED_ADDRESS",
+            "user_action": "PAY_NOW",
+            "return_url": "http://localhost:4200/checkout/payment/status",
+            "cancel_url": "http://localhost:4200/checkout/payment/status"
+          }
+        }
       }
     };
-    return this.httpClient.post<PaymentResponse>('https://api.sandbox.paypal.com/v1/payments/payment', data, { headers });
+    return this.httpClient.post<PaymentResponse>('https://api-m.sandbox.paypal.com/v2/checkout/orders', data, { headers });
   }
 
   getPaymentStatus(access_token: string, payment_id: string) {
@@ -59,6 +71,16 @@ export class PaymentService {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${access_token}`
     });
-    return this.httpClient.get<PaymentResultResponse>('https://api.sandbox.paypal.com/v1/payments/payment/' + payment_id, { headers });
+    return this.httpClient.get<PaymentResultResponse>('https://api-m.sandbox.paypal.com/v2/checkout/orders/' + payment_id, { headers });
   }
+
+  completeOrder(access_token: string, order_id: string, intent: string) {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${access_token}`,
+    });
+    return this.httpClient.post('https://api-m.sandbox.paypal.com/v2/checkout/orders/' + order_id + '/' + intent, { headers });
+  }
+
+
 }

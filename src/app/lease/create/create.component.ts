@@ -1,6 +1,5 @@
 // import { Component, OnInit } from '@angular/core';
 import {Component, ViewEncapsulation, Inject, ViewChild, OnInit} from '@angular/core';
-import {SidebarComponent, ClickEventArgs} from '@syncfusion/ej2-angular-navigations';
 
 @Component({
   selector: 'app-create',

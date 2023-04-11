@@ -12,6 +12,8 @@ export interface Product {
   topBadges: TopBadge[];
   propertyCards: PropertyCard[]
 }
+export interface SearchedHotelResponse {
+}
 interface AverageRating {
   name: string;
   points: number;
