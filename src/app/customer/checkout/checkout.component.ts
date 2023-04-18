@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { cart } from 'src/app/models/constance';
-import { Cart } from 'src/app/models/model';
+import { Cart, CartItem } from 'src/app/models/model';
 import { getDateNoYearTitle, getNightNumber } from 'src/app/shared/utils/DateUtils';
 import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 import { PaymentService } from '../services/payment.service';
@@ -16,7 +15,7 @@ export class CheckoutComponent implements OnInit {
   headerComponent!: HTMLElement;
 
   showWaitingOverlay: boolean = false;
-  cart: Cart = cart;
+  cart!: CartItem[];
   showAmenitiesItem: number[] = [];
 
   customerInformationFormGroup = this._formBuilder.group({
@@ -67,8 +66,8 @@ export class CheckoutComponent implements OnInit {
   }
 
   getTotalPrice() {
-    const totalPrice = this.cart.items.reduce((total, item) => {
-      return total + item.price;
+    const totalPrice = this.cart.reduce((total, item) => {
+      return total + item.room.rentalPrice;
     }
       , 0);
     return totalPrice + (totalPrice * 10 / 100);

@@ -1,56 +1,58 @@
 <div class="cart-container">
-    <div class="empty-cart text-center" *ngIf="cart.items!.length ===0">
+    <div class="empty-cart text-center" *ngIf="cart.length ===0">
         <img src="https://cdn6.agoda.net/images/kite-js/illustrations/athena/baggage/group.svg" alt="empty" width="92px"
             height="92px">
         <h2>Xe đẩy hàng của quý khách chẳng có gì bên trong</h2>
         <p>Hãy mua khách sạn, chuyến bay, ô tô và điểm thu hút để lập kế hoạch cho chuyến đi tiếp theo</p>
         <button class="btn btn-primary btn-search__other w-fit bx__shadow">Tìm kiếm du lịch</button>
     </div>
-    <div class="d-flex-bh flex-wrap-bh cart-list__container" *ngIf="cart.items!.length>0">
+    <div class="d-flex-bh flex-wrap-bh cart-list__container" *ngIf="cart!.length>0">
         <div class="cart-list__column">
             <div class="cart-list__box">
-                <p class="text-summary">Xe đẩy hàng của quý khách ({{cart.items.length}})</p>
+                <p class="text-summary">Xe đẩy hàng của quý khách ({{cart.length}})</p>
             </div>
             <div class="d-flex-bh flex-wrap-bh cart-list__box">
                 <p class="typo-recommend">Tiết kiệm trọn gói</p>
                 <p class="recommend-title">Kết hợp và tiết kiệm thêm</p>
                 <p class="w-fit recommend-order">Đặt 2 hoạt động trở lên để mở khóa tiết kiệm gói</p>
             </div>
-            <div class="d-flex-bh flex-wrap-bh cart-list__box cart-item" *ngFor="let item of cart.items">
+            <div class="d-flex-bh flex-wrap-bh cart-list__box cart-item" *ngFor="let item of cart">
                 <div class="item-img">
-                    <img [src]="item.image" alt="image" width="68px">
+                    <img [src]="item.bannerImage" alt="image" width="68px">
                 </div>
                 <div class="item-information">
-                    <p class="item-name">{{item.name}}</p>
+                    <p class="item-name">{{item.hotel.name}}</p>
                     <p>
                         <i class="fa-solid fa-star cl-star item-rating__icon"
-                            *ngFor="let item of [].constructor(getRatingStar(item.avgRating))"></i>
+                            *ngFor="let item of [].constructor(getRatingStar(item.hotel.averagePoints))"></i>
                         <i class="fa-solid fa-star-half-stroke cl-star item-rating__icon"
-                            *ngFor="let item of [].constructor(5-getRatingStar(item.avgRating))"></i>
+                            *ngFor="let item of [].constructor(5-getRatingStar(item.hotel.averagePoints))"></i>
                         <span class="text-secondary">
                             <i class="fa-solid fa-location-dot item-location"></i>
-                            {{item.location}}
+                            {{item.address}}
                         </span>
                     </p>
                     <p class="item-rating">
-                        <span class="rating-point">{{item.avgRating}}</span>
-                        <span class="rating-title">Tuyệt vời</span>
-                        <span class="text-secondary">297 nhận xét</span>
+                        <span class="rating-point">{{item.hotel.averagePoints}}</span>
+                        <span class="rating-title" *ngIf="item.hotel.averagePoints>9">Trên cả tuyệt vời</span>
+                        <span class="rating-title" *ngIf="item.hotel.averagePoints<9">Tuyệt vời</span>
+                        <span class="text-secondary">{{item.totalReviews}} nhận xét</span>
                     </p>
                 </div>
-                <div class="item-delete" (click)="onDeleteItemFromCart(item.id)">
+                <div class="item-delete cursor-pointer" (click)="onDeleteItemFromCart(item.id)">
                     <i class="fa-regular fa-trash-can"></i>
                 </div>
                 <div class="w-fit divider-line"></div>
                 <div class="d-flex-bh flex-wrap-bh w-fit" [class.bg-chosen]="isChecked(item.id)">
                     <div class="item-selection">
-                        <mat-checkbox (change)="onChangeOption($event)" [id]="convertToString(item.id)" class="cart-checkbox">{{item.units}} X
-                            {{item.special_feature}}</mat-checkbox>
-                        <p class="text-secondary item-daterange">{{getDateInPlain(item.start_date)}} —
-                            {{getDateInPlain(item.end_date)}}</p>
+                        <mat-checkbox (change)="onChangeOption($event)" [id]="convertToString(item.id)"
+                            class="cart-checkbox">{{item.adult}} người lớn, {{item.child}} trẻ em
+                        </mat-checkbox>
+                        <p class="text-secondary item-daterange">{{getDateInPlain(item.fromDate)}} —
+                            {{getDateInPlain(item.toDate)}}</p>
                     </div>
                     <div class="item-price text-end">
-                        <p class="text-price">{{formatMoney(item.price)}}</p>
+                        <p class="text-price">{{formatMoney(item.room.rentalPrice)}}</p>
                         <p class="text-secondary item-daterange">Bao gồm thuế và phí</p>
                     </div>
                 </div>
@@ -67,7 +69,8 @@
                 <div class="total-price__item">
                     <p>{{formatMoney(getTotalPrice())}}</p>
                 </div>
-                <button class="w-fit btn btn-primary btn-continue bx__shadow" [disabled]="chosenItems.length<1" routerLink="/checkout">Tiếp
+                <button class="w-fit btn btn-primary btn-continue bx__shadow" [disabled]="chosenItems.length<1"
+                    routerLink="/checkout">Tiếp
                     theo</button>
             </div>
         </div>

@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Cart, PaymentResponse, PaymentResultResponse, PaypalToken } from 'src/app/models/model';
+import { Cart, CartItem, PaymentResponse, PaymentResultResponse, PaypalToken } from 'src/app/models/model';
 import { convertVNDToUSD } from 'src/app/shared/utils/MoneyUtils';
 
 @Injectable({
@@ -25,15 +25,15 @@ export class PaymentService {
     return this.httpClient.post<PaypalToken>('https://api.sandbox.paypal.com/v1/oauth2/token', data, { headers });
   }
 
-  createPayment(access_token: string, token_type: string, cart: Cart) {
+  createPayment(access_token: string, token_type: string, cart: CartItem[]) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `${token_type} ${access_token}`,
       'Paypal-Request-Id': (Math.random() + 1).toString(36).substring(7)
     });
 
-    const totalPrice = cart.items.reduce((total, item) => {
-      return total + item.price;
+    const totalPrice = cart.reduce((total, item) => {
+      return total + item.room.rentalPrice;
     }, 0);
 
     const data = {

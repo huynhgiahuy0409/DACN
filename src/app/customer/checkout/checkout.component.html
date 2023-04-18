@@ -93,23 +93,29 @@
         <div class="short-order__title">
             <p>Tóm tắt Đặt phòng</p>
         </div>
-        <div class="items-checkout" *ngFor="let item of cart.items;index as ind">
+        <div class="items-checkout" *ngFor="let item of cart;index as ind">
             <div class="order-item">
                 <p class="item-type">
-                    <app-hotel-home-svg></app-hotel-home-svg>{{item.rooms[0].type}} <span
-                        class="text-secondary">({{item.location}})</span>
+                    <app-hotel-home-svg></app-hotel-home-svg>
+                    <!-- {{item.rooms[0].type}}  -->
+                    room type here
+                    <span class="text-secondary">
+                        <!-- ({{item.location}}) -->
+                        hotel location here
+                    </span>
                 </p>
                 <div class="d-flex-bh flex-wrap-bh item-summary__details">
                     <div class="item-img">
-                        <img [src]="item.image" alt="image" width="80px">
+                        <!-- <img [src]="item.image" alt="image" width="80px"> -->
+                        item image here
                     </div>
                     <div class="item-information">
-                        <p class="fw-bold">{{item.name}}</p>
+                        <p class="fw-bold">{{item.hotel.name}}</p>
                         <div>
                             <i class="fa-solid fa-star cl-star item-rating__icon"
-                                *ngFor="let item of [].constructor(getRatingStar(item.avgRating))"></i>
+                                *ngFor="let item of [].constructor(getRatingStar(item.hotel.averagePoints))"></i>
                             <i class="fa-solid fa-star-half-stroke cl-star item-rating__icon"
-                                *ngFor="let item of [].constructor(5-getRatingStar(item.avgRating))"></i>
+                                *ngFor="let item of [].constructor(5-getRatingStar(item.hotel.averagePoints))"></i>
                         </div>
                         <div class="item-rating">
                             <span class="rating-svg">
@@ -121,9 +127,10 @@
                                     </path>
                                 </svg>
                             </span>
-                            <span class="rating-point">{{item.avgRating}}</span>
+                            <span class="rating-point">{{item.hotel.averagePoints}}</span>
                             <span class="rating-title fw-bold">Tuyệt vời
-                                <p class="rating-quantity">{{item.reviews}} nhận xét</p>
+                                <!-- <p class="rating-quantity">{{item.reviews}} nhận xét</p> -->
+                                <p class="rating-quantity">số lượng nhận xét here</p>
                             </span>
                         </div>
                     </div>
@@ -136,8 +143,10 @@
                                 d="M17.483 1.005a.5.5 0 0 1 .5.5v.551h3.596a1.5 1.5 0 0 1 1.5 1.5v17.947a1.5 1.5 0 0 1-1.5 1.5H2.497a1.5 1.5 0 0 1-1.5-1.5V3.556a1.5 1.5 0 0 1 1.5-1.5h3.485v-.55a.5.5 0 1 1 1 0v.55h10v-.55a.5.5 0 0 1 .5-.5zm4.596 6.997H1.997v13.501a.5.5 0 0 0 .5.5H21.58a.5.5 0 0 0 .5-.5v-13.5zM7 15.5a.5.5 0 0 1 .5.5v2.838a.5.5 0 0 1-.5.5H4a.5.5 0 0 1-.5-.5V16a.5.5 0 0 1 .5-.5h3zm6 0a.5.5 0 0 1 .5.5v2.838a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V16a.5.5 0 0 1 .5-.5h3zm6 0a.5.5 0 0 1 .5.5v2.838a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V16a.5.5 0 0 1 .5-.5h3zm-12.5 1h-2v1.838h2V16.5zm6 0h-2v1.838h2V16.5zm6 0h-2v1.838h2V16.5zM7 9.5a.5.5 0 0 1 .5.5v2.838a.5.5 0 0 1-.5.5H4a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .5-.5h3zm6 0a.5.5 0 0 1 .5.5v2.838a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .5-.5h3zm6 0a.5.5 0 0 1 .5.5v2.838a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .5-.5h3zm-12.5 1h-2v1.838h2V10.5zm6 0h-2v1.838h2V10.5zm6 0h-2v1.838h2V10.5zM5.982 3.056H2.497a.5.5 0 0 0-.5.5v3.446H22.08V3.556a.5.5 0 0 0-.5-.5h-3.597v.428a.5.5 0 1 1-1 0v-.428h-10v.428a.5.5 0 1 1-1 0v-.428z">
                             </path>
                         </svg>
-                        {{getDateInPlain(item.start_date)}} - {{getDateInPlain(item.end_date)}} |
-                        {{getNightInNumber(item.start_date,item.end_date)}}
+
+                        from date- todate here
+                        <!-- {{getDateInPlain(item.start_date)}} - {{getDateInPlain(item.end_date)}} |
+                        {{getNightInNumber(item.start_date,item.end_date)}} -->
                     </p>
                     <p>
                         <svg width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -146,7 +155,8 @@
                                 d="M3.523 3.056a1.5 1.5 0 0 1 1.5 1.497l.02 8.503h16.536a1.5 1.5 0 0 1 1.5 1.5v5.947a1.5 1.5 0 0 1-1.5 1.5h-2.07a.5.5 0 0 1-.5-.5v-3.5H5.043v3.5a.5.5 0 0 1-.5.5H2.497a1.5 1.5 0 0 1-1.5-1.5V4.556a1.5 1.5 0 0 1 1.5-1.5h1.026zm0 1H2.497a.5.5 0 0 0-.5.5v15.947a.5.5 0 0 0 .5.5h1.546v-3.5a.5.5 0 0 1 .5-.5H19.51a.5.5 0 0 1 .5.5v3.5h1.57a.5.5 0 0 0 .5-.5v-5.947a.5.5 0 0 0-.5-.5H4.543a.5.5 0 0 1-.5-.498l-.02-9.003a.5.5 0 0 0-.5-.499zM16.598 6.5a5.5 5.5 0 0 1 4.52 2.367l.42.607a1.5 1.5 0 0 1-1.232 2.354H13a1.5 1.5 0 0 1-1.5-1.5V8A1.5 1.5 0 0 1 13 6.5h3.598zm-8.042 0a2.556 2.556 0 1 1 0 5.112 2.556 2.556 0 0 1 0-5.112zm8.042 1H13a.5.5 0 0 0-.5.5v2.328a.5.5 0 0 0 .5.5h7.306a.5.5 0 0 0 .41-.784l-.42-.607A4.5 4.5 0 0 0 16.598 7.5zm-8.042 0a1.556 1.556 0 1 0 0 3.112 1.556 1.556 0 0 0 0-3.112z">
                             </path>
                         </svg>
-                        {{item.rooms[0].adult}} x Căn Hộ {{item.rooms[0].beds}} phòng ngủ
+                        <!-- {{item.rooms[0].adult}} x Căn Hộ {{item.rooms[0].beds}} phòng ngủ -->
+                        some information about room here
                     </p>
                     <p>
                         <svg width="1em" height="1em" xmlns="http://www.w3.org/2000/svg"
@@ -159,19 +169,23 @@
                             </defs>
                             <use xlink:href="#mmb-account_24px-a"></use>
                         </svg>
-                        {{item.rooms.length}} phòng, {{item.rooms[0].adult}} Người lớn
+                        1 phòng, {{item.room.maxAdults}} Người lớn
                     </p>
                 </div>
             </div>
             <div class="item-amenities" *ngIf="isShowAmenitiesItem(ind)">
                 <div class="divider-line"></div>
-                <div class="amenity-check" *ngFor="let amenity of item.rooms[0].amenities">
+                <!-- <div class="amenity-check" *ngFor="let amenity of item.rooms[0].amenities"> -->
+                <div class="amenity-check" *ngFor="let amenity of [1,1,1]">
                     <div class="amenity-icon">
-                        <wifi-svg *ngIf="amenity.name==='Wifi'"></wifi-svg>
-                        <check-svg *ngIf="amenity.name!=='Wifi'"></check-svg>
+                        <!-- <wifi-svg *ngIf="amenity.name==='Wifi'"></wifi-svg>
+                        <check-svg *ngIf="amenity.name!=='Wifi'"></check-svg> -->
+                        <wifi-svg></wifi-svg>
+                        <check-svg></check-svg>
                     </div>
                     <div class="amenity-name">
-                        <p class="text-check">{{amenity.name}}</p>
+                        <!-- <p class="text-check">{{amenity.name}}</p> -->
+                        <p class="text-check">amenity name here</p>
                     </div>
                 </div>
             </div>
@@ -221,13 +235,13 @@
                     <p class="text-end">{{formatPrice(getTotalPrice())}}</p>
                 </div>
 
-                <div class="d-flex-bh w-fit" *ngFor="let item of cart.items">
+                <div class="d-flex-bh w-fit" *ngFor="let item of cart">
                     <div class="price-column__first">
                         <p class="mg-0">Tổng phải trả khi nhận phòng</p>
-                        <p class="item-name">{{item.name}}</p>
+                        <p class="item-name">{{item.hotel.name}}</p>
                     </div>
                     <div class="price-column__second">
-                        <p class="text-end">{{formatPrice(item.price)}}</p>
+                        <p class="text-end">{{formatPrice(item.room.rentalPrice)}}</p>
                     </div>
                 </div>
             </div>

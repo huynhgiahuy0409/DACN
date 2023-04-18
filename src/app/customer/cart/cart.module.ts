@@ -5,6 +5,7 @@ import { CartRoutingModule } from './cart-routing.module';
 import { CartComponent } from './cart.component';
 import { AngularMaterialModule } from 'src/app/shared/angular-material/angular-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CartService } from '../services/cart.service';
 
 
 @NgModule({
@@ -15,6 +16,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AngularMaterialModule,
     FormsModule,
     ReactiveFormsModule
+  ],
+  providers: [
+    CartService
   ]
 })
 export class CartModule { }

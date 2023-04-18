@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { cart } from 'src/app/models/constance';
-import { Cart } from 'src/app/models/model';
+import { Cart, CartItem } from 'src/app/models/model';
 import { getDateInString } from 'src/app/shared/utils/DateUtils';
 import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
+import { CartService } from '../services/cart.service';
+import { parseISO } from 'date-fns';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-cart',
@@ -11,14 +13,18 @@ import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 })
 export class CartComponent implements OnInit {
 
-  cart: Cart = cart;
+  cart: CartItem[] = [];
+  session_id: string = localStorage.getItem("sessionId") || "";
 
   chosenItems: any[] = [];
 
-  constructor() { }
+  constructor(private cartService: CartService, private toastrService: ToastrService) {
+  }
 
   ngOnInit(): void {
-    // this.cart.items = [];
+    this.cartService.getCartItemsBySessionId(this.session_id).subscribe((res) => {
+      this.cart = res;
+    });
   }
 
   formatMoney(amount: number) {
@@ -33,7 +39,7 @@ export class CartComponent implements OnInit {
     const { checked, source } = $event;
     const id = Number(source.id);
 
-    const itemInCart = this.cart.items.find(item => item.id === id);
+    const itemInCart = this.cart.find(item => item.id === id);
     const itemChosen = this.chosenItems.find(item => item.id === id);
     if (checked && itemInCart && !itemChosen) {
       this.chosenItems.push(itemInCart);
@@ -44,19 +50,28 @@ export class CartComponent implements OnInit {
 
   getTotalPrice() {
     const totalPrice = this.chosenItems.reduce((total, item) => {
-      return total + item.price;
+      return total + item.room.rentalPrice;
     }
       , 0);
     return totalPrice;
   }
 
-  getDateInPlain(dateNum: number) {
-    return getDateInString(dateNum);
+  getDateInPlain(dateNum: string) {
+    const parsed = parseISO(dateNum).getTime()
+    return getDateInString(parsed);
   }
 
   onDeleteItemFromCart(id: number) {
     this.chosenItems = this.chosenItems.filter(item => item.id !== id);
-    this.cart.items = this.cart.items.filter(item => item.id !== id);
+    this.cart = this.cart.filter(item => item.id !== id);
+
+    this.cartService.deleteItemFromCart(id).subscribe((res) => {
+      if (res.statusCode === 200) {
+        this.toastrService.success(res.message);
+      } else {
+        this.toastrService.error(res.message);
+      }
+    });
   }
 
   convertToString(value: number) {
