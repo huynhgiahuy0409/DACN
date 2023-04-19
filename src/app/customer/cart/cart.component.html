@@ -35,7 +35,7 @@
                     <p class="item-rating">
                         <span class="rating-point">{{item.hotel.averagePoints}}</span>
                         <span class="rating-title" *ngIf="item.hotel.averagePoints>9">Trên cả tuyệt vời</span>
-                        <span class="rating-title" *ngIf="item.hotel.averagePoints<9">Tuyệt vời</span>
+                        <span class="rating-title" *ngIf="item.hotel.averagePoints<=9">Tuyệt vời</span>
                         <span class="text-secondary">{{item.totalReviews}} nhận xét</span>
                     </p>
                 </div>
@@ -43,15 +43,22 @@
                     <i class="fa-regular fa-trash-can"></i>
                 </div>
                 <div class="w-fit divider-line"></div>
-                <div class="d-flex-bh flex-wrap-bh w-fit" [class.bg-chosen]="isChecked(item.id)">
-                    <div class="item-selection">
+                <div class="d-flex-bh flex-wrap-bh w-fit" [class.bg-chosen]="isChecked(item.id)"
+                    [class.bg-disabled]="!isAvailable(item.status)">
+                    <div class="item-selection" *ngIf="isAvailable(item.status)">
                         <mat-checkbox (change)="onChangeOption($event)" [id]="convertToString(item.id)"
                             class="cart-checkbox">{{item.adult}} người lớn, {{item.child}} trẻ em
                         </mat-checkbox>
                         <p class="text-secondary item-daterange">{{getDateInPlain(item.fromDate)}} —
                             {{getDateInPlain(item.toDate)}}</p>
                     </div>
-                    <div class="item-price text-end">
+                    <div class="item-selection" *ngIf="!isAvailable(item.status)">
+                        <mat-checkbox class="cart-checkbox" [disabled]="true">Phòng này hiện đã có khách đặt
+                        </mat-checkbox>
+                        <p class="text-secondary item-daterange">{{getDateInPlain(item.fromDate)}} —
+                            {{getDateInPlain(item.toDate)}}</p>
+                    </div>
+                    <div class="item-price text-end" *ngIf="isAvailable(item.status)">
                         <p class="text-price">{{formatMoney(item.room.rentalPrice)}}</p>
                         <p class="text-secondary item-daterange">Bao gồm thuế và phí</p>
                     </div>
@@ -70,7 +77,7 @@
                     <p>{{formatMoney(getTotalPrice())}}</p>
                 </div>
                 <button class="w-fit btn btn-primary btn-continue bx__shadow" [disabled]="chosenItems.length<1"
-                    routerLink="/checkout">Tiếp
+                    routerLink="/checkout" (click)="onSaveChosenItems()">Tiếp
                     theo</button>
             </div>
         </div>

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { DELETE_BY_IDS } from 'src/app/models/constance';
 import { DELETE_ITEM_FROM_CART, GET_CART_BY_SESSION_ID } from 'src/app/models/constance';
 import { ApiResponse, CartItem } from 'src/app/models/model';
 
@@ -26,5 +27,9 @@ export class CartService {
       id: id
     };
     return this.httpClient.delete<ApiResponse>(`${DELETE_ITEM_FROM_CART}`, this.httpOptions);
+  }
+
+  deleteItemsFromCart(ids: number[]): Observable<ApiResponse> {
+    return this.httpClient.post<ApiResponse>(`${DELETE_BY_IDS}`, ids);
   }
 }
