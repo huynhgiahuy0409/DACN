@@ -10,6 +10,29 @@ export interface CartItem {
   address: string;
   bannerImage: string;
   totalReviews: number;
+  roomType: string;
+  benefits: Benefit[];
+  status: string;
+}
+
+export interface ReservationRequest {
+  price: number;
+  adult: number;
+  children: number;
+  startDate: string;
+  endDate: string;
+  discountPercent: number;
+  username: string;
+  hotelId: number;
+  roomId: number;
+  fullName: string;
+  email: string;
+  phone: string;
+}
+
+export interface Benefit {
+  name: string;
+  code: string;
 }
 
 export interface HotelResponse {

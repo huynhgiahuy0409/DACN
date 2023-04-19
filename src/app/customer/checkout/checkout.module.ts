@@ -10,6 +10,7 @@ import { PaymentService } from '../services/payment.service';
 import { HttpClientModule } from '@angular/common/http';
 import { CheckPaymentStatusComponent } from './check-payment-status/check-payment-status.component';
 import { LoadingOverlayComponent } from './loading-overlay/loading-overlay.component';
+import { ReservationService } from '../services/reservation.service';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { LoadingOverlayComponent } from './loading-overlay/loading-overlay.compo
     HttpClientModule
   ],
   providers: [
-    PaymentService
+    PaymentService,
+    ReservationService
   ]
 })
 export class CheckoutModule { }

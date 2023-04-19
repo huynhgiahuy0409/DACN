@@ -65,20 +65,30 @@ export class CartComponent implements OnInit {
     this.chosenItems = this.chosenItems.filter(item => item.id !== id);
     this.cart = this.cart.filter(item => item.id !== id);
 
-    this.cartService.deleteItemFromCart(id).subscribe((res) => {
-      if (res.statusCode === 200) {
-        this.toastrService.success(res.message);
-      } else {
-        this.toastrService.error(res.message);
-      }
-    });
+    this.cartService.deleteItemFromCart(id).subscribe(
+      (res) => {
+        if (res.statusCode === 200) {
+          this.toastrService.success(res.message);
+        }
+      },
+      (error) => {
+        this.toastrService.error(error.error.message);
+      });
   }
 
   convertToString(value: number) {
     return String(value);
   }
 
+  onSaveChosenItems() {
+    localStorage.setItem("chosenItems", JSON.stringify(this.chosenItems));
+  }
+
   isChecked(id: number) {
     return this.chosenItems.find(item => item.id === id);
+  }
+
+  isAvailable(status: string) {
+    return status === "AVAILABLE";
   }
 }
