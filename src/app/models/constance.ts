@@ -4,5 +4,5 @@ export const DELETE_ITEM_FROM_CART = `${API_PREFIX}/carts/deleteItemFromCart`;
 export const DELETE_BY_IDS = `${API_PREFIX}/carts/deleteByIds`;
 export const ADD_RESERVATION = `${API_PREFIX}/reservations/saveReservation`;
 export const ADD_ALL_RESERVATION = `${API_PREFIX}/reservations/saveAllReservation`;
-
+export const URL_API = "http://localhost:8080";
 export const ONE_DOLLAR_IN_USD = 23456;

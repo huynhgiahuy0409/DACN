@@ -1,8 +1,14 @@
-export interface OptionResponse{
+export interface APIResponse<T> {
+    data: T,
+    message: string,
+    statusCode: number
+}
+
+export interface OptionResponse {
     label: string,
     code: string,
 }
-export interface ImageResponse{
+export interface ImageResponse {
     url: string;
     isThumbnail: boolean;
 }
@@ -15,54 +21,31 @@ export interface SearchedHotelResponse {
     benefits: string[],
     discount: DiscountResponseEntity
 }
-export interface DiscountResponseEntity{
+export interface DiscountResponseEntity {
     name: string,
     icon: string,
 }
-export interface AddressResponse{
+export interface AddressResponse {
 
 }
-export interface ProvinceResponse{
+export interface ProvinceResponse {
     id: number,
     name: string,
     code: string,
 }
-export interface DistrictResponse{
+export interface DistrictResponse {
     id: number,
     name: string,
     prefix: string,
 }
 
-
-// export interface Product {
-//     name: string;
-//     address: string;
-//     benefits: string[];
-//     startRating: number;
-//     originalPrice: number;
-//     rentalPrice: number;
-//     averageRating: AverageRating;
-//     reviewImages: Image[];
-//     topBadges: TopBadge[];
-//     propertyCards: PropertyCard[]
-//   }
-//   export interface SearchedHotelResponse {
-//   }
-  interface AverageRatingResponse {
+interface AverageRatingResponse {
     name: string;
     points: number;
     reviews: number;
-  }
-//   interface TopBadge {
-//     name: string;
-//     icon: string
-//   }
-//   interface PropertyCard {
-//     name: string;
-//     icon: string
-//   }
-//   interface Image {
-//     url: string;
-//     isThumbnail: boolean;
-//   }
-
+}
+export interface AutocompleteSearchResponse{
+    name: string,
+    type: string,
+    category: string
+}
