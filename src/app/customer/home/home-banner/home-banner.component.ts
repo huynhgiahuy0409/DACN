@@ -12,9 +12,12 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { filter } from 'rxjs';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { BehaviorSubject, Observable, debounce, debounceTime, distinctUntilChanged, filter, of, switchMap, tap } from 'rxjs';
 import { Occupancy, RedirectInfo } from 'src/app/models/model';
+import { HotelService } from '../../services/hotel.service';
+import { AutocompleteSearchResponse } from 'src/app/models/response';
+import { ProgressSpinnerService } from '../../services/progress-spinner.service';
 interface Tab {
   idx: number;
   label: string;
@@ -32,18 +35,26 @@ interface StayType {
   templateUrl: './home-banner.component.html',
   styleUrls: ['./home-banner.component.scss'],
 })
-export class HomeBannerComponent implements OnInit {
+export class HomeBannerComponent implements OnInit, OnChanges {
   @ViewChild('occupancyPopup')
   occupancyPopup!: ElementRef<HTMLDivElement>;
+  @ViewChild('occupancyLineForm')
+  occupancyLineForm!: ElementRef<HTMLDivElement>;
   @ViewChild('occupancyBox')
   occupancyBox!: ElementRef<HTMLDivElement>;
   @ViewChild('homeBanner')
   homeBanner!: ElementRef<HTMLDivElement>;
+  @ViewChild('autocompleteSearch')
+  autocompleteSearch!: ElementRef<HTMLDivElement>;
+
+
   isShowFilterBar: boolean = false
-  enableOverlay: boolean = false;
+  isEnableAutocompleteSearch: boolean = true
+  overlaySwitchBSub: BehaviorSubject<boolean> = new BehaviorSubject(false)
+  overlaySwitch$ = this.overlaySwitchBSub.asObservable()
   isEnableOccupancy = false;
-  selectedTab!: Tab;
   ageOptions!: string[];
+  selectedTab!: Tab;
   tabList: Tab[] = [
     {
       idx: 0,
@@ -119,13 +130,44 @@ export class HomeBannerComponent implements OnInit {
       },
     },
   ];
-  overlayState = {
+  overlayState: { isShow: boolean, currElement: Element | undefined } = {
     isShow: false,
     currElement: undefined,
   };
+
+  overlayStateBSub: BehaviorSubject<{ isShow: boolean, currElement: Element | undefined }> = new BehaviorSubject(this.overlayState)
+  overlayState$ = this.overlayStateBSub.asObservable()
+  get curOverlayState() {
+    return this.overlayStateBSub.value
+  }
+
+
+  updateOverlayState(element: Element) {
+    let { isShow, currElement } = this.curOverlayState
+    if (isShow === true) {
+      if (currElement !== element) {
+        currElement = element
+      } else {
+        currElement = undefined
+        isShow = false
+      }
+    } else {
+      if (currElement !== element) {
+        isShow = true
+        currElement = element
+      }
+    }
+    this.overlayStateBSub
+      .next({
+        isShow: isShow,
+        currElement: currElement
+      })
+  }
+
+  autocompleteSearchs$!: Observable<AutocompleteSearchResponse[]>
   hotelAndHomeFormGroup!: FormGroup;
   privateHomeFormGroup!: FormGroup;
-  constructor(private __fb: FormBuilder) {
+  constructor(private __fb: FormBuilder, private _hotelService: HotelService, private _progressSpinnerService: ProgressSpinnerService) {
     this.selectedTab = this.tabList[0];
     this.selectedStayType = this.stayTypes[0];
     this.ageOptions = this.createChildrenAgeRange();
@@ -151,9 +193,17 @@ export class HomeBannerComponent implements OnInit {
         children: this.__fb.array([]),
       }),
     });
-    this.hotelAndHomeFormGroup.valueChanges.subscribe((value) =>
-      console.log(value)
-    );
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes)
+    if (changes['enableOverlay'].currentValue === false) {
+      console.log(1)
+    } else {
+      console.log(2)
+    }
+  }
+  get placeControl(): FormControl {
+    return this.hotelAndHomeFormGroup.get("place") as FormControl
   }
   get children(): FormArray {
     return this.hotelAndHomeFormGroup
@@ -177,12 +227,35 @@ export class HomeBannerComponent implements OnInit {
       }
     }
   }
-  ngAfterViewInit(): void {}
-  ngOnInit(): void {}
+  ngAfterViewInit(): void {
+    this.overlayState$.subscribe(value => {
+      this.isEnableOccupancy = value.currElement !== this.occupancyLineForm.nativeElement ? false : true
+      this.isEnableAutocompleteSearch = value.isShow === true ? true : false
+    })
+  }
+  ngOnInit(): void {
+    this.autocompleteSearchs$ = this.placeControl.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      tap(_ => {
+        this._progressSpinnerService.next(true)
+      }),
+      switchMap((search: string) => {
+        if(search.trim()){
+          return this._hotelService.getAutocompleteSearch(search)
+        }
+        return of([])
+      }),
+      tap(response => {
+        console.log(response)
+        this._progressSpinnerService.next(false)
+      }),
+    )
+  }
 
   sltTab(tab: Tab) {
     this.selectedTab = tab;
-    this.enableOverlay = false;
+    // this.enableOverlay = false;
     this.overlayState.isShow = false;
     this.isEnableOccupancy = false;
   }
@@ -191,34 +264,12 @@ export class HomeBannerComponent implements OnInit {
     this.hotelAndHomeFormGroup.patchValue({
       stayType: stayType.value,
     });
-    this.updateOverlayState(element);
   }
-  updateOverlayState(element: any) {
-    if (this.overlayState.currElement !== element) {
-      this.overlayState.currElement = element;
-      this.overlayState.isShow = true;
-      this.isEnableOccupancy = false;
-    } else {
-      this.overlayState.currElement = undefined;
-      this.overlayState.isShow = false;
-      this.isEnableOccupancy = false;
-    }
-  }
-  onClickOverlay(){
-    this.overlayState.isShow = false
-    this.overlayState.currElement = undefined
-    this.isEnableOccupancy = false
-  }
-  toggleOccupancy(element: any) {
-    if (this.overlayState.currElement !== element) {
-      this.overlayState.currElement = element;
-      this.overlayState.isShow = true;
-      this.isEnableOccupancy = true;
-    } else {
-      this.overlayState.currElement = undefined;
-      this.overlayState.isShow = false;
-      this.isEnableOccupancy = false;
-    }
+  onClickOverlay() {
+    this.overlayStateBSub.next({
+      isShow: false,
+      currElement: undefined
+    })
   }
   createChildrenAgeRange(): string[] {
     const result: string[] = [];
@@ -231,21 +282,22 @@ export class HomeBannerComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onScroll(event: Event) {
     // Gọi hàm xử lý sự kiện scroll ở đây
-    if(this.occupancyPopup){
+    if (this.occupancyPopup) {
       const occupancyPopupTop =
-      this.occupancyPopup.nativeElement.getBoundingClientRect().top;
-      if(occupancyPopupTop < 0){
+        this.occupancyPopup.nativeElement.getBoundingClientRect().top;
+      if (occupancyPopupTop < 0) {
         this.overlayState.currElement = undefined;
         this.overlayState.isShow = false
         this.isEnableOccupancy = false
       }
     }
     const homeBannerBottom = this.homeBanner.nativeElement.getBoundingClientRect().bottom
-    
-    if(homeBannerBottom < 0){
+
+    if (homeBannerBottom < 0) {
       this.isShowFilterBar = true
-    }else{
+    } else {
       this.isShowFilterBar = false
     }
   }
+
 }

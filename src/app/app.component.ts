@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProgressSpinnerService } from './customer/services/progress-spinner.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'dacn';
+  constructor(public progressSpinnerService: ProgressSpinnerService){}
 }
