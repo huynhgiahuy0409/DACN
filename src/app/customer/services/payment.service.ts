@@ -55,7 +55,7 @@ export class PaymentService {
             "brand_name": "SPRING HOTEL",
             "locale": "en-US",
             "landing_page": "LOGIN",
-            "shipping_preference": "SET_PROVIDED_ADDRESS",
+            // "shipping_preference": "SET_PROVIDED_ADDRESS",
             "user_action": "PAY_NOW",
             "return_url": "http://localhost:4200/checkout/payment/status",
             "cancel_url": "http://localhost:4200/checkout/payment/status"
