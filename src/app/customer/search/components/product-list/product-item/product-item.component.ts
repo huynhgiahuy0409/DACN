@@ -1,5 +1,5 @@
+import { SearchedProductItemResponse } from './../../../../../models/response';
 import { Component, Input, OnInit } from '@angular/core';
-import { Product } from '../product-list.component';
 
 @Component({
   selector: 'app-product-item',
@@ -8,7 +8,7 @@ import { Product } from '../product-list.component';
 })
 export class ProductItemComponent implements OnInit {
   @Input()
-  product!: Product
+  searchedProduct!: SearchedProductItemResponse
   isHoverReviewItem = false
   constructor() { }
 

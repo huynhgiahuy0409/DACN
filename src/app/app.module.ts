@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from "@angular/common/http";
 import { ToastrModule } from 'ngx-toastr';
 import { AngularMaterialModule } from './shared/angular-material/angular-material.module';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,9 @@ import { AngularMaterialModule } from './shared/angular-material/angular-materia
     ToastrModule.forRoot(),
     AngularMaterialModule
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

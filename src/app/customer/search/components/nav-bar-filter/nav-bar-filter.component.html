@@ -3,7 +3,7 @@
         <div class="navbar-filter__label">
             <span>Sắp xếp</span>
         </div>
-        <li class="navbar-filter__item" [class.selected]="sltTabIdx === idx" *ngFor="let tab of tabs; index as idx">
+        <li class="navbar-filter__item" [class.selected]="sltTabIdx === idx" *ngFor="let tab of tabs; index as idx" (click)="selectTabIdx(idx)">
             <span>{{tab}}</span>
         </li>
     </ul>

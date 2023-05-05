@@ -63,7 +63,7 @@
                                         <ng-container *ngIf="(autocompleteSearchs$ | async) as autocompleteSearchs">
                                             <div #autocompleteSearch id="autocomplete-search" *ngIf="autocompleteSearchs.length > 0 && isEnableAutocompleteSearch">
                                                 <ul>
-                                                    <li class="d-flex-bh"
+                                                    <li (click)="selectAutocomplete(autocompleteSeasrch)" class="d-flex-bh"
                                                         *ngFor="let autocompleteSeasrch of autocompleteSearchs">
                                                         <div class="icon">
                                                             <ng-container *ngIf="autocompleteSeasrch.type === 'property' ">
@@ -133,7 +133,7 @@
                                             <div class="occupancy-selection">
                                                 <div class="info-group">
                                                     <p>
-                                                        {{ occupancy.value.adult
+                                                        {{ occupancy.value.adults
                                                         }} người lớn
                                                         <span *ngIf="occupancy.value.children.length>
                                                             0">,
@@ -143,7 +143,7 @@
                                                             trẻ em</span>
                                                     </p>
                                                     <span>{{
-                                                        occupancy.value.room }}
+                                                        occupancy.value.rooms }}
                                                         phòng</span>
                                                 </div>
                                                 <div class="arrow-down__wrapper" [class.toggle]="isEnableOccupancy">
@@ -269,7 +269,7 @@
                                         <div class="occupancy-selection">
                                             <div class="info-group">
                                                 <p>
-                                                    {{ occupancy.value.adult }}
+                                                    {{ occupancy.value.adults }}
                                                     người lớn
                                                     <span *ngIf="occupancy.value.children.length>
                                                         0">,
@@ -278,7 +278,7 @@
                                                         }}
                                                         trẻ em</span>
                                                 </p>
-                                                <span>{{ occupancy.value.room }}
+                                                <span>{{ occupancy.value.rooms }}
                                                     phòng</span>
                                             </div>
                                             <div class="arrow-down__wrapper" [class.toggle]="isEnableOccupancy">
@@ -345,7 +345,7 @@
                 </ng-template>
             </div>
             <div class="search__wrapper">
-                <button mat-raised-button color="primary" [routerLink]="'/search'">Tìm kiếm</button>
+                <button mat-raised-button color="primary" [disabled]="hotelAndHomeFormGroup.invalid" (click)="onSubmitSearch()">Tìm kiếm</button>
             </div>
         </div>
     </div>

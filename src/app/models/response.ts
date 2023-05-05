@@ -12,21 +12,20 @@ export interface ImageResponse {
     url: string;
     isThumbnail: boolean;
 }
-export interface SearchedHotelResponse {
-    previewImages: ImageResponse[],
-    hotelName: string,
-    district: DistrictResponse,
-    province: ProvinceResponse,
-    averageRating: AverageRatingResponse,
-    benefits: string[],
-    discount: DiscountResponseEntity
-}
-export interface DiscountResponseEntity {
-    name: string,
-    icon: string,
-}
-export interface AddressResponse {
-
+export interface SearchedProductItemResponse {
+    name: string;
+    benefits: string[];
+    address: AddressResponse;
+    startRating: number;
+    originalPrice: number;
+    rentalPrice: number;
+    finalPrice: number;
+    averageRating: AverageRatingResponse;
+    discount: DiscountResponse;
+    isSearchedHotel: boolean;
+    isDeals: boolean;
+    isOnlinePayment: boolean;
+    isFreeCancellation: boolean;
 }
 export interface ProvinceResponse {
     id: number,
@@ -39,13 +38,26 @@ export interface DistrictResponse {
     prefix: string,
 }
 
-interface AverageRatingResponse {
+export interface AverageRatingResponse {
     name: string;
     points: number;
     reviews: number;
 }
-export interface AutocompleteSearchResponse{
+export interface AutocompleteSearchResponse {
     name: string,
     type: string,
-    category: string
+    category: string,
+    hotelId: string,
+    searchValue: string
+}
+export interface AddressResponse {
+    id: number,
+    street: string
+    province: string,
+    district: string,
+    ward: string
+}
+export interface DiscountResponse {
+    name: string,
+    percent: number
 }

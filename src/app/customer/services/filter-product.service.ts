@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { URL_API } from 'src/app/models/constance';
 import { ProductFilterRequest } from 'src/app/models/request';
 import { APIResponse, SearchedProductItemResponse } from 'src/app/models/response';
@@ -9,7 +9,19 @@ import { APIResponse, SearchedProductItemResponse } from 'src/app/models/respons
   providedIn: 'root'
 })
 export class FilterProductService {
-  constructor(private _httpClient: HttpClient) { }
+
+  private productFilterRequestBSub: BehaviorSubject<ProductFilterRequest | null> = new BehaviorSubject<ProductFilterRequest | null>(null)
+  productFilterRequest$ = this.productFilterRequestBSub.asObservable()
+
+  nextProductFilterRequest(value: ProductFilterRequest) {
+    this.productFilterRequestBSub.next(value)
+  }
+  get currProductFilterRequest() {
+    return this.productFilterRequestBSub.value;
+  }
+  constructor(private _httpClient: HttpClient) {
+    this.productFilterRequest$.subscribe(v => console.log(v))
+  }
 
   public filterProduct(productFilterRequest: ProductFilterRequest): Observable<APIResponse<SearchedProductItemResponse[]>> {
     let url = URL_API.concat(`/api/hotel/search`);
