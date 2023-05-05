@@ -1,7 +1,7 @@
 <div class="product-list__wrapper">
     <ul class="product__list">
-        <ng-container *ngFor="let product of products$ | async">
-            <app-product-item [product]="product">
+        <ng-container *ngFor="let searchedProduct of searchedProducts$ | async">
+            <app-product-item [searchedProduct]="searchedProduct">
             </app-product-item>
         </ng-container>
     </ul>

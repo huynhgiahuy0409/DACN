@@ -8,7 +8,9 @@
     border: 1px solid var(--border-color);
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .12);
     transition: box-shadow .2s ease-in-out, background-color .2s ease-in-out;
-    overflow: hidden;
+}
+.product__item.searched {
+    border: 3px solid var(--primary-color);
 }
 
 .product__item:hover {
@@ -30,6 +32,7 @@
 
 .product__item__body .left__wrapper .product-image__wrapper .product-image__thumbnail {
     overflow: hidden;
+    border-top-left-radius: 8px;
 }
 
 .product__item__body .left__wrapper .product-image__wrapper .product-image__thumbnail img {

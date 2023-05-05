@@ -110,6 +110,11 @@
     transform: translateY(-50%);
 }
 
+.home-banner .banner_filter .search__wrapper button:disabled {
+    background-color: var(--primary-color);
+    color: #fff;
+    cursor: not-allowed;
+}
 .home-banner .banner_filter .search__wrapper button {
     width: 490px;
     height: 64px;
