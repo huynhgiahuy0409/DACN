@@ -1,5 +1,5 @@
 <div class="product-item__wrapper grid">
-  <div class="product__item" [class.searched]="searchedProduct.isSearchedHotel">
+  <div class="product__item" [class.searched]="isSearchedProduct">
     <div class="product__item__header"></div>
     <div class="product__item__body">
       <div class="row no-gutters">
@@ -52,7 +52,7 @@
                   {{ searchedProduct.name }}
                 </h3>
                 <div class="star-rating__wrapper">
-                  <app-start-rating></app-start-rating>
+                  <app-start-rating [cover]="computeStarCover(searchedProduct.starRating)"></app-start-rating>
                 </div>
                 <div class="address__wrapper">
                   <app-location-maker-svg

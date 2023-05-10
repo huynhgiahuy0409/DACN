@@ -5,7 +5,8 @@ export interface ProductFilterRequest{
     rooms: number;
     adults: number;
     children: number;
-    hotelId: number
+    value: number;
+    type: string;
     productSortRequest?: ProductSortRequest
 }
 export interface ProductSortRequest{

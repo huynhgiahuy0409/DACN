@@ -2,6 +2,8 @@ import { take } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import { FilterProductService } from 'src/app/customer/services/filter-product.service';
 import { ProductFilterRequest } from 'src/app/models/request';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-nav-bar-filter',
@@ -9,37 +11,47 @@ import { ProductFilterRequest } from 'src/app/models/request';
   styleUrls: ['./nav-bar-filter.component.scss']
 })
 export class NavBarFilterComponent implements OnInit {
-  tabs: string[] = [
-    "Phù hợp nhất",
-    "Được đánh giá nhiều nhất",
-    "Giá thấp nhất trước",
-    "Tên sản phẩm"
+  tabs: {label: string, value: string}[] = [
+    {label: "Phù hợp nhất", value: "default"},
+    {label:"Tên sản phẩm", value: "name"},
+    {label:"Giá thấp nhất trước", value: "price"},
+    {label:"Mức độ hài lòng", value: "rate"},
   ];
-  sltTabIdx = 0
-  constructor(private _productFilterService: FilterProductService) { }
+  sltTabValue = "default"
+  constructor(private _productFilterService: FilterProductService, private _route: ActivatedRoute, private _router: Router) {
+    let tabValue = this._route.snapshot.queryParams["property"]
+    this.sltTabValue = tabValue? tabValue : "default"
+  }
 
   ngOnInit(): void {
   }
-  selectTabIdx(index: number){
-    this.sltTabIdx = index
-    let currProductFilterRequest: ProductFilterRequest | null = this._productFilterService.currProductFilterRequest
-    if(currProductFilterRequest){
-      if(index === 0){
+  selectTab(value: string) {
+    this.sltTabValue = value
+    let currProductFilterRequest: any = {...this._route.snapshot.queryParams}
+    
+    if (currProductFilterRequest) {
+      if (value === "default") {
         currProductFilterRequest.productSortRequest = undefined
-      }else if(index === 1){
-        
-      }else if(index === 2){
+      } else if (value === "name") {
+        currProductFilterRequest.productSortRequest = {
+          direction: "asc",
+          property: "name"
+        }
+      } else if (value === "price") {
         currProductFilterRequest.productSortRequest = {
           direction: "asc",
           property: "price"
         }
-      }else if(index === 3){
+      }else if (value === "rate") {
         currProductFilterRequest.productSortRequest = {
-          direction: "asc",
-          property: "product-name"
+          direction: "desc",
+          property: "rate"
         }
       }
-      this._productFilterService.nextProductFilterRequest(currProductFilterRequest)
+      const queryParams = { ...this._route.snapshot.queryParams };
+      queryParams['property'] = currProductFilterRequest.productSortRequest?.property;
+      queryParams['direction'] = currProductFilterRequest.productSortRequest?.direction;
+      this._router.navigate([], { queryParams , replaceUrl: true});
     }
   }
 }

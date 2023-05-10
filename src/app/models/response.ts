@@ -12,11 +12,15 @@ export interface ImageResponse {
     url: string;
     isThumbnail: boolean;
 }
+export interface SearchedProductResponse{
+    searchedProduct: SearchedProductItemResponse
+    relativeSearchedProducts: SearchedProductItemResponse[]
+}
 export interface SearchedProductItemResponse {
     name: string;
     benefits: string[];
     address: AddressResponse;
-    startRating: number;
+    starRating: number;
     originalPrice: number;
     rentalPrice: number;
     finalPrice: number;
@@ -45,10 +49,9 @@ export interface AverageRatingResponse {
 }
 export interface AutocompleteSearchResponse {
     name: string,
-    type: string,
     category: string,
-    hotelId: string,
-    searchValue: string
+    value: string,
+    type: string,
 }
 export interface AddressResponse {
     id: number,

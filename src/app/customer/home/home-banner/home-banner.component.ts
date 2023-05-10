@@ -153,9 +153,8 @@ export class HomeBannerComponent implements OnInit {
     this.ageOptions = this.createChildrenAgeRange();
     // form init
     this.hotelAndHomeFormGroup = this.__fb.group({
+      search: [""],
       stayType: [this.selectedStayType.value, Validators.required],
-      hotelId: [""],
-      place: ['', Validators.required],
       startDate: [new Date(), Validators.required],
       endDate: [new Date(), Validators.required],
       occupancy: this.__fb.group({
@@ -163,6 +162,8 @@ export class HomeBannerComponent implements OnInit {
         adults: this.occupancyOptions[1].value,
         children: this.__fb.array([]),
       }),
+      value: [""],
+      type: [""]
     });
     this.hotelAndHomeFormGroup.valueChanges.subscribe(value => {
       console.log(value)
@@ -181,7 +182,7 @@ export class HomeBannerComponent implements OnInit {
     });
   }
   get hotelPlaceControl(): FormControl {
-    return this.hotelAndHomeFormGroup.get("place") as FormControl
+    return this.hotelAndHomeFormGroup.get("search") as FormControl
   }
   get children(): FormArray {
     return this.hotelAndHomeFormGroup
@@ -217,7 +218,7 @@ export class HomeBannerComponent implements OnInit {
   }
   ngOnInit(): void {
     this.autocompleteSearchs$ = this.hotelPlaceControl.valueChanges.pipe(
-      debounceTime(1000),
+      debounceTime(500),
       tap(_ => {
         this._progressSpinnerService.next(true)
       }),
@@ -228,7 +229,6 @@ export class HomeBannerComponent implements OnInit {
         return of([])
       }),
       tap(response => {
-        console.log(response)
         this._progressSpinnerService.next(false)
       }),
     )
@@ -236,16 +236,25 @@ export class HomeBannerComponent implements OnInit {
   updateOverlayState(element: Element) {
     let { isShow, currElement } = this.curOverlayState
     if (isShow === true) {
+      // select another element
       if (currElement !== element) {
         currElement = element
-      } else {
-        currElement = undefined
-        isShow = false
+      }
+      // retarget pre element
+      else {
+        if(element === this.autocompleteSearch.nativeElement){
+          currElement = element
+          isShow = true
+        }else {
+          currElement = undefined
+          isShow = false
+        }
       }
     } else {
+      // init 
       if (currElement !== element) {
-        isShow = true
         currElement = element
+        isShow = true
       }
     }
     this.overlayStateBSub
@@ -253,6 +262,7 @@ export class HomeBannerComponent implements OnInit {
         isShow: isShow,
         currElement: currElement
       })
+    
   }
   sltTab(tab: Tab) {
     this.selectedTab = tab;
@@ -302,12 +312,11 @@ export class HomeBannerComponent implements OnInit {
     }
   }
   selectAutocomplete(autocompleteSearch: AutocompleteSearchResponse) {
-    this.hotelAndHomeFormGroup.get("place")!.patchValue(autocompleteSearch.searchValue)
-    this.hotelAndHomeFormGroup.get("hotelId")!.patchValue(autocompleteSearch.hotelId)
-    console.log(autocompleteSearch)
+    this.hotelAndHomeFormGroup.get("value")!.patchValue(autocompleteSearch.value)
+    this.hotelAndHomeFormGroup.get("type")!.patchValue(autocompleteSearch.type)
   }
   onSubmitSearch(){
-    const {place, startDate, endDate, occupancy, hotelId} = this.hotelAndHomeFormGroup.value
+    const {place, startDate, endDate, occupancy, value, type} = this.hotelAndHomeFormGroup.value
     const navigationExtras: NavigationExtras = {
       queryParams: {
         textToSearch: place,
@@ -316,7 +325,8 @@ export class HomeBannerComponent implements OnInit {
         rooms: occupancy.rooms,
         adults: occupancy.adults,
         children: occupancy.children.length,
-        hotel: hotelId
+        value: value,
+        type: type
       }
     }
     this._router.navigate(["/search"], navigationExtras)

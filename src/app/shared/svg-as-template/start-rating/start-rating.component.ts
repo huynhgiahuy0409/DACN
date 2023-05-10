@@ -9,7 +9,8 @@ export class StartRatingComponent implements OnInit {
   @Input() 
   fillColor: string = 'gold'
   @Input()
-  cover: string = '20%'
+  cover: string = '0%'
+  
   constructor() { }
 
   ngOnInit(): void {
