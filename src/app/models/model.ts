@@ -219,3 +219,14 @@ export interface HotelProfile {
   photos: Photos;
   profile: Profile;
 }
+
+export interface FavoriteHotel {
+  id: number;
+  bannerUrl: string;
+  name: string;
+  address: string;
+  avgRating: number;
+  totalRating: number;
+  originalPrice: number;
+  rentalPrice: number;
+}
