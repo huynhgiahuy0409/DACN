@@ -2,7 +2,8 @@
     <div class="favorite-bar">
         <p class="empty-heading">Danh sách yêu thích</p>
     </div>
-    <div class="d-flex-bh flex-wrap-bh justify-content-center-bh text-center" *ngIf="favorite_list.length<1">
+    <div class="d-flex-bh flex-wrap-bh justify-content-center-bh text-center"
+        *ngIf="favorite_list&&favorite_list.length<1">
         <p class="w-fit empty-heading">Chưa có gì ở đây</p>
         <div class="empty-img">
             <img src="../../../assets/images/img-camel-fresh.png" alt="">
@@ -11,17 +12,18 @@
         </p>
         <button class="btn btn-primary bx__shadow btn-back" (click)="goBack()">Quay lại</button>
     </div>
-    <div class="d-flex-bh flex-wrap-bh" *ngIf="favorite_list.length>0">
+    <div class="d-flex-bh flex-wrap-bh" *ngIf="favorite_list && favorite_list.length>0">
         <div class="d-flex-bh flex-wrap-bh option-container">
             <button (click)="toggleShowDayCalendar()" #toggleCalendar>Ngày</button>
             <button (click)="toggleShowPeopleOptions()" #togglePeople>Khách</button>
         </div>
         <div class="d-flex-bh flex-wrap-bh favorite-item w-fit">
-            <div class="item-content" *ngFor="let item of favorite_list">
+            <div class="item-content cursor-pointer" *ngFor="let item of favorite_list"
+                [routerLink]="['/details/',item.hotelId]">
                 <div class="item-image">
                     <img [src]="favorite_list[0].bannerUrl" [alt]="item.name">
                 </div>
-                <div class="toggle-icon">
+                <div class="toggle-icon cursor-pointer" (click)="deleteFavoriteHotel(item.id)">
                     <i class="fa-solid fa-heart"></i>
                 </div>
                 <div class="item-informations">
@@ -44,8 +46,8 @@
                         </div>
                     </div>
                     <div class="item-price text-end">
-                        <p class="original-price">Mỗi đêm từ <span>{{getMoneyFormat(item.originalPrice)}}</span></p>
-                        <p class="rental-price">{{getMoneyFormat(item.rentalPrice)}}</p>
+                        <p class="original-price">Mỗi đêm từ <span>{{getMoneyFormat(item.originPrice)}}</span></p>
+                        <p class="rental-price">{{getMoneyFormat(item.finalPrice)}}</p>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import { FavoriteListRoutingModule } from './favorite-list-routing.module';
 import { FavoriteListComponent } from './favorite-list.component';
 import { AngularMaterialModule } from 'src/app/shared/angular-material/angular-material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FavoriteHotelService } from '../services/favorite-hotel.service';
 
 
 @NgModule({
@@ -15,6 +16,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AngularMaterialModule,
     FormsModule,
     ReactiveFormsModule
+  ],
+  providers: [
+    FavoriteHotelService
   ]
 })
 export class FavoriteListModule { }

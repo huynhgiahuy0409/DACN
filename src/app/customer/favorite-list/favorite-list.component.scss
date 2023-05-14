@@ -71,7 +71,7 @@
             border-bottom: 1px solid var(--border-color);
             .rating {
               &-point {
-                flex: 0 0 50%;
+                flex: 0 0 55%;
                 padding-top: 10px;
                 p {
                   color: var(--secondary-text);
@@ -83,7 +83,7 @@
                 }
               }
               &-total {
-                flex: 0 0 40%;
+                flex: 0 0 35%;
                 color: var(--secondary-text);
                 padding-top: 10px;
                 span {

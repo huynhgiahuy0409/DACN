@@ -12,7 +12,7 @@ export interface ImageResponse {
     url: string;
     isThumbnail: boolean;
 }
-export interface SearchedProductResponse{
+export interface SearchedProductResponse {
     searchedProduct: SearchedProductItemResponse
     relativeSearchedProducts: SearchedProductItemResponse[]
 }
@@ -63,4 +63,15 @@ export interface AddressResponse {
 export interface DiscountResponse {
     name: string,
     percent: number
+}
+export interface FavoriteHotelResponse {
+    id: number;
+    hotelId: number;
+    bannerUrl: string;
+    name: string;
+    address: string;
+    avgRating: number;
+    totalRating: number;
+    originPrice: number;
+    finalPrice: number;
 }

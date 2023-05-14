@@ -1,4 +1,4 @@
-export interface ProductFilterRequest{
+export interface ProductFilterRequest {
     search: string;
     startDate: string;
     endDate: string;
@@ -9,7 +9,11 @@ export interface ProductFilterRequest{
     type: string;
     productSortRequest?: ProductSortRequest
 }
-export interface ProductSortRequest{
+export interface ProductSortRequest {
     direction: string;
     property: string
+}
+export interface SaveFavoriteHotelRequest {
+    hotelId: number;
+    username: string;
 }

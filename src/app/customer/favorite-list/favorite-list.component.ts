@@ -1,8 +1,10 @@
 import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { DateRange } from '@angular/material/datepicker';
-import { FavoriteHotel } from 'src/app/models/model';
 import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
+import { FavoriteHotelService } from '../services/favorite-hotel.service';
+import { FavoriteHotelResponse } from 'src/app/models/response';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-favorite-list',
@@ -11,68 +13,7 @@ import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 })
 export class FavoriteListComponent implements OnInit {
 
-  favorite_list: FavoriteHotel[] = [
-    {
-      id: 1,
-      bannerUrl: "https://pix8.agoda.net/hotelImages/22423667/-1/c8b11fd11884172c23959f0ccb4ebfc0.jpg?ca=19&ce=1&s=1024x768",
-      name: "Hotel 1",
-      address: "Quận 3, Hồ Chí Minh",
-      avgRating: 8.8,
-      totalRating: 450,
-      originalPrice: 1700000,
-      rentalPrice: 749411
-    },
-    {
-      id: 1,
-      bannerUrl: "https://pix8.agoda.net/hotelImages/22423667/-1/c8b11fd11884172c23959f0ccb4ebfc0.jpg?ca=19&ce=1&s=1024x768",
-      name: "Hotel 1",
-      address: "Quận 3, Hồ Chí Minh",
-      avgRating: 8.8,
-      totalRating: 450,
-      originalPrice: 1700000,
-      rentalPrice: 749411
-    },
-    {
-      id: 1,
-      bannerUrl: "https://pix8.agoda.net/hotelImages/22423667/-1/c8b11fd11884172c23959f0ccb4ebfc0.jpg?ca=19&ce=1&s=1024x768",
-      name: "Hotel 1",
-      address: "Quận 3, Hồ Chí Minh",
-      avgRating: 8.8,
-      totalRating: 450,
-      originalPrice: 1700000,
-      rentalPrice: 749411
-    },
-    {
-      id: 1,
-      bannerUrl: "https://pix8.agoda.net/hotelImages/22423667/-1/c8b11fd11884172c23959f0ccb4ebfc0.jpg?ca=19&ce=1&s=1024x768",
-      name: "Hotel 1",
-      address: "Quận 3, Hồ Chí Minh",
-      avgRating: 8.8,
-      totalRating: 450,
-      originalPrice: 1700000,
-      rentalPrice: 749411
-    },
-    {
-      id: 1,
-      bannerUrl: "https://pix8.agoda.net/hotelImages/22423667/-1/c8b11fd11884172c23959f0ccb4ebfc0.jpg?ca=19&ce=1&s=1024x768",
-      name: "Hotel 1",
-      address: "Quận 3, Hồ Chí Minh",
-      avgRating: 8.8,
-      totalRating: 450,
-      originalPrice: 1700000,
-      rentalPrice: 749411
-    },
-    {
-      id: 1,
-      bannerUrl: "https://pix8.agoda.net/hotelImages/22423667/-1/c8b11fd11884172c23959f0ccb4ebfc0.jpg?ca=19&ce=1&s=1024x768",
-      name: "Hotel 1",
-      address: "Quận 3, Hồ Chí Minh",
-      avgRating: 8.8,
-      totalRating: 450,
-      originalPrice: 1700000,
-      rentalPrice: 749411
-    },
-  ];
+  favorite_list!: FavoriteHotelResponse[];
   showDayCalendar = false;
   showPeopleOptions = false;
   todayDate = new Date();
@@ -115,7 +56,7 @@ export class FavoriteListComponent implements OnInit {
     }
   }
 
-  constructor(private render: Renderer2, private _fb: FormBuilder) {
+  constructor(private render: Renderer2, private _fb: FormBuilder, private favoriteHotelService: FavoriteHotelService, private toastrService: ToastrService) {
     this.render.listen('window', 'click', (e: Event) => {
       const elm = e.target as HTMLElement;
 
@@ -129,6 +70,30 @@ export class FavoriteListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getFavoriteList();
+  }
+
+  getFavoriteList() {
+    this.favoriteHotelService.getAll("tester").subscribe({
+      next: (res) => {
+        this.favorite_list = res;
+      },
+      error: (err) => {
+        this.toastrService.error(err, "Lỗi");
+      }
+    })
+  }
+
+  deleteFavoriteHotel(id: number) {
+    this.favoriteHotelService.deleteById(id).subscribe({
+      next: (res) => {
+        this.toastrService.success("Xóa thành công", "Thành công");
+        this.getFavoriteList();
+      },
+      error: (err) => {
+        this.toastrService.error(err, "Lỗi");
+      }
+    })
   }
 
   goBack() {
