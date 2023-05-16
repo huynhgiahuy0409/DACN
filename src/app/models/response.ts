@@ -5,6 +5,7 @@ export interface APIResponse<T> {
 }
 
 export interface OptionResponse {
+    value: number,
     label: string,
     code: string,
 }
@@ -15,6 +16,8 @@ export interface ImageResponse {
 export interface SearchedProductResponse{
     searchedProduct: SearchedProductItemResponse
     relativeSearchedProducts: SearchedProductItemResponse[]
+    minFinalPrice: number
+    maxFinalPrice: number
 }
 export interface SearchedProductItemResponse {
     name: string;
@@ -63,4 +66,9 @@ export interface AddressResponse {
 export interface DiscountResponse {
     name: string,
     percent: number
+}
+export interface FilterOptionItemResponse {
+    value: any,
+    name: string,
+    total: number
 }

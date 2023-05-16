@@ -8,8 +8,15 @@ export interface ProductFilterRequest{
     value: number;
     type: string;
     productSortRequest?: ProductSortRequest
+    optionFilter?: OptionFilterRequest
 }
 export interface ProductSortRequest{
     direction: string;
     property: string
+}
+export interface OptionFilterRequest{
+    hotelFacilities?: number[],
+    benefits?: number[],
+    guestRating?: string,
+    discount?: string
 }

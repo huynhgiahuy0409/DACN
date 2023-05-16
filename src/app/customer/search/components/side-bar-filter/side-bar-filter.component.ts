@@ -1,16 +1,45 @@
 import { KeyValue } from '@angular/common';
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { forkJoin, Observable, of, take, timeout } from 'rxjs';
-import { OptionResponse } from 'src/app/models/response';
-interface RadioOption {
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { id } from 'date-fns/locale';
+import {
+  combineLatest,
+  concatMap,
+  forkJoin,
+  Observable,
+  of,
+  switchMap,
+  take,
+  tap,
+  timeout,
+} from 'rxjs';
+import { FilterProductService } from 'src/app/customer/services/filter-product.service';
+import { OptionFilterRequest, ProductFilterRequest } from 'src/app/models/request';
+import {
+  FilterOptionItemResponse,
+  OptionResponse,
+  SearchedProductResponse,
+} from 'src/app/models/response';
+export interface RadioOption {
   label: string;
-  code: string;
+  value: any;
+  total?: number;
 }
-interface CheckBoxOption {
+export interface CheckBoxOption {
   checked: boolean;
   label: string;
-  code: string;
+  value: any;
+  total?: number;
 }
 export interface FilterField {
   type: string;
@@ -22,91 +51,297 @@ export interface FilterField {
   radioOptions?: RadioOption[];
   checkOptions?: CheckBoxOption[];
 }
+export interface SelectedField {
+  label: string;
+  selectedCheckOptions: SelectedCheckOption[];
+}
+export interface SelectedCheckOption {
+  name: string;
+  label: string;
+  value: any;
+  checked: boolean;
+}
 @Component({
   selector: 'app-side-bar-filter',
   templateUrl: './side-bar-filter.component.html',
   styleUrls: ['./side-bar-filter.component.scss'],
 })
-export class SideBarFilterComponent implements OnInit, OnChanges {
+export class SideBarFilterComponent
+  implements OnInit, OnChanges, AfterViewInit {
+  searchedProduct$!: Observable<SearchedProductResponse | null>;
+  minFinalPrice!: number;
+  maxFinalPrice!: number;
+  minValue!: number;
+  maxValue!: number;
+  @ViewChild('thumbLeftInput')
+  thumbLeftInput!: ElementRef;
+  @ViewChild('thumbRightInput')
+  thumbRightInput!: ElementRef;
+  @ViewChild('thumbLeft')
+  thumbLeft!: ElementRef;
+  @ViewChild('thumbRight')
+  thumbRight!: ElementRef;
+  @ViewChild('range')
+  range!: ElementRef;
   filterFields: FilterField[] = [
     {
-      type: 'checkbox',
-      name: 'propertyType',
-      label: 'Hình thức',
-      checkOptions: [],
+      type: 'radio',
+      name: 'discount',
+      label: 'Ưu đãi và giảm giá',
+      radioOptions: [],
+      value: '',
       color: 'primary',
     },
     {
       type: 'checkbox',
-      name: 'startRating',
-      label: 'Đánh giá sao',
+      name: 'hotelFacilities',
+      label: 'Tiện nghi chỗ nghỉ',
       checkOptions: [],
       color: 'primary',
     },
     {
       type: 'radio',
       name: 'guestRating',
-      label: 'Khách đánh giá',
+      label: 'Đánh giá',
       value: '',
       radioOptions: [],
       color: 'primary',
     },
+    {
+      type: 'checkbox',
+      name: 'benefits',
+      label: 'Chọn phòng có',
+      value: '',
+      checkOptions: [],
+      color: 'primary',
+    },
   ];
   filterFormGroup!: FormGroup;
-  constructor(private __fb: FormBuilder) {
-    this.filterFormGroup = this.__fb.group({});
-    this.filterFormGroup.valueChanges.subscribe((value) => console.log(value));
+  myFilterField: FilterField = {
+    type: 'checkbox',
+    name: 'myfilter',
+    label: 'Bộ lọc của quý khách',
+    checkOptions: [],
+    color: 'primary',
+  };
+  selectedField: SelectedField = {
+    label: 'Bộ lọc của quý khách',
+    selectedCheckOptions: [],
+  };
+  get discountControl(): FormControl {
+    return this.filterFormGroup.get('discount') as FormControl;
   }
-  ngOnChanges(changes: SimpleChanges): void {}
-  ngOnInit(): void {
-    let obsA$: Observable<OptionResponse[]> = of([
-      {
-        label: 'Fish',
-        code: 'f',
-      },
-      {
-        label: 'Big',
-        code: 'b',
-      },
-    ]);
-    let obsC$: Observable<OptionResponse[]> = of([
-      {
-        label: 'Check A',
-        code: 'a',
-      },
-      {
-        label: 'Check B',
-        code: 'b',
-      },
-    ]);
-
-    forkJoin([obsA$, obsC$]).subscribe((result) => {
-      let radioOptionsA: OptionResponse[] = result[0];
-      let checkOptionsB: OptionResponse[] = result[1];
-      this.filterFields[0].checkOptions = checkOptionsB.map(
-        (option: OptionResponse) => {
-          return {
-            ...option,
-            checked: false,
-          };
-        }
-      );
-      this.filterFields[1].checkOptions = checkOptionsB.map(
-        (option: OptionResponse) => {
-          return {
-            ...option,
-            checked: false,
-          };
-        }
-      );
-      this.filterFields[2].radioOptions = radioOptionsA.map(
-        (option: OptionResponse) => {
-          return {
-            ...option,
-          };
-        }
-      );
-      console.log(this.filterFields);
+  constructor(
+    private __fb: FormBuilder,
+    private _productFilterService: FilterProductService,
+    private cdr: ChangeDetectorRef,
+    private _route: ActivatedRoute,
+    private _router: Router
+  ) {
+    this.filterFormGroup = this.__fb.group({});
+    this.filterFormGroup.valueChanges.subscribe((formValue) => {
+      console.log(formValue);
     });
+  }
+  ngAfterViewInit(): void { }
+  ngOnChanges(changes: SimpleChanges): void { }
+  ngOnInit(): void {
+    this.searchedProduct$ =
+      this._productFilterService.searchedProductResponse$.pipe(
+        tap((searchedProduct) => {
+          if (searchedProduct) {
+            this.minFinalPrice = searchedProduct.minFinalPrice;
+            this.maxFinalPrice = searchedProduct.maxFinalPrice;
+            this.minValue = this.minFinalPrice;
+            this.maxValue = this.maxFinalPrice;
+          }
+        })
+      );
+
+    this._productFilterService.productFilterRequest$
+      .pipe(
+        switchMap((filter) => {
+          let benefitOptions$ = this._productFilterService.findBenefitOptions(
+            filter!
+          );
+          let userRateOptions$ = this._productFilterService.findUserRateOptions(
+            filter!
+          );
+          let hotelFacilities$ =
+            this._productFilterService.findHotelFacilityOptions(filter!);
+          let discountOptions$ = this._productFilterService.findDiscountOptions(
+            filter!
+          );
+          return forkJoin([
+            benefitOptions$,
+            userRateOptions$,
+            hotelFacilities$,
+            discountOptions$,
+          ]);
+        })
+      )
+      .subscribe((options) => {
+        const curFilter: ProductFilterRequest =
+          this._productFilterService.currProductFilterRequest!;
+        const optionFilter: OptionFilterRequest | undefined = curFilter!.optionFilter
+        let benefitOptions: FilterOptionItemResponse[] = options[0];
+        let userRateOptions: FilterOptionItemResponse[] = options[1];
+        let hotelFacilityOptions: FilterOptionItemResponse[] = options[2];
+        let discountOptions: FilterOptionItemResponse[] = options[3];
+
+        const benefitIds: number[] | null = optionFilter && optionFilter.benefits && optionFilter.benefits.length > 0 ? optionFilter.benefits : null;
+        this.filterFields[3].checkOptions = this.buildCheckboxOptions(benefitOptions, this.filterFields[3].name, benefitIds)
+        const sltUserRate: string | null = optionFilter && optionFilter.guestRating? optionFilter.guestRating: null
+        this.filterFields[2].radioOptions = this.buildRadioOptions(userRateOptions, this.filterFields[2], sltUserRate)
+        const hotelFacityIds: number[] | null = optionFilter && optionFilter.hotelFacilities && optionFilter.hotelFacilities.length > 0 ? optionFilter.hotelFacilities : null;
+        this.filterFields[1].checkOptions = this.buildCheckboxOptions(hotelFacilityOptions, this.filterFields[1].name, hotelFacityIds)
+        const discountValue: string | null = optionFilter && optionFilter.discount? optionFilter.discount: null
+        this.filterFields[0].radioOptions = this.buildRadioOptions(discountOptions, this.filterFields[0], discountValue)
+      });
+  }
+  private buildCheckboxOptions(fetchedOptions: FilterOptionItemResponse[], dynamicFieldName: string, seletedIds: any[] | null): CheckBoxOption[] {
+    return fetchedOptions.map(
+      (filterOptionResponse: FilterOptionItemResponse) => {
+        const { name, value, total } = filterOptionResponse;
+        let checked =
+          seletedIds &&
+            seletedIds?.includes(
+              Number.parseInt(filterOptionResponse.value)
+            )
+            ? true
+            : false;
+        if (checked) {
+          let sltOptTmp: SelectedCheckOption = {
+            name: dynamicFieldName,
+            label: name,
+            value: value,
+            checked: checked,
+          };
+          let foundSltOption: SelectedCheckOption | undefined =
+            this.selectedField.selectedCheckOptions.find(
+              (option) =>
+                option.name == sltOptTmp.name &&
+                option.value == sltOptTmp.value
+            );
+          if (!foundSltOption) {
+            this.selectedField.selectedCheckOptions.unshift(sltOptTmp);
+          }
+        }
+        return {
+          checked: checked,
+          label: name,
+          value: value,
+          total: total,
+        } as CheckBoxOption;
+      }
+    );
+  }
+  private buildRadioOptions(fetchedOptions: FilterOptionItemResponse[], dynamicField: FilterField, selecteValue: any): RadioOption[] {
+    return fetchedOptions.map(
+      (filterOptionResponse: FilterOptionItemResponse) => {
+        const { name, value, total } = filterOptionResponse;
+        let isValue: boolean = selecteValue == value
+        if(isValue){
+          let sltOptTmp: SelectedCheckOption = {
+            name: dynamicField.name,
+            label: name,
+            value: value,
+            checked: isValue,
+          };
+          let foundSltOption: SelectedCheckOption | undefined =
+            this.selectedField.selectedCheckOptions.find(
+              (option) =>
+                option.name == sltOptTmp.name &&
+                option.value == sltOptTmp.value
+            );
+          if (!foundSltOption) {
+            this.selectedField.selectedCheckOptions.unshift(sltOptTmp);
+          }
+          dynamicField.value = value
+        }        
+        return {
+          label: name,
+          value: value,
+          total: total,
+        } as RadioOption;
+      }
+    );
+  }
+
+  rangeLeftSlider() {
+    let thisValue = this.thumbLeftInput.nativeElement.value;
+    let rightInputValue = this.thumbRightInput.nativeElement.value;
+    let thisMin = this.thumbLeftInput.nativeElement.min;
+    let thisMax = this.thumbLeftInput.nativeElement.max;
+    let thumbWidth = this.thumbLeft.nativeElement.offsetWidth;
+    this.thumbLeftInput.nativeElement.value = thisValue = Math.min(
+      thisValue,
+      Number.parseInt(rightInputValue) - 10000
+    );
+
+    const percent = ((thisValue - thisMin) / (thisMax - thisMin)) * 100;
+    this.thumbLeft.nativeElement.style.left = `calc(${percent}% - ${percent * (thumbWidth / 100)
+      }px)`;
+    this.range.nativeElement.style.left = percent + '%';
+  }
+  rangeRightSlider() {
+    let leftInputValue = this.thumbLeftInput.nativeElement.value;
+    let thisValue = this.thumbRightInput.nativeElement.value;
+    let thisMin = this.thumbRightInput.nativeElement.min;
+    let thisMax = this.thumbRightInput.nativeElement.max;
+    let thumbWidth = this.thumbRight.nativeElement.offsetWidth;
+    this.thumbRightInput.nativeElement.value = thisValue = Math.max(
+      thisValue,
+      Number.parseInt(leftInputValue) + 10000
+    );
+    const percent = ((thisValue - thisMin) / (thisMax - thisMin)) * 100;
+    this.thumbRight.nativeElement.style.right = `calc(${100 - percent}% - ${100 - percent
+      }*${thumbWidth / 100}px)`;
+    this.range.nativeElement.style.right = 100 - percent + '%';
+  }
+  changeSelectedOption(sltOption: SelectedCheckOption) {
+    if (sltOption.name === 'discount') {
+      if (sltOption.checked == false) {
+        this.filterFormGroup.get('discount')?.reset();
+      } else {
+        this.filterFormGroup.get('discount')?.patchValue(sltOption.value);
+      }
+    } else if (sltOption.name === 'hotelFacilities') {
+      let facilityOptionFound = this.filterFields[1].checkOptions?.find(
+        (item) => item.value === sltOption.value
+      );
+      facilityOptionFound!.checked = sltOption.checked;
+      const filters = this.filterFields[1].checkOptions
+        ?.filter((option) => option.checked === true)
+        .map((filter) => filter.value);
+      this.filterFormGroup.get('hotelFacilities')?.patchValue(filters);
+      const queryParams = { ...this._route.snapshot.queryParams };
+
+      const joinedValues: string = filters!.join(',');
+      queryParams['hotelFacilities'] = joinedValues;
+      this._router.navigate([], {
+        queryParams,
+        replaceUrl: true,
+      });
+    }else if(sltOption.name === 'guestRating'){
+      if(sltOption.checked == true){
+        this.filterFields[2].value = sltOption.value
+      }else{
+        this.filterFields[2].value = ""
+      }
+    }
+  }
+  clearSelectedOption() {
+    this.filterFormGroup.reset();
+    this.selectedField.selectedCheckOptions.forEach((item) => {
+      item.checked = false;
+    });
+    this.filterFields.forEach(field => {
+      if(field.type === 'radio'){
+        field.value = ""
+      }else if(field.type === 'checkbox'){
+        field.checkOptions?.forEach(option => option.checked = false) 
+      }
+    })
   }
 }
