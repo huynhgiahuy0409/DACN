@@ -7,16 +7,18 @@ export interface ProductFilterRequest{
     children: number;
     value: number;
     type: string;
-    productSortRequest?: ProductSortRequest
-    optionFilter?: OptionFilterRequest
+    productSortRequest?: ProductSort
+    optionFilter?: OptionFilter
 }
-export interface ProductSortRequest{
+export interface ProductSort{
     direction: string;
     property: string
 }
-export interface OptionFilterRequest{
+export interface OptionFilter{
     hotelFacilities?: number[],
     benefits?: number[],
     guestRating?: string,
-    discount?: string
+    discount?: string,
+    priceFrom?: number,
+    priceTo?: number
 }

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { URL_API } from 'src/app/models/constance';
-import { ProductFilterRequest } from 'src/app/models/request';
+import { OptionFilter, ProductFilterRequest } from 'src/app/models/request';
 import { APIResponse, FilterOptionItemResponse, SearchedProductItemResponse, SearchedProductResponse } from 'src/app/models/response';
 
 @Injectable({

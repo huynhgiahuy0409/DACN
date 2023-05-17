@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, filter, map, of, switchMap, tap, timeout } from 'rxjs';
 import { FilterProductService } from 'src/app/customer/services/filter-product.service';
 import { ProgressSpinnerService } from 'src/app/customer/services/progress-spinner.service';
-import { ProductFilterRequest } from 'src/app/models/request';
+import { OptionFilter, ProductFilterRequest } from 'src/app/models/request';
 import {
   AddressResponse,
   AverageRatingResponse,
@@ -23,12 +23,14 @@ export class ProductListComponent implements OnInit {
     private _route: ActivatedRoute,
     private _productFilterService: FilterProductService,
     private _progressSpinnerService: ProgressSpinnerService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this._route.queryParamMap
       .pipe(
         tap((paramsAsMap: any) => {
+          console.log(paramsAsMap);
+          
           this._progressSpinnerService.next(true);
           const {
             textToSearch,
@@ -44,7 +46,9 @@ export class ProductListComponent implements OnInit {
             hotelFacilities,
             benefits,
             guestRating,
-            discount
+            discount,
+            priceFrom,
+            priceTo,
           } = paramsAsMap.params;
           const productFilterRequest: ProductFilterRequest = {
             search: textToSearch,
@@ -56,60 +60,81 @@ export class ProductListComponent implements OnInit {
             value: value,
             type: type,
           };
+          let optionFilter: OptionFilter | null = {}
+          console.log(optionFilter);
+          
           productFilterRequest.productSortRequest =
             property && direction
               ? {
-                property: property,
-                direction: direction,
-              }
+                  property: property,
+                  direction: direction,
+                }
               : undefined;
-          if(hotelFacilities){
-            const hotelFacilityIds: number[] = hotelFacilities.split(",").map(Number)
-            productFilterRequest.optionFilter = {
-              ...productFilterRequest.optionFilter,
-              hotelFacilities: hotelFacilityIds
-            }
+          if (hotelFacilities) {
+            const hotelFacilityIds: number[] = hotelFacilities
+              .split(',')
+              .map(Number);
+            optionFilter = {
+              ...optionFilter,
+              hotelFacilities: hotelFacilityIds,
+            };
           }
-          if(benefits){
-            const benefitIds: number[] = benefits.split(",").map(Number)
-            productFilterRequest.optionFilter = {
-              ...productFilterRequest.optionFilter,
-              benefits: benefitIds
-            }
+          if (benefits) {
+            const benefitIds: number[] = benefits.split(',').map(Number);
+            optionFilter = {
+              ...optionFilter,
+              benefits: benefitIds,
+            };
           }
-          if(guestRating){
-            productFilterRequest.optionFilter = {
-              ...productFilterRequest.optionFilter,
-              guestRating: guestRating
-            }
+          if (guestRating) {
+            optionFilter = {
+              ...optionFilter,
+              guestRating: guestRating,
+            };
           }
-          if(discount){
-            productFilterRequest.optionFilter = {
-              ...productFilterRequest.optionFilter,
-              discount: discount
-            }
+          if (discount) {
+            optionFilter = {
+              ...optionFilter,
+              discount: discount,
+            };
           }
-          this._productFilterService.nextProductFilterRequest(productFilterRequest)
-        }),
-      ).subscribe()
-
-
-    this.searchedProductResponse$ = this._productFilterService.productFilterRequest$.pipe(
-      switchMap(filter => {
-        if (filter) {
-          return this._productFilterService.filterProduct(filter).pipe(
-            map((response) => response.data)
+          if (priceFrom) {
+            optionFilter = {
+              ...optionFilter,
+              priceFrom: priceFrom,
+            };
+          }
+          if (priceTo) {
+            optionFilter = {
+              ...optionFilter,
+              priceTo: priceTo,
+            };
+          }
+          productFilterRequest.optionFilter = optionFilter
+          this._productFilterService.nextProductFilterRequest(
+            productFilterRequest
           );
-        } else {
-          return of(null)
-        }
-      }),
-      tap(searchedProductResponse => {
-        this._progressSpinnerService.next(false);
-        this._productFilterService.nextSearchedProductResponse(searchedProductResponse)
-      })
-    )
+        })
+      )
+      .subscribe();
+
+    this.searchedProductResponse$ =
+      this._productFilterService.productFilterRequest$.pipe(
+        switchMap((filter) => {
+          if (filter) {
+            return this._productFilterService
+              .filterProduct(filter)
+              .pipe(map((response) => response.data));
+          } else {
+            return of(null);
+          }
+        }),
+        tap((searchedProductResponse) => {
+          this._progressSpinnerService.next(false);
+          this._productFilterService.nextSearchedProductResponse(
+            searchedProductResponse
+          );
+        })
+      );
   }
-
-
 }

@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './checkbox-atom.component.html',
   styleUrls: ['./checkbox-atom.component.scss']
 })
-export default class CheckboxAtomComponent implements OnInit{
+export default class CheckboxAtomComponent implements OnInit {
   @Input()
   field!: FilterField
   @Input()
@@ -17,16 +17,16 @@ export default class CheckboxAtomComponent implements OnInit{
   @Input()
   selectedField!: SelectedField
   constructor(private __fb: FormBuilder, private _route: ActivatedRoute, private _router: Router) { }
-  
+
   ngOnInit(): void {
     this.form.addControl(this.field.name, this.__fb.control(""))
   }
   updateChange(checkOption: CheckBoxOption) {
-    const {value, label, checked} = checkOption
+    const { value, label, checked } = checkOption
     let selectedCheckOption: SelectedCheckOption | undefined = this.selectedField.selectedCheckOptions.find(sltRadioOption => {
       return ((sltRadioOption.name == this.field.name) && (sltRadioOption.value == checkOption.value))
     })
-    
+
     if (selectedCheckOption) {
       selectedCheckOption.value = value
       selectedCheckOption.label = label
@@ -46,10 +46,10 @@ export default class CheckboxAtomComponent implements OnInit{
 
     const joinedValues = filters!.join(',');
     queryParams[this.field.name] = joinedValues
-    
+
     this._router.navigate([], {
       queryParams, replaceUrl: true, queryParamsHandling: 'merge'
     });
-    
+
   }
 }

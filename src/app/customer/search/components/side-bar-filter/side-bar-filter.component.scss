@@ -1,5 +1,8 @@
 .sidebar-filter__group{
-
+    
+}
+.sidebar-filter__group.hidden{
+    display: none;
 }
 .sidebar-filter__field{
     display: block;
@@ -75,10 +78,10 @@
     position: absolute;
     pointer-events: none;
     -webkit-appearance: none;
+    opacity: 0;
     z-index: 4;
     height: 5px;
     width: 100%;
-    opacity: 0;
     margin: 0
  }
  
