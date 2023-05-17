@@ -29,8 +29,6 @@ export class ProductListComponent implements OnInit {
     this._route.queryParamMap
       .pipe(
         tap((paramsAsMap: any) => {
-          console.log(paramsAsMap);
-          
           this._progressSpinnerService.next(true);
           const {
             textToSearch,
@@ -60,9 +58,7 @@ export class ProductListComponent implements OnInit {
             value: value,
             type: type,
           };
-          let optionFilter: OptionFilter | null = {}
-          console.log(optionFilter);
-          
+          let optionFilter: OptionFilter | null = {};
           productFilterRequest.productSortRequest =
             property && direction
               ? {
@@ -110,14 +106,14 @@ export class ProductListComponent implements OnInit {
               priceTo: priceTo,
             };
           }
-          productFilterRequest.optionFilter = optionFilter
+          productFilterRequest.optionFilter = optionFilter;
           this._productFilterService.nextProductFilterRequest(
             productFilterRequest
           );
         })
       )
       .subscribe();
-
+    /* Detect filter from URL to fetch SeachedProducts */
     this.searchedProductResponse$ =
       this._productFilterService.productFilterRequest$.pipe(
         switchMap((filter) => {

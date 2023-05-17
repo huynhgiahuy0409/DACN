@@ -1,4 +1,4 @@
-<ul class="sidebar-filter__group" [class.hidden]="!priceFrom && !priceTo">
+<ul class="sidebar-filter__group">
     <div class="budget__group">
         <h4>Giá mỗi đêm</h4>
         <div class="rang-slider">
@@ -22,7 +22,7 @@
                         <span>Tối thiểu</span>
                         <div class="input__wrapper">
                             <span>₫</span>
-                            <input type="text" [value]="priceFrom">
+                            <input disabled type="text" [(ngModel)]="priceFrom">
                         </div>
                     </div>
                     <div class="connect-line"></div>
@@ -30,7 +30,7 @@
                         <span>Tối đa</span>
                         <div class="input__wrapper">
                             <span>₫</span>
-                            <input type="text" [value]="priceTo">
+                            <input disabled type="text" [(ngModel)]="priceTo">
                         </div>
                     </div>
                 </div>

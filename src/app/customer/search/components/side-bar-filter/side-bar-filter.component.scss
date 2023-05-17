@@ -26,6 +26,7 @@
     position: relative;
     z-index: 1;
     height: 5px;
+    // top: 20px
  }
  
  .slider>.track {
@@ -109,6 +110,9 @@
     border: 1.5px solid #000;
     border-radius: 5px;
     text-align: right;
+ }
+ #multi_range input:disabled{
+   color: #000;
  }
  #multi_range .connect-line{
     flex:1;

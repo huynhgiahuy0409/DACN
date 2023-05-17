@@ -28,10 +28,7 @@ import {
   timeout,
 } from 'rxjs';
 import { FilterProductService } from 'src/app/customer/services/filter-product.service';
-import {
-  OptionFilter,
-  ProductFilterRequest,
-} from 'src/app/models/request';
+import { OptionFilter, ProductFilterRequest } from 'src/app/models/request';
 import {
   FilterOptionItemResponse,
   OptionResponse,
@@ -74,13 +71,14 @@ export interface SelectedCheckOption {
   styleUrls: ['./side-bar-filter.component.scss'],
 })
 export class SideBarFilterComponent
-  implements OnInit, OnChanges, AfterViewInit {
+  implements OnInit, OnChanges, AfterViewInit
+{
   searchedProduct$!: Observable<SearchedProductResponse | null>;
   minFinalPrice!: number;
   maxFinalPrice!: number;
   priceFrom!: number;
   priceTo!: number;
-  @ViewChild('thumbLeftInput', {static: true})
+  @ViewChild('thumbLeftInput', { static: true })
   thumbLeftInput!: ElementRef;
   @ViewChild('thumbRightInput')
   thumbRightInput!: ElementRef;
@@ -90,6 +88,7 @@ export class SideBarFilterComponent
   thumbRight!: ElementRef;
   @ViewChild('range')
   range!: ElementRef;
+  priceFromControl = new FormControl();
   filterFields: FilterField[] = [
     {
       type: 'radio',
@@ -138,69 +137,65 @@ export class SideBarFilterComponent
   get discountControl(): FormControl {
     return this.filterFormGroup.get('discount') as FormControl;
   }
-  priceFromBSub: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null)
-  priceFrom$ = this.priceFromBSub.asObservable().pipe(debounceTime(1000))
-  priceToBSub: BehaviorSubject<number | null> = new BehaviorSubject<number | null>(null)
-  priceTo$ = this.priceToBSub.asObservable().pipe(debounceTime(1000))
+  priceFromBSub: BehaviorSubject<number | null> = new BehaviorSubject<
+    number | null
+  >(null);
+  priceFrom$ = this.priceFromBSub.asObservable().pipe(debounceTime(1000));
+  priceToBSub: BehaviorSubject<number | null> = new BehaviorSubject<
+    number | null
+  >(null);
+  priceTo$ = this.priceToBSub.asObservable().pipe(debounceTime(1000));
   constructor(
     private __fb: FormBuilder,
     private _productFilterService: FilterProductService,
     private cdr: ChangeDetectorRef,
     private _route: ActivatedRoute,
-    private _router: Router,
+    private _router: Router
   ) {
     this.filterFormGroup = this.__fb.group({});
     this.filterFormGroup.valueChanges.subscribe((formValue) => {
       console.log(formValue);
     });
   }
-  ngAfterViewInit(): void {
-  }
+  ngAfterViewInit(): void {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
   ngOnInit(): void {
-    
-    this.priceFrom$.subscribe(value => {
+    this.priceFrom$.subscribe((value) => {
+      if (value) {
+        const queryParams = { ...this._route.snapshot.queryParams };
+        console.log(queryParams);
+        
+        queryParams['priceFrom'] = value;
+
+        this._router.navigate([], {
+          queryParams,
+          replaceUrl: true,
+          queryParamsHandling: 'merge',
+        });
+      }
+    });
+    this.priceTo$.subscribe((value) => {
       if (value) {
         const queryParams = { ...this._route.snapshot.queryParams };
 
-        queryParams["priceFrom"] = value
+        queryParams['priceTo'] = value;
 
         this._router.navigate([], {
-          queryParams, replaceUrl: true, queryParamsHandling: 'merge'
+          queryParams,
+          replaceUrl: true,
+          queryParamsHandling: 'merge',
         });
       }
-    })
-    this.priceTo$.subscribe(value => {
-      if (value) {
-        const queryParams = { ...this._route.snapshot.queryParams };
-
-        queryParams["priceTo"] = value
-
-        this._router.navigate([], {
-          queryParams, replaceUrl: true, queryParamsHandling: 'merge'
-        });
-      }
-    })
-    this._productFilterService.productFilterRequest$.pipe(
-      switchMap((filter) => {
-        if (filter) {
-          return this._productFilterService
-            .filterProduct(filter)
-            .pipe(map((response) => response.data));
-        } else {
-          return of(null);
-        }
-      }),
-    ).subscribe(
-      (searchedProduct) => {
+    });
+    /* Process slider range when server response searchedProduct */
+    this._productFilterService.searchedProductResponse$
+      .subscribe((searchedProduct) => {
         if (searchedProduct) {
           this.minFinalPrice = searchedProduct.minFinalPrice;
           this.maxFinalPrice = searchedProduct.maxFinalPrice;
-          this.priceFrom = this.minFinalPrice
-          this.priceTo = this.maxFinalPrice
+          this.priceFrom = this.minFinalPrice;
+          this.priceTo = this.maxFinalPrice;
           let currFilter: ProductFilterRequest | null =
             this._productFilterService.currProductFilterRequest;
           if (currFilter?.optionFilter?.priceFrom) {
@@ -209,17 +204,11 @@ export class SideBarFilterComponent
           if (currFilter?.optionFilter?.priceTo) {
             this.priceTo = currFilter?.optionFilter?.priceTo;
           }
-          console.log(this.thumbLeftInput.nativeElement.value);
-          console.log(this.thumbRightInput.nativeElement.value);
-          
-
-
-          this.changeLeftSlider('update')
-          this.changeRightSlider('update')
+          this.changeLeftSlider('update');
+          this.changeRightSlider('update');
         }
-      }
-    );
-
+      });
+    /* Fetch options for filterbar */
     this._productFilterService.productFilterRequest$
       .pipe(
         switchMap((filter) => {
@@ -245,8 +234,7 @@ export class SideBarFilterComponent
       .subscribe((options) => {
         const curFilter: ProductFilterRequest =
           this._productFilterService.currProductFilterRequest!;
-        const optionFilter: OptionFilter | undefined =
-          curFilter!.optionFilter;
+        const optionFilter: OptionFilter | undefined = curFilter!.optionFilter;
         let benefitOptions: FilterOptionItemResponse[] = options[0];
         let userRateOptions: FilterOptionItemResponse[] = options[1];
         let hotelFacilityOptions: FilterOptionItemResponse[] = options[2];
@@ -254,8 +242,8 @@ export class SideBarFilterComponent
 
         const benefitIds: number[] | null =
           optionFilter &&
-            optionFilter.benefits &&
-            optionFilter.benefits.length > 0
+          optionFilter.benefits &&
+          optionFilter.benefits.length > 0
             ? optionFilter.benefits
             : null;
         this.filterFields[3].checkOptions = this.buildCheckboxOptions(
@@ -274,8 +262,8 @@ export class SideBarFilterComponent
         );
         const hotelFacityIds: number[] | null =
           optionFilter &&
-            optionFilter.hotelFacilities &&
-            optionFilter.hotelFacilities.length > 0
+          optionFilter.hotelFacilities &&
+          optionFilter.hotelFacilities.length > 0
             ? optionFilter.hotelFacilities
             : null;
         this.filterFields[1].checkOptions = this.buildCheckboxOptions(
@@ -291,7 +279,6 @@ export class SideBarFilterComponent
           discountValue
         );
       });
-
   }
   private buildCheckboxOptions(
     fetchedOptions: FilterOptionItemResponse[],
@@ -303,7 +290,7 @@ export class SideBarFilterComponent
         const { name, value, total } = filterOptionResponse;
         let checked =
           seletedIds &&
-            seletedIds?.includes(Number.parseInt(filterOptionResponse.value))
+          seletedIds?.includes(Number.parseInt(filterOptionResponse.value))
             ? true
             : false;
         if (checked) {
@@ -372,19 +359,24 @@ export class SideBarFilterComponent
       this.priceTo - 1
     );
 
-    const percent = ((this.priceFrom - this.minFinalPrice) / (this.maxFinalPrice - this.minFinalPrice)) * 100;
-    console.log(this.thumbLeft.nativeElement.style.left);
-    this.thumbLeft.nativeElement.style.left = `calc(${percent}% - ${percent * (thumbWidth / 100)
-      }px)`;
+    const percent =
+      ((this.priceFrom - this.minFinalPrice) /
+        (this.maxFinalPrice - this.minFinalPrice)) *
+      100;
+    console.log(thumbWidth);
+    
+    this.thumbLeft.nativeElement.style.left = `calc(${percent}% - ${
+      percent * (thumbWidth / 100)
+    }px)`;
 
     this.range.nativeElement.style.left = percent + '%';
     if (this.priceFrom + 1 == this.priceTo) {
-      this.thumbLeftInput.nativeElement.style.zIndex = 5
+      this.thumbLeftInput.nativeElement.style.zIndex = 5;
     } else {
-      this.thumbLeftInput.nativeElement.style.zIndex = 4
+      this.thumbLeftInput.nativeElement.style.zIndex = 4;
     }
     if (type === 'change') {
-      this.priceFromBSub.next(this.priceFrom)
+      this.priceFromBSub.next(this.priceFrom);
     }
   }
 
@@ -394,18 +386,22 @@ export class SideBarFilterComponent
       this.priceTo,
       this.priceFrom + 1
     );
-    const percent = ((this.priceTo - this.minFinalPrice) / (this.maxFinalPrice - this.minFinalPrice)) * 100;
-    this.thumbRight.nativeElement.style.right = `calc(${100 - percent}% - ${100 - percent
-      }*${thumbWidth / 100}px)`;
+    const percent =
+      ((this.priceTo - this.minFinalPrice) /
+        (this.maxFinalPrice - this.minFinalPrice)) *
+      100;
+    this.thumbRight.nativeElement.style.right = `calc(${100 - percent}% - ${
+      100 - percent
+    }*${thumbWidth / 100}px)`;
     this.range.nativeElement.style.right = 100 - percent + '%';
 
     if (this.priceTo + 1 == this.priceFrom) {
-      this.thumbRightInput.nativeElement.style.zIndex = 4
+      this.thumbRightInput.nativeElement.style.zIndex = 4;
     } else {
-      this.thumbRight.nativeElement.style.zIndex = 5
+      this.thumbRight.nativeElement.style.zIndex = 5;
     }
     if (type === 'change') {
-      this.priceToBSub.next(this.priceTo)
+      this.priceToBSub.next(this.priceTo);
     }
   }
   changeSelectedOption(sltOption: SelectedCheckOption) {
