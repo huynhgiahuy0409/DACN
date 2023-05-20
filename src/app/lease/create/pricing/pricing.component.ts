@@ -43,7 +43,6 @@ export class PricingComponent implements OnInit {
   hp!: HotelProfile;
 
   submitForm() {
-    console.log(this.rfPricing.value)
     this.hp =
       {
         id: 0,
@@ -74,8 +73,6 @@ export class PricingComponent implements OnInit {
     this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock, this.hp).subscribe(value => {
 
       this.hotelProfileService.pricing = value.pricing;
-      console.log('pricingo')
-      console.log(this.hotelProfileService.pricing)
     })
   }
 

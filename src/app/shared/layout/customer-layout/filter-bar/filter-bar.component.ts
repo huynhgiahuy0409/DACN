@@ -1,6 +1,9 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { Occupancy } from 'src/app/models/model';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { log } from 'console';
+import { FilterProductService } from 'src/app/customer/services/filter-product.service';
+import { OccupancyOption } from 'src/app/models/model';
+import { ProductFilterRequest } from 'src/app/models/request';
 
 @Component({
   selector: 'app-filter-bar',
@@ -17,94 +20,30 @@ export class FilterBarComponent implements OnInit {
   enableOverlay: boolean = false;
   isEnableOccupancy = false;
   ageOptions!: string[];
-  
+
   hotelAndHomeForm: any;
-  occupancyOptions: Occupancy[] = [
-    {
-      idx: 0,
-      label: 'Phòng',
-      value: 1,
-      add: (occupancy: Occupancy) => {
-        occupancy.value++;
-        this.occupancy.get('room')?.patchValue(occupancy.value);
-      },
-      remove: (occupancy: Occupancy) => {
-        occupancy.value--;
-        this.occupancy.get('room')?.patchValue(occupancy.value);
-      },
-    },
-    {
-      idx: 1,
-      label: 'Người lớn',
-      subLabel: 'Lớn hơn hoặc bằng 18 tuổi',
-      value: 2,
-      add: (occupancy: Occupancy) => {
-        occupancy.value++;
-        this.occupancy.get('adult')?.patchValue(occupancy.value);
-      },
-      remove: (occupancy: Occupancy) => {
-        occupancy.value--;
-        this.occupancy.get('adult')?.patchValue(occupancy.value);
-      },
-    },
-    {
-      idx: 2,
-      label: 'Trẻ em',
-      subLabel: 'Từ 0 tới 17 tuổi',
-      value: 0,
-      childOptions: [],
-      add: (occupancy: Occupancy) => {
-        occupancy.value++;
-        this.children.push(this.__fb.control(this.ageOptions[0]));
-      },
-      remove: (occupancy: Occupancy) => {
-        let length = occupancy.childOptions!.length
-        occupancy.value--;
-        this.children.removeAt(length - 1)
-      },
-    },
-  ];
   overlayState = {
     isShow: false,
     currElement: undefined,
   };
-  hotelAndHomeFormGroup!: FormGroup;
+  hotelFormGroup!: FormGroup;
   privateHomeFormGroup!: FormGroup;
-  constructor(private __fb: FormBuilder) {
-    this.ageOptions = this.createChildrenAgeRange();
-    // form init
-    this.hotelAndHomeFormGroup = this.__fb.group({
+  constructor(private _fb: FormBuilder, public filterProductService: FilterProductService) {
+    this.hotelFormGroup = filterProductService.hotelFormGroup
+    this.privateHomeFormGroup = this._fb.group({
       place: '',
       startDate: new Date(),
       endDate: new Date(),
-      occupancy: this.__fb.group({
-        room: this.occupancyOptions[0].value,
-        adult: this.occupancyOptions[1].value,
-        children: this.__fb.array([]),
+      occupancy: this._fb.group({
+        room: filterProductService.occupancyOptions[0].value,
+        adult: filterProductService.occupancyOptions[1].value,
+        children: filterProductService.occupancyOptions[2].value,
       }),
     });
-    this.privateHomeFormGroup = this.__fb.group({
-      place: '',
-      startDate: new Date(),
-      endDate: new Date(),
-      occupancy: this.__fb.group({
-        room: this.occupancyOptions[0].value,
-        adult: this.occupancyOptions[1].value,
-        children: this.__fb.array([]),
-      }),
-    });
-    this.hotelAndHomeFormGroup.valueChanges.subscribe((value) =>
-      console.log(value)
+    this.hotelFormGroup.valueChanges.subscribe((value) => {}
     );
   }
-  get children(): FormArray {
-    return this.hotelAndHomeFormGroup
-      .get('occupancy')
-      ?.get('children') as FormArray;
-  }
-  get occupancy(): FormGroup {
-    return this.hotelAndHomeFormGroup.get('occupancy') as FormGroup;
-  }
+
   ngAfterViewChecked(): void {
     if (this.occupancyPopup) {
       const windowHeight = window.innerHeight;
@@ -119,8 +58,29 @@ export class FilterBarComponent implements OnInit {
       }
     }
   }
-  ngAfterViewInit(): void {}
-  ngOnInit(): void {}
+  ngAfterViewInit(): void { }
+  ngOnInit(): void {
+    this.filterProductService.productFilterRequest$.subscribe((filter: ProductFilterRequest | null) => {
+      if (filter) {
+        console.log(filter)
+        const { startDate, endDate, search, adults, children, rooms, type, value } = filter
+        this.hotelFormGroup.patchValue({
+          search,
+          startDate,
+          endDate,
+          occupancy: {
+            rooms,
+            adults,
+            children
+          },
+          type,
+          value
+        })
+      }
+    })
+    // this.filterProductService.hotelFormGroup.valueChanges.subscribe(v => console.log(v))
+    this.hotelFormGroup.valueChanges.subscribe(v => console.log(v))
+  }
 
   updateOverlayState(element: any) {
     if (this.overlayState.currElement !== element) {
@@ -133,7 +93,7 @@ export class FilterBarComponent implements OnInit {
       this.isEnableOccupancy = false;
     }
   }
-  onClickOverlay(){
+  onClickOverlay() {
     this.overlayState.isShow = false
     this.overlayState.currElement = undefined
     this.isEnableOccupancy = false
@@ -160,11 +120,10 @@ export class FilterBarComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onScroll(event: Event) {
     // Gọi hàm xử lý sự kiện scroll ở đây
-    if(this.occupancyPopup){
+    if (this.occupancyPopup) {
       const occupancyPopupTop =
-      this.occupancyPopup.nativeElement.getBoundingClientRect().top;
-      console.log(occupancyPopupTop);
-      if(occupancyPopupTop < 0){
+        this.occupancyPopup.nativeElement.getBoundingClientRect().top;
+      if (occupancyPopupTop < 0) {
         this.overlayState.currElement = undefined;
         this.overlayState.isShow = false
         this.isEnableOccupancy = false

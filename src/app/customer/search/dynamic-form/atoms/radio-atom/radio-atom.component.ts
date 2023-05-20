@@ -13,6 +13,8 @@ import {
   SelectedCheckOption,
 } from '../../../components/side-bar-filter/side-bar-filter.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProductFilterRequest } from 'src/app/models/request';
+import { FilterProductService } from 'src/app/customer/services/filter-product.service';
 
 @Component({
   selector: 'app-radio-atom',
@@ -29,7 +31,8 @@ export class RadioAtomComponent implements OnInit, OnChanges {
   constructor(
     private __fb: FormBuilder,
     private _route: ActivatedRoute,
-    private _router: Router
+    private _router: Router,
+    private _filterProductService: FilterProductService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.form.contains(this.field.name)) {
@@ -47,9 +50,6 @@ export class RadioAtomComponent implements OnInit, OnChanges {
       this.selectedField.selectedCheckOptions.find(
         (sltRadioOption) => sltRadioOption.name == this.field.name 
       );
-    console.log(selectedCheckOption != null);
-    console.log(selectedCheckOption != undefined);
-    
     if (selectedCheckOption) {
       selectedCheckOption.value = value;
       selectedCheckOption.label = label;
@@ -60,17 +60,10 @@ export class RadioAtomComponent implements OnInit, OnChanges {
         checked: true,
         label: label,
         value: value,
+        type: this.field.type
       };
       this.selectedField.selectedCheckOptions.unshift(selectedCheckOption);
     }
-
-    const queryParams = { ...this._route.snapshot.queryParams };
-    queryParams[this.field.name] = value;
-
-    this._router.navigate([], {
-      queryParams,
-      replaceUrl: true,
-      queryParamsHandling: 'merge',
-    });
+    this._filterProductService.changeSelectedOption(selectedCheckOption)
   }
 }

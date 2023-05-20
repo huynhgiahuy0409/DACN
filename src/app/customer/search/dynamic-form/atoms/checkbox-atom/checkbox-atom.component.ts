@@ -3,6 +3,7 @@ import { Component, Input, OnInit, AfterViewInit, OnChanges, SimpleChanges, DoCh
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { CheckBoxOption, FilterField } from '../../../components/side-bar-filter/side-bar-filter.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FilterProductService } from 'src/app/customer/services/filter-product.service';
 
 @Component({
   selector: 'app-checkbox-atom',
@@ -16,15 +17,15 @@ export default class CheckboxAtomComponent implements OnInit {
   form!: FormGroup
   @Input()
   selectedField!: SelectedField
-  constructor(private __fb: FormBuilder, private _route: ActivatedRoute, private _router: Router) { }
+  constructor(private __fb: FormBuilder, private _route: ActivatedRoute, private _router: Router, private _productFilterService: FilterProductService) { }
 
   ngOnInit(): void {
     this.form.addControl(this.field.name, this.__fb.control(""))
   }
-  updateChange(checkOption: CheckBoxOption) {
-    const { value, label, checked } = checkOption
+  updateChange(sltOption: CheckBoxOption) {
+    const { value, label, checked } = sltOption
     let selectedCheckOption: SelectedCheckOption | undefined = this.selectedField.selectedCheckOptions.find(sltRadioOption => {
-      return ((sltRadioOption.name == this.field.name) && (sltRadioOption.value == checkOption.value))
+      return ((sltRadioOption.name == this.field.name) && (sltRadioOption.value == sltOption.value))
     })
 
     if (selectedCheckOption) {
@@ -36,20 +37,11 @@ export default class CheckboxAtomComponent implements OnInit {
         name: this.field.name,
         checked: checked,
         label: label,
-        value: value
+        value: value,
+        type: this.field.type
       }
       this.selectedField.selectedCheckOptions.unshift(selectedCheckOption)
     }
-    const filters = this.field.checkOptions?.filter(option => option.checked === true).map(filter => filter.value)
-
-    const queryParams = { ...this._route.snapshot.queryParams };
-
-    const joinedValues = filters!.join(',');
-    queryParams[this.field.name] = joinedValues
-
-    this._router.navigate([], {
-      queryParams, replaceUrl: true, queryParamsHandling: 'merge'
-    });
-
+    this._productFilterService.changeSelectedOption(selectedCheckOption)
   }
 }

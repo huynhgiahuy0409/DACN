@@ -11,7 +11,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { log } from 'console';
 import { id } from 'date-fns/locale';
 import {
   BehaviorSubject,
@@ -28,7 +29,10 @@ import {
   timeout,
 } from 'rxjs';
 import { FilterProductService } from 'src/app/customer/services/filter-product.service';
-import { OptionFilter, ProductFilterRequest } from 'src/app/models/request';
+import {
+  OptionFilterRequest,
+  ProductFilterRequest,
+} from 'src/app/models/request';
 import {
   FilterOptionItemResponse,
   OptionResponse,
@@ -64,6 +68,7 @@ export interface SelectedCheckOption {
   label: string;
   value: any;
   checked: boolean;
+  type: string;
 }
 @Component({
   selector: 'app-side-bar-filter',
@@ -71,8 +76,7 @@ export interface SelectedCheckOption {
   styleUrls: ['./side-bar-filter.component.scss'],
 })
 export class SideBarFilterComponent
-  implements OnInit, OnChanges, AfterViewInit
-{
+  implements OnInit, OnChanges, AfterViewInit {
   searchedProduct$!: Observable<SearchedProductResponse | null>;
   minFinalPrice!: number;
   maxFinalPrice!: number;
@@ -153,21 +157,15 @@ export class SideBarFilterComponent
     private _router: Router
   ) {
     this.filterFormGroup = this.__fb.group({});
-    this.filterFormGroup.valueChanges.subscribe((formValue) => {
-      console.log(formValue);
-    });
   }
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnChanges(changes: SimpleChanges): void { }
   ngOnInit(): void {
     this.priceFrom$.subscribe((value) => {
       if (value) {
         const queryParams = { ...this._route.snapshot.queryParams };
-        console.log(queryParams);
-        
         queryParams['priceFrom'] = value;
-
         this._router.navigate([], {
           queryParams,
           replaceUrl: true,
@@ -189,25 +187,26 @@ export class SideBarFilterComponent
       }
     });
     /* Process slider range when server response searchedProduct */
-    this._productFilterService.searchedProductResponse$
-      .subscribe((searchedProduct) => {
+    this._productFilterService.searchedProductResponse$.subscribe(
+      (searchedProduct) => {
         if (searchedProduct) {
           this.minFinalPrice = searchedProduct.minFinalPrice;
           this.maxFinalPrice = searchedProduct.maxFinalPrice;
           this.priceFrom = this.minFinalPrice;
           this.priceTo = this.maxFinalPrice;
-          let currFilter: ProductFilterRequest | null =
+          let curFilter: ProductFilterRequest | null =
             this._productFilterService.currProductFilterRequest;
-          if (currFilter?.optionFilter?.priceFrom) {
-            this.priceFrom = currFilter?.optionFilter?.priceFrom;
+          if (curFilter?.optionFilter?.priceFrom) {
+            this.priceFrom = curFilter?.optionFilter?.priceFrom;
           }
-          if (currFilter?.optionFilter?.priceTo) {
-            this.priceTo = currFilter?.optionFilter?.priceTo;
+          if (curFilter?.optionFilter?.priceTo) {
+            this.priceTo = curFilter?.optionFilter?.priceTo;
           }
           this.changeLeftSlider('update');
           this.changeRightSlider('update');
         }
-      });
+      }
+    );
     /* Fetch options for filterbar */
     this._productFilterService.productFilterRequest$
       .pipe(
@@ -223,7 +222,7 @@ export class SideBarFilterComponent
           let discountOptions$ = this._productFilterService.findDiscountOptions(
             filter!
           );
-          return forkJoin([
+          return combineLatest([
             benefitOptions$,
             userRateOptions$,
             hotelFacilities$,
@@ -234,63 +233,44 @@ export class SideBarFilterComponent
       .subscribe((options) => {
         const curFilter: ProductFilterRequest =
           this._productFilterService.currProductFilterRequest!;
-        const optionFilter: OptionFilter | undefined = curFilter!.optionFilter;
+        const optionFilter: OptionFilterRequest | undefined =
+          curFilter!.optionFilter;
         let benefitOptions: FilterOptionItemResponse[] = options[0];
+        console.log(benefitOptions)
         let userRateOptions: FilterOptionItemResponse[] = options[1];
         let hotelFacilityOptions: FilterOptionItemResponse[] = options[2];
         let discountOptions: FilterOptionItemResponse[] = options[3];
-
-        const benefitIds: number[] | null =
-          optionFilter &&
-          optionFilter.benefits &&
-          optionFilter.benefits.length > 0
+        const discountValue: string | null =
+        optionFilter && optionFilter.discount ? optionFilter.discount : null;
+        const benefits: number[] | undefined =
+          optionFilter && optionFilter.benefits
             ? optionFilter.benefits
-            : null;
-        this.filterFields[3].checkOptions = this.buildCheckboxOptions(
-          benefitOptions,
-          this.filterFields[3].name,
-          benefitIds
-        );
-        const sltUserRate: string | null =
+            : undefined;
+        const hotelFacilities: number[] | undefined =
+        optionFilter && optionFilter.hotelFacilities
+          ? optionFilter.hotelFacilities
+          : undefined;
+        const rate: string | null =
           optionFilter && optionFilter.guestRating
             ? optionFilter.guestRating
             : null;
-        this.filterFields[2].radioOptions = this.buildRadioOptions(
-          userRateOptions,
-          this.filterFields[2],
-          sltUserRate
-        );
-        const hotelFacityIds: number[] | null =
-          optionFilter &&
-          optionFilter.hotelFacilities &&
-          optionFilter.hotelFacilities.length > 0
-            ? optionFilter.hotelFacilities
-            : null;
-        this.filterFields[1].checkOptions = this.buildCheckboxOptions(
-          hotelFacilityOptions,
-          this.filterFields[1].name,
-          hotelFacityIds
-        );
-        const discountValue: string | null =
-          optionFilter && optionFilter.discount ? optionFilter.discount : null;
-        this.filterFields[0].radioOptions = this.buildRadioOptions(
-          discountOptions,
-          this.filterFields[0],
-          discountValue
-        );
+        this.setupFilterOptions(this.filterFields[0], discountOptions, discountValue)
+        this.setupFilterOptions(this.filterFields[1], hotelFacilityOptions, hotelFacilities)
+        this.setupFilterOptions(this.filterFields[2], userRateOptions, rate)
+        this.setupFilterOptions(this.filterFields[3], benefitOptions, benefits)
       });
   }
   private buildCheckboxOptions(
     fetchedOptions: FilterOptionItemResponse[],
     dynamicFieldName: string,
-    seletedIds: any[] | null
+    seletedIds: any[] | undefined
   ): CheckBoxOption[] {
     return fetchedOptions.map(
       (filterOptionResponse: FilterOptionItemResponse) => {
         const { name, value, total } = filterOptionResponse;
         let checked =
           seletedIds &&
-          seletedIds?.includes(Number.parseInt(filterOptionResponse.value))
+            seletedIds?.includes(Number.parseInt(filterOptionResponse.value))
             ? true
             : false;
         if (checked) {
@@ -299,6 +279,7 @@ export class SideBarFilterComponent
             label: name,
             value: value,
             checked: checked,
+            type: 'checkbox',
           };
           let foundSltOption: SelectedCheckOption | undefined =
             this.selectedField.selectedCheckOptions.find(
@@ -328,11 +309,13 @@ export class SideBarFilterComponent
         const { name, value, total } = filterOptionResponse;
         let isValue: boolean = selecteValue == value;
         if (isValue) {
+          dynamicField.value = value;
           let sltOptTmp: SelectedCheckOption = {
             name: dynamicField.name,
             label: name,
             value: value,
             checked: isValue,
+            type: 'radio',
           };
           let foundSltOption: SelectedCheckOption | undefined =
             this.selectedField.selectedCheckOptions.find(
@@ -342,7 +325,6 @@ export class SideBarFilterComponent
           if (!foundSltOption) {
             this.selectedField.selectedCheckOptions.unshift(sltOptTmp);
           }
-          dynamicField.value = value;
         }
         return {
           label: name,
@@ -363,11 +345,8 @@ export class SideBarFilterComponent
       ((this.priceFrom - this.minFinalPrice) /
         (this.maxFinalPrice - this.minFinalPrice)) *
       100;
-    console.log(thumbWidth);
-    
-    this.thumbLeft.nativeElement.style.left = `calc(${percent}% - ${
-      percent * (thumbWidth / 100)
-    }px)`;
+    this.thumbLeft.nativeElement.style.left = `calc(${percent}% - ${percent * (thumbWidth / 100)
+      }px)`;
 
     this.range.nativeElement.style.left = percent + '%';
     if (this.priceFrom + 1 == this.priceTo) {
@@ -390,9 +369,8 @@ export class SideBarFilterComponent
       ((this.priceTo - this.minFinalPrice) /
         (this.maxFinalPrice - this.minFinalPrice)) *
       100;
-    this.thumbRight.nativeElement.style.right = `calc(${100 - percent}% - ${
-      100 - percent
-    }*${thumbWidth / 100}px)`;
+    this.thumbRight.nativeElement.style.right = `calc(${100 - percent}% - ${100 - percent
+      }*${thumbWidth / 100}px)`;
     this.range.nativeElement.style.right = 100 - percent + '%';
 
     if (this.priceTo + 1 == this.priceFrom) {
@@ -405,48 +383,31 @@ export class SideBarFilterComponent
     }
   }
   changeSelectedOption(sltOption: SelectedCheckOption) {
-    if (sltOption.name === 'discount') {
-      if (sltOption.checked == false) {
-        this.filterFormGroup.get('discount')?.reset();
-      } else {
-        this.filterFormGroup.get('discount')?.patchValue(sltOption.value);
-      }
-    } else if (sltOption.name === 'hotelFacilities') {
-      let facilityOptionFound = this.filterFields[1].checkOptions?.find(
-        (item) => item.value === sltOption.value
-      );
-      facilityOptionFound!.checked = sltOption.checked;
-      const filters = this.filterFields[1].checkOptions
-        ?.filter((option) => option.checked === true)
-        .map((filter) => filter.value);
-      this.filterFormGroup.get('hotelFacilities')?.patchValue(filters);
-      const queryParams = { ...this._route.snapshot.queryParams };
-
-      const joinedValues: string = filters!.join(',');
-      queryParams['hotelFacilities'] = joinedValues;
-      this._router.navigate([], {
-        queryParams,
-        replaceUrl: true,
-      });
-    } else if (sltOption.name === 'guestRating') {
-      if (sltOption.checked == true) {
-        this.filterFields[2].value = sltOption.value;
-      } else {
-        this.filterFields[2].value = '';
-      }
-    }
+    this._productFilterService.changeSelectedOption(sltOption)
   }
   clearSelectedOption() {
-    this.filterFormGroup.reset();
-    this.selectedField.selectedCheckOptions.forEach((item) => {
-      item.checked = false;
-    });
-    this.filterFields.forEach((field) => {
-      if (field.type === 'radio') {
-        field.value = '';
-      } else if (field.type === 'checkbox') {
-        field.checkOptions?.forEach((option) => (option.checked = false));
+    let queryParams = { ...this._route.snapshot.queryParams };
+   
+    this.selectedField.selectedCheckOptions.forEach(
+      (item) => {
+        item.checked = false
+        item.value = ""
       }
+      );
+      this.filterFields.forEach(field => {
+      delete queryParams[field.name];
+      field.value = ""
+    })
+    this._router.navigate([], {
+      queryParams,
     });
+  }
+  private setupFilterOptions(field: FilterField, filterOptionItems: FilterOptionItemResponse[], sltValues: any){
+      const {type } = field 
+      if(type === 'radio'){
+        field.radioOptions = this.buildRadioOptions(filterOptionItems, field, sltValues)
+      }else if(type === 'checkbox'){
+        field.checkOptions = this.buildCheckboxOptions(filterOptionItems, field.name, sltValues)
+      }
   }
 }

@@ -21,7 +21,6 @@ export class DescriptionComponent implements OnInit {
   }
   hp!: HotelProfile;
   submitForm(){
-    console.log(this.rfDescription.value)
     this.hp =
       {
         id: 0,
@@ -58,8 +57,6 @@ export class DescriptionComponent implements OnInit {
     this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock,this.hp).subscribe(value => {
 
       this.hotelProfileService.description=value.description;
-      console.log('description')
-      console.log(this.hotelProfileService.description)
     })
 
 

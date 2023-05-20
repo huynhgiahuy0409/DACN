@@ -48,7 +48,6 @@ export class ProfileComponent implements OnInit {
       })
     }
 
-    console.log(this.value);
   }
 
   rfProfile!: FormGroup;
@@ -59,7 +58,6 @@ export class ProfileComponent implements OnInit {
   hp!: HotelProfile;
 
   submitForm() {
-    console.log(this.rfProfile.value)
     this.hp =
       {
         id: 0,
@@ -75,8 +73,6 @@ export class ProfileComponent implements OnInit {
     this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock, this.hp).subscribe(value => {
 
       this.hotelProfileService.profile = value.profile;
-      console.log('profile')
-      console.log(this.hotelProfileService.profile)
     })
   }
 

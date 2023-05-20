@@ -1,6 +1,6 @@
 <div class="filter-bar">
     <div class="grid wide">
-        <form [formGroup]="hotelAndHomeFormGroup" class="filter-form form-default">
+        <form [formGroup]="hotelFormGroup" class="filter-form form-default">
             <div class="row m-gutters">
                 <div class="col l-4">
                     <div #locationLineForm class="line-form" (click)="updateOverlayState(locationLineForm)">
@@ -10,7 +10,7 @@
                         <div class="d-flex-bh align-items-center-bh w-fit">
                             <mat-form-field class="w-fit" appearance="fill">
                                 <mat-label>Nhập địa danh hoặc vị trí</mat-label>
-                                <input formControlName="place" matInput placeholder="Ex.Thành phố Hồ Chí Minh" />
+                                <input formControlName="search" matInput placeholder="Ex.Thành phố Hồ Chí Minh" />
                             </mat-form-field>
                         </div>
                     </div>
@@ -51,12 +51,12 @@
                             <div class="occupancy-selection">
                                 <div class="info-group">
                                     <p>
-                                        {{ occupancy.value.adult }} người lớn
-                                        <span *ngIf="occupancy.value.children.length > 0">,
-                                            {{ occupancy.value.children.length }}
+                                        {{ filterProductService.adultControl.value }} người lớn
+                                        <span *ngIf="filterProductService.childrenControl.value > 0">,
+                                            {{ filterProductService.childrenControl.value }}
                                             trẻ em</span>
                                     </p>
-                                    <span>{{ occupancy.value.room }} phòng</span>
+                                    <span>{{ filterProductService.roomControl.value }} phòng</span>
                                 </div>
                                 <div class="arrow-down__wrapper" [class.toggle]="isEnableOccupancy">
                                     <i class="fa-solid fa-angle-down"></i>
@@ -66,49 +66,28 @@
                         <div #occupancyPopup class="occupancy__popup" *ngIf="isEnableOccupancy">
                             <div class="occupancy-option__list">
                                 <div class="overlay"></div>
-                                <div class="occupancy-option__item" *ngFor="let i of occupancyOptions; index as idx">
+                                <div class="occupancy-option__item" *ngFor="let i of filterProductService.occupancyOptions; index as idx">
                                     <div class="info-group">
                                         <div class="label">{{ i.label }}</div>
                                         <span class="sub-label">{{ i.subLabel }}</span>
                                     </div>
                                     <div class="control-group">
-                                        <div class="control-button" (click)="i.remove(i)">
+                                        <div class="control-button" (click)="filterProductService.updateOccupancy(i, '-')">
                                             <i class="fa-solid fa-minus"></i>
                                         </div>
-                                        <h3>{{ i.value }}</h3>
-                                        <div class="control-button" (click)="i.add(i)">
+                                        <h3>{{ filterProductService.occupancyGroup.get(i.name)!.value }}</h3>
+                                        <div class="control-button" (click)="filterProductService.updateOccupancy(i, '+')">
                                             <i class="fa-solid fa-plus"></i>
                                         </div>
                                     </div>
                                 </div>
-                                <ng-container formArrayName="children" *ngIf="children.controls.length > 0">
-                                    <div class="occupancy-option__item child-option"
-                                        *ngFor="let c of children.controls; index as idx">
-                                        <ul class="info-group">
-                                            <div class="dot"></div>
-                                            <li class="label">
-                                                Tuổi của trẻ em
-                                                {{ idx + 1 }}
-                                            </li>
-                                        </ul>
-                                        <div class="control-group">
-                                            <mat-form-field class="w-fit">
-                                                <mat-select [formControlName]="idx">
-                                                    <mat-option [value]="age" *ngFor="let age of ageOptions">
-                                                        {{ age }}
-                                                    </mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-                                    </div>
-                                </ng-container>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col l-1">
                     <div class="search-button__wrapper">
-                        <button mat-raised-button color="primary">Tìm kiếm</button>
+                        <button mat-raised-button color="primary" (click)="filterProductService.onSubmitHotelFormGroup()">Tìm kiếm</button>
                     </div>
                 </div>
             </div>

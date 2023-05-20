@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { log } from 'console';
 import { Observable, filter, map, of, switchMap, tap, timeout } from 'rxjs';
 import { FilterProductService } from 'src/app/customer/services/filter-product.service';
 import { ProgressSpinnerService } from 'src/app/customer/services/progress-spinner.service';
-import { OptionFilter, ProductFilterRequest } from 'src/app/models/request';
+import { OptionFilterRequest, ProductFilterRequest } from 'src/app/models/request';
 import {
   AddressResponse,
   AverageRatingResponse,
@@ -23,7 +24,7 @@ export class ProductListComponent implements OnInit {
     private _route: ActivatedRoute,
     private _productFilterService: FilterProductService,
     private _progressSpinnerService: ProgressSpinnerService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this._route.queryParamMap
@@ -57,56 +58,20 @@ export class ProductListComponent implements OnInit {
             children: children,
             value: value,
             type: type,
-          };
-          let optionFilter: OptionFilter | null = {};
-          productFilterRequest.productSortRequest =
-            property && direction
-              ? {
-                  property: property,
-                  direction: direction,
-                }
-              : undefined;
-          if (hotelFacilities) {
-            const hotelFacilityIds: number[] = hotelFacilities
-              .split(',')
-              .map(Number);
-            optionFilter = {
-              ...optionFilter,
-              hotelFacilities: hotelFacilityIds,
-            };
-          }
-          if (benefits) {
-            const benefitIds: number[] = benefits.split(',').map(Number);
-            optionFilter = {
-              ...optionFilter,
-              benefits: benefitIds,
-            };
-          }
-          if (guestRating) {
-            optionFilter = {
-              ...optionFilter,
-              guestRating: guestRating,
-            };
-          }
-          if (discount) {
-            optionFilter = {
-              ...optionFilter,
-              discount: discount,
-            };
-          }
-          if (priceFrom) {
-            optionFilter = {
-              ...optionFilter,
+            productSort: {
+              property: property,
+              direction: direction,
+            },
+            optionFilter: {
               priceFrom: priceFrom,
-            };
-          }
-          if (priceTo) {
-            optionFilter = {
-              ...optionFilter,
               priceTo: priceTo,
-            };
-          }
-          productFilterRequest.optionFilter = optionFilter;
+              discount: discount,
+              guestRating: guestRating,
+              benefits: benefits? benefits.split(",").map(Number): undefined,
+              hotelFacilities: hotelFacilities? hotelFacilities.split(",").map(Number): undefined
+            }
+          };
+          console.log(productFilterRequest)
           this._productFilterService.nextProductFilterRequest(
             productFilterRequest
           );
@@ -118,6 +83,7 @@ export class ProductListComponent implements OnInit {
       this._productFilterService.productFilterRequest$.pipe(
         switchMap((filter) => {
           if (filter) {
+            console.log(filter)
             return this._productFilterService
               .filterProduct(filter)
               .pipe(map((response) => response.data));
@@ -126,6 +92,7 @@ export class ProductListComponent implements OnInit {
           }
         }),
         tap((searchedProductResponse) => {
+          console.log(searchedProductResponse)
           this._progressSpinnerService.next(false);
           this._productFilterService.nextSearchedProductResponse(
             searchedProductResponse
