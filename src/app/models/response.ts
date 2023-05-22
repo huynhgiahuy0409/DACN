@@ -72,3 +72,19 @@ export interface FilterOptionItemResponse {
     name: string,
     total: number
 }
+export interface FavoriteHotelResponse {
+    id: number;
+    hotelId: number;
+    bannerUrl: string;
+    name: string;
+    address: string;
+    avgRating: number;
+    totalRating: number;
+    originPrice: number;
+    finalPrice: number;
+}
+export interface FilterOptionItemResponse {
+    value: any,
+    name: string,
+    total: number
+}
