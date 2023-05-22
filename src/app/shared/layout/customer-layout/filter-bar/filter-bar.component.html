@@ -83,6 +83,7 @@
                   <mat-datepicker #startPicker></mat-datepicker>
                   <mat-label>Chọn ngày đi</mat-label>
                   <input
+                    [min]="filterProductService.minStartDate"
                     matInput
                     [matDatepicker]="startPicker"
                     formControlName="startDate"
@@ -103,6 +104,7 @@
                   <mat-datepicker #endPicker></mat-datepicker>
                   <mat-label>Chọn ngày về</mat-label>
                   <input
+                    [min]="filterProductService.minEndDate"
                     matInput
                     [matDatepicker]="endPicker"
                     formControlName="endDate"
