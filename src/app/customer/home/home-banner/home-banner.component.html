@@ -37,10 +37,7 @@
       <div class="tab-content">
         <ng-container *ngIf="selectedTab.idx === 0; else privateHomeForm">
           <div class="grid">
-            <form
-              [formGroup]="hotelFormGroup"
-              class="filter-form form-default"
-            >
+            <form [formGroup]="hotelFormGroup" class="filter-form form-default">
               <div class="row">
                 <div
                   class="button-group__wrapper col l-12"
@@ -88,7 +85,7 @@
                     </div>
                     <ng-container
                       *ngIf="
-                      autocompleteSearchs$ | async as autocompleteSearchs
+                        autocompleteSearchs$ | async as autocompleteSearchs
                       "
                     >
                       <div
@@ -101,7 +98,11 @@
                       >
                         <ul>
                           <li
-                            (click)="filterProductService.selectAutocomplete(autocompleteSeasrch)"
+                            (click)="
+                              filterProductService.selectAutocomplete(
+                                autocompleteSeasrch
+                              )
+                            "
                             class="d-flex-bh"
                             *ngFor="
                               let autocompleteSeasrch of autocompleteSearchs
@@ -160,11 +161,7 @@
                             [matDatepicker]="startPicker"
                             formControlName="startDate"
                           />
-                          <mat-datepicker-toggle
-                            matSuffix
-                            [for]="startPicker"
-                            (click)="updateOverlayState(startDateLineForm)"
-                          >
+                          <mat-datepicker-toggle matSuffix [for]="startPicker" (click)="updateOverlayState(startDateLineForm)">
                             <mat-icon matDatepickerToggleIcon
                               >calendar_today</mat-icon
                             >
@@ -182,15 +179,14 @@
                           <mat-datepicker #endPicker></mat-datepicker>
                           <mat-label>Chọn ngày về</mat-label>
                           <input
-                          [min]="filterProductService.minEndDate"
+                            [min]="filterProductService.minEndDate"
                             matInput
                             [matDatepicker]="endPicker"
                             formControlName="endDate"
                           />
-                          <mat-datepicker-toggle
+                          <mat-datepicker-toggle (click)="updateOverlayState(endDateLineForm)"
                             matSuffix
                             [for]="endPicker"
-                            (click)="updateOverlayState(startDateLineForm)"
                           ></mat-datepicker-toggle>
                         </mat-form-field>
                       </div>
@@ -261,7 +257,12 @@
                             >
                               <i class="fa-solid fa-minus"></i>
                             </div>
-                            <h3>{{ i.value }}</h3>
+                            <h3>
+                              {{
+                                filterProductService.occupancyGroup.get(i.name)!
+                                  .value
+                              }}
+                            </h3>
                             <div
                               class="control-button"
                               (click)="updateOccupancy(i, '+')"
@@ -410,11 +411,16 @@
                               filterProductService.childrenControl.value > 0
                             "
                             >,
-                            {{  filterProductService.childrenControl.value }}
+                            {{ filterProductService.childrenControl.value }}
                             trẻ em</span
                           >
                         </p>
-                        <span>{{ filterProductService.roomControl.value }} phòng</span>
+                        <span
+                          >{{
+                            filterProductService.roomControl.value
+                          }}
+                          phòng</span
+                        >
                       </div>
                       <div
                         class="arrow-down__wrapper"
@@ -433,18 +439,31 @@
                       <div class="overlay"></div>
                       <div
                         class="occupancy-option__item"
-                        *ngFor="let i of filterProductService.occupancyOptions ; index as idx"
+                        *ngFor="
+                          let i of filterProductService.occupancyOptions;
+                          index as idx
+                        "
                       >
                         <div class="info-group">
                           <div class="label">{{ i.label }}</div>
                           <span class="sub-label">{{ i.subLabel }}</span>
                         </div>
                         <div class="control-group">
-                          <div class="control-button" (click)="filterProductService.updateOccupancy(i, '-')">
+                          <div
+                            class="control-button"
+                            (click)="
+                              filterProductService.updateOccupancy(i, '-')
+                            "
+                          >
                             <i class="fa-solid fa-minus"></i>
                           </div>
                           <h3>{{ i.value }}</h3>
-                          <div class="control-button" (click)="filterProductService.updateOccupancy(i, '+')">
+                          <div
+                            class="control-button"
+                            (click)="
+                              filterProductService.updateOccupancy(i, '+')
+                            "
+                          >
                             <i class="fa-solid fa-plus"></i>
                           </div>
                         </div>
@@ -473,7 +492,7 @@
     <div
       class="overlay-bh"
       *ngIf="overlayState.isShow"
-      (click)="filterProductService.onSubmitHotelFormGroup()"
+      (click)="onClickOverlay()"
     ></div>
   </ng-container>
 </div>

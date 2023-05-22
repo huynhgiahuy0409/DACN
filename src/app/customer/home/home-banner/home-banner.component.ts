@@ -71,6 +71,10 @@ export class HomeBannerComponent implements OnInit {
   autocompleteSearch!: ElementRef<HTMLDivElement>;
   @ViewChild('locationLineForm')
   locationLineForm!: ElementRef<HTMLDivElement>;
+  @ViewChild('startDatepickerToggle')
+  startDatepickerToggle!: ElementRef<HTMLDivElement>;
+  @ViewChild('endDatepickerToggle')
+  endDatepickerToggle!: ElementRef<HTMLDivElement>;
 
   isShowFilterBar: boolean = false;
   isEnableAutocompleteSearch: boolean = true;
@@ -167,7 +171,6 @@ export class HomeBannerComponent implements OnInit {
   ngOnInit(): void {
     this.hotelFormGroup = this.filterProductService.hotelFormGroup
     this.autocompleteSearchs$ = this.filterProductService.autocompleteSearchs$
-    this.hotelFormGroup.valueChanges.subscribe(v => console.log(v))
   }
   updateOverlayState(element: Element) {
     let { isShow, currElement } = this.curOverlayState;
