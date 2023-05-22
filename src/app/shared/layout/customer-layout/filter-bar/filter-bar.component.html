@@ -15,10 +15,11 @@
             <div class="d-flex-bh align-items-center-bh w-fit">
               <mat-form-field class="w-fit" appearance="fill">
                 <mat-label>Nhập địa danh hoặc vị trí</mat-label>
-                <input
+                <input #searchInput
                   formControlName="search"
                   matInput
                   placeholder="Ex.Thành phố Hồ Chí Minh"
+                  (keyup)="onKeyupSearch(searchInput.value)"
                 />
               </mat-form-field>
             </div>
@@ -196,6 +197,7 @@
         <div class="col l-1">
           <div class="search-button__wrapper">
             <button
+              [disabled]="hotelFormGroup.invalid"
               mat-raised-button
               color="primary"
               (click)="onSubmitHotelFormGroup()"

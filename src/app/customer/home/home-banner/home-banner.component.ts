@@ -128,7 +128,7 @@ export class HomeBannerComponent implements OnInit {
     return this.overlayStateBSub.value;
   }
 
-  autocompleteSearchs$!: Observable<AutocompleteSearchResponse[]>;
+  autocompleteSearchs$!: Observable<AutocompleteSearchResponse[] | null>;
   hotelFormGroup!: FormGroup;
   privateHomeFormGroup!: FormGroup;
   constructor(
@@ -169,8 +169,12 @@ export class HomeBannerComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.hotelFormGroup = this.filterProductService.hotelFormGroup
-    this.autocompleteSearchs$ = this.filterProductService.autocompleteSearchs$
+    this.hotelFormGroup = this.filterProductService.hotelFormGroup;
+    this.autocompleteSearchs$ = this.filterProductService.autocompletes$.pipe(
+      tap((autocompletes) => {
+        this._progressSpinnerService.next(false);
+      })
+    );
   }
   updateOverlayState(element: Element) {
     let { isShow, currElement } = this.curOverlayState;
@@ -242,15 +246,14 @@ export class HomeBannerComponent implements OnInit {
     }
   }
   selectAutocomplete(autocompleteSearch: AutocompleteSearchResponse) {
-    this.hotelFormGroup
-      .get('search')!
-      .patchValue(autocompleteSearch.name);
-    this.hotelFormGroup.get('type')!.patchValue(autocompleteSearch.type);
-    this.hotelFormGroup
-      .get('value')!
-      .patchValue(autocompleteSearch.value);
+    this.hotelFormGroup.get('search')!.setValue(autocompleteSearch.name);
+    this.hotelFormGroup.get('type')!.setValue(autocompleteSearch.type);
+    this.hotelFormGroup.get('value')!.setValue(autocompleteSearch.value);
   }
   updateOccupancy(occupancy: OccupancyOption, action: '+' | '-') {
-    this.filterProductService.updateOccupancy(occupancy, action)
+    this.filterProductService.updateOccupancy(occupancy, action);
+  }
+  onKeyupSearch(value: string) {
+    this.filterProductService.nextSearchValue(value)
   }
 }

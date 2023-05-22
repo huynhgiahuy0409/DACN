@@ -26,6 +26,11 @@
     display: block;
     height: 100%;
 }
+.search-button__wrapper button:disabled{
+    background-color: var(--primary-color);
+    color: #fff;
+    cursor: not-allowed;
+}
 
 #line-form__search{
     z-index: 1001;
