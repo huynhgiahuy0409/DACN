@@ -51,6 +51,7 @@ export interface RoomResponse {
   status: string;
   originPrice: number;
   rentalPrice: number;
+  finalPrice: number;
 }
 
 export interface ApiResponse {

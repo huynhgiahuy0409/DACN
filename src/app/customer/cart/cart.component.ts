@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Cart, CartItem } from 'src/app/models/model';
-import { getDateInString } from 'src/app/shared/utils/DateUtils';
+import { getDateInString, getNightNumber } from 'src/app/shared/utils/DateUtils';
 import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 import { CartService } from '../services/cart.service';
 import { parseISO } from 'date-fns';
@@ -41,6 +41,7 @@ export class CartComponent implements OnInit {
 
     const itemInCart = this.cart.find(item => item.id === id);
     const itemChosen = this.chosenItems.find(item => item.id === id);
+
     if (checked && itemInCart && !itemChosen) {
       this.chosenItems.push(itemInCart);
     } else {
@@ -50,7 +51,7 @@ export class CartComponent implements OnInit {
 
   getTotalPrice() {
     const totalPrice = this.chosenItems.reduce((total, item) => {
-      return total + item.room.rentalPrice;
+      return total + (this.getNightInNumber(item.fromDate, item.toDate) * item.room.finalPrice);
     }
       , 0);
     return totalPrice;
@@ -59,6 +60,16 @@ export class CartComponent implements OnInit {
   getDateInPlain(dateNum: string) {
     const parsed = parseISO(dateNum).getTime()
     return getDateInString(parsed);
+  }
+
+  getNightInNumber(startDate: string, endDate: string) {
+    const start = parseISO(startDate).getTime()
+    const end = parseISO(endDate).getTime()
+    return getNightNumber(start, end);
+  }
+
+  getPriceByNights(fromDate: string, toDate: string, price: number) {
+    return this.formatMoney(this.getNightInNumber(fromDate, toDate) * price);
   }
 
   onDeleteItemFromCart(id: number) {

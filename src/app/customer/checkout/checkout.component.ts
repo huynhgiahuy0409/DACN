@@ -48,7 +48,7 @@ export class CheckoutComponent implements OnInit {
     return getDateNoYearTitle(parsed);
   }
 
-  getNightInNumber(startDate: string, endDate: string) {
+  getNightLabel(startDate: string, endDate: string) {
     const start = parseISO(startDate).getTime()
     const end = parseISO(endDate).getTime()
     return getNightNumber(start, end) + " đêm";
@@ -72,11 +72,21 @@ export class CheckoutComponent implements OnInit {
 
   getTotalPrice() {
     const totalPrice = this.chosenItems.reduce((total, item) => {
-      return total + item.room.rentalPrice;
+      return total + (this.getNightInNumber(item.fromDate, item.toDate) * item.room.finalPrice);
     }
       , 0);
     // return totalPrice + (totalPrice * 10 / 100);
     return totalPrice;
+  }
+
+  getPriceByNights(fromDate: string, toDate: string, price: number) {
+    return this.formatPrice(this.getNightInNumber(fromDate, toDate) * price);
+  }
+
+  getNightInNumber(startDate: string, endDate: string) {
+    const start = parseISO(startDate).getTime()
+    const end = parseISO(endDate).getTime()
+    return getNightNumber(start, end);
   }
 
   onProceedToPayment() {

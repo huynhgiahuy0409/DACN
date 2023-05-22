@@ -31,7 +31,8 @@
             "stylePreprocessorOptions": {
               "includePaths": ["./node_modules"]
             },
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": ["moment"]
           },
           "configurations": {
             "production": {

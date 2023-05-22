@@ -31,18 +31,21 @@ export class CheckPaymentStatusComponent implements OnInit {
       } else {
         this.isPaid = true;
         this.reservationService.saveAllReservation(finalItems).subscribe(
-          (res) => {
-            this.cartService.deleteItemsFromCart(ids).subscribe((res) => {
-              console.log(res);
-              localStorage.removeItem("finalItems");
-              localStorage.removeItem("chosenItems");
-              localStorage.removeItem("payment_token");
-              localStorage.removeItem("payment_id");
-            }, (err) => {
-              console.log(err);
-            });
-          }, (err) => {
-          });
+          {
+            next: (res) => {
+              this.cartService.deleteItemsFromCart(ids).subscribe((res) => {
+                console.log(res);
+                localStorage.removeItem("finalItems");
+                localStorage.removeItem("chosenItems");
+                localStorage.removeItem("payment_token");
+                localStorage.removeItem("payment_id");
+              });
+            },
+            error: (err) => {
+              console.log("error", err);
+            }
+          }
+        );
       }
       this.headerComponent = document.getElementsByClassName('header-container').item(0) as HTMLElement;
       this.headerComponent.style.display = "none";

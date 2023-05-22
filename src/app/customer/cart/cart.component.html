@@ -59,7 +59,7 @@
                             {{getDateInPlain(item.toDate)}}</p>
                     </div>
                     <div class="item-price text-end" *ngIf="isAvailable(item.status)">
-                        <p class="text-price">{{formatMoney(item.room.rentalPrice)}}</p>
+                        <p class="text-price">{{getPriceByNights(item.fromDate,item.toDate,item.room.finalPrice)}}</p>
                         <p class="text-secondary item-daterange">Bao gồm thuế và phí</p>
                     </div>
                 </div>

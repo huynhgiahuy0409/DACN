@@ -51,7 +51,7 @@
                 <div class="input-group">
                     <label for="email">Email ID</label>
                     <div>
-                        <input type="email" id="email" placeholder="Email" formControlName="email">
+                        <input type="text" id="email" placeholder="Email" formControlName="email">
                         <mat-error *ngIf="customerInformationFormGroup.get('email')?.errors">Vui lòng
                             nhập
                             email hợp lệ</mat-error>
@@ -60,7 +60,7 @@
                 <div class="input-group">
                     <label for="phone">Số di động</label>
                     <div>
-                        <input type="phone" id="phone" placeholder="Số di động" formControlName="phone" maxlength="10">
+                        <input type="text" id="phone" placeholder="Số di động" formControlName="phone" maxlength="10">
                         <mat-error *ngIf="customerInformationFormGroup.get('phone')?.errors">Vui lòng nhập
                             số điện thoại hợp lệ</mat-error>
                     </div>
@@ -145,7 +145,7 @@
                             </path>
                         </svg>
                         {{getDateInPlain(item.fromDate)}} - {{getDateInPlain(item.toDate)}} |
-                        {{getNightInNumber(item.fromDate,item.toDate)}}
+                        {{getNightLabel(item.fromDate,item.toDate)}}
                     </p>
                     <p>
                         <svg width="1em" height="1em" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
@@ -206,13 +206,13 @@
         <div class="details-price__container">
             <p class="item-price__title">Chi Tiết Giá</p>
             <div class="d-flex-bh flex-wrap-bh details-price">
-                <div class="price-column__first">
+                <!-- <div class="price-column__first">
                     <p class="text-check">Tiết kiệm gói</p>
                 </div>
                 <div class="price-column__second">
                     <p class="text-end text-check">- {{formatPrice(getTotalPrice()*10/100)}}</p>
                 </div>
-                <div class="divider-line w-fit"></div>
+                <div class="divider-line w-fit"></div> -->
 
                 <div class="price-column__first">
                     <p>Tổng cộng thuế và phí</p>
@@ -235,7 +235,7 @@
                         <p class="item-name">{{item.hotel.name}}</p>
                     </div>
                     <div class="price-column__second">
-                        <p class="text-end">{{formatPrice(item.room.rentalPrice)}}</p>
+                        <p class="text-end">{{getPriceByNights(item.fromDate,item.toDate,item.room.finalPrice)}}</p>
                     </div>
                 </div>
             </div>
