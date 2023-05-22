@@ -30,7 +30,6 @@ export class CheckPaymentStatusComponent implements OnInit {
         this.isPaid = false;
       } else {
         this.isPaid = true;
-
         this.reservationService.saveAllReservation(finalItems).subscribe(
           (res) => {
             this.cartService.deleteItemsFromCart(ids).subscribe((res) => {
@@ -43,7 +42,6 @@ export class CheckPaymentStatusComponent implements OnInit {
               console.log(err);
             });
           }, (err) => {
-            console.log(err);
           });
       }
       this.headerComponent = document.getElementsByClassName('header-container').item(0) as HTMLElement;

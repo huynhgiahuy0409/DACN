@@ -31,8 +31,6 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.chosenItems = localStorage.getItem("chosenItems") ? JSON.parse(localStorage.getItem("chosenItems")!) : [];
-    console.log(this.chosenItems);
-
     this.headerComponent = document.getElementsByClassName('header-container').item(0) as HTMLElement;
     this.headerComponent.style.display = "none";
   }

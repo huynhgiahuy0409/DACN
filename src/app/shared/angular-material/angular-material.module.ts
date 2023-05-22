@@ -15,6 +15,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
+import {MatSliderModule} from '@angular/material/slider';
+
 @NgModule({
   declarations: [],
   exports: [
@@ -31,7 +33,8 @@ import { MatCardModule } from '@angular/material/card';
     MatRadioModule,
     MatAutocompleteModule,
     MatProgressSpinnerModule,
-    MatCardModule
+    MatCardModule,
+    MatSliderModule
   ]
 })
 export class AngularMaterialModule { }

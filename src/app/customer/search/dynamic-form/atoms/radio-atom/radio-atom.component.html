@@ -1,12 +1,12 @@
-<ng-container [formGroup]="form">
-    <mat-radio-group [formControlName]="field.name">
-        <ng-container *ngFor="let radioOption of
+<mat-radio-group [(ngModel)]="field.value">
+    <ng-container *ngFor="let radioOption of
             field.radioOptions">
-            <p>
-                <mat-radio-button [color] = "field.color" [value]="radioOption.code">
-                    {{radioOption.label}}
-                </mat-radio-button>
-            </p>
-        </ng-container>
-    </mat-radio-group>
-</ng-container>
+        <p>
+            <mat-radio-button [color]="field.color" [value]="radioOption.value" (change)="selectRadio(radioOption)">
+                <span style="font-size: 1.2rem;">
+                    {{radioOption.label}} - {{radioOption.value}}<span> ({{radioOption.total}})</span>
+                </span>
+            </mat-radio-button>
+        </p>
+    </ng-container>
+</mat-radio-group>

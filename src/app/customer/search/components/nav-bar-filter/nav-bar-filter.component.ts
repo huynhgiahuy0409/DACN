@@ -34,7 +34,7 @@ export class NavBarFilterComponent implements OnInit {
         currProductFilterRequest.productSortRequest = undefined
       } else if (value === "name") {
         currProductFilterRequest.productSortRequest = {
-          direction: "asc",
+          direction: "desc",
           property: "name"
         }
       } else if (value === "price") {
@@ -51,7 +51,7 @@ export class NavBarFilterComponent implements OnInit {
       const queryParams = { ...this._route.snapshot.queryParams };
       queryParams['property'] = currProductFilterRequest.productSortRequest?.property;
       queryParams['direction'] = currProductFilterRequest.productSortRequest?.direction;
-      this._router.navigate([], { queryParams , replaceUrl: true});
+      this._router.navigate([], { queryParams , replaceUrl: true, queryParamsHandling: 'merge'});
     }
   }
 }

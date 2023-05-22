@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, map, of, switchMap, tap, timeout } from 'rxjs';
+import { log } from 'console';
+import { Observable, filter, map, of, switchMap, tap, timeout } from 'rxjs';
 import { FilterProductService } from 'src/app/customer/services/filter-product.service';
 import { ProgressSpinnerService } from 'src/app/customer/services/progress-spinner.service';
-import { ProductFilterRequest } from 'src/app/models/request';
+import { OptionFilterRequest, ProductFilterRequest } from 'src/app/models/request';
 import {
   AddressResponse,
   AverageRatingResponse,
@@ -26,9 +27,9 @@ export class ProductListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.searchedProductResponse$ = this._route.queryParamMap
+    this._route.queryParamMap
       .pipe(
-        switchMap((paramsAsMap: any) => {
+        tap((paramsAsMap: any) => {
           this._progressSpinnerService.next(true);
           const {
             textToSearch,
@@ -41,6 +42,12 @@ export class ProductListComponent implements OnInit {
             type,
             property,
             direction,
+            hotelFacilities,
+            benefits,
+            guestRating,
+            discount,
+            priceFrom,
+            priceTo,
           } = paramsAsMap.params;
           const productFilterRequest: ProductFilterRequest = {
             search: textToSearch,
@@ -51,24 +58,46 @@ export class ProductListComponent implements OnInit {
             children: children,
             value: value,
             type: type,
+            productSort: {
+              property: property,
+              direction: direction,
+            },
+            optionFilter: {
+              priceFrom: priceFrom,
+              priceTo: priceTo,
+              discount: discount,
+              guestRating: guestRating,
+              benefits: benefits? benefits.split(",").map(Number): undefined,
+              hotelFacilities: hotelFacilities? hotelFacilities.split(",").map(Number): undefined
+            }
           };
-          productFilterRequest.productSortRequest =
-          property && direction
-              ? {
-                property: property,
-                direction: direction,
-              }
-              : undefined;
-          console.log(productFilterRequest);
-          return this._productFilterService.filterProduct(productFilterRequest).pipe(map((response) => response.data));
-        }),
-        tap(response => {
-          console.log(response);
-          this._progressSpinnerService.next(false);
+          console.log(productFilterRequest)
+          this._productFilterService.nextProductFilterRequest(
+            productFilterRequest
+          );
         })
       )
-
+      .subscribe();
+    /* Detect filter from URL to fetch SeachedProducts */
+    this.searchedProductResponse$ =
+      this._productFilterService.productFilterRequest$.pipe(
+        switchMap((filter) => {
+          if (filter) {
+            console.log(filter)
+            return this._productFilterService
+              .filterProduct(filter)
+              .pipe(map((response) => response.data));
+          } else {
+            return of(null);
+          }
+        }),
+        tap((searchedProductResponse) => {
+          console.log(searchedProductResponse)
+          this._progressSpinnerService.next(false);
+          this._productFilterService.nextSearchedProductResponse(
+            searchedProductResponse
+          );
+        })
+      );
   }
-
-
 }

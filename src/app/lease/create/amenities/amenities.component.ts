@@ -55,7 +55,6 @@ export class AmenitiesComponent implements OnInit {
   hp!: HotelProfile;
 
   submitForm() {
-    console.log(this.rfAmenities.value)
     this.hp =
       {
         id: 0,
@@ -90,8 +89,6 @@ export class AmenitiesComponent implements OnInit {
     this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock, this.hp).subscribe(value => {
 
       this.hotelProfileService.amenities = value.amenities;
-      console.log('amenities')
-      console.log(this.hotelProfileService.amenities)
     })
   }
 

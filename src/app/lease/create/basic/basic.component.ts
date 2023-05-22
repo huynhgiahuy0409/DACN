@@ -136,9 +136,6 @@ export class BasicComponent implements OnInit {
       typeCommon: ['', Validators.required],
 
     });
-    console.log(this.rfBasic.controls['typeComparisionBusiness'].value,)
-
-
   }
 
 
@@ -203,10 +200,6 @@ export class BasicComponent implements OnInit {
 
       this.hotelProfileService.id_lock=value.id;
       this.hotelProfileService.basic=value.basic;
-      console.log('id lock')
-      console.log(this.hotelProfileService.id_lock);
-      console.log('basic')
-      console.log(this.hotelProfileService.basic);
 
     })
 

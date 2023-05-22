@@ -46,9 +46,7 @@ export class PhotosComponent implements OnInit {
     this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock, this.hp).subscribe(value => {
 
       this.hotelProfileService.photos = value.photos;
-      console.log('photos')
-      console.log(this.hotelProfileService.photos)
-
+   
     })
 
   }
