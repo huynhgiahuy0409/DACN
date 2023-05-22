@@ -79,7 +79,8 @@
                           #searchInput
                           formControlName="search"
                           matInput
-                          placeholder="Ex.Thành phố Hồ Chí Minh"
+                          placeholder="Ex.Thành phố Hồ Chí Minh" 
+                          (keyup)="onKeyupSearch(searchInput.value)"
                         />
                       </mat-form-field>
                     </div>

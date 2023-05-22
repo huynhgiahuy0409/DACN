@@ -3,7 +3,11 @@ import { Injectable, OnInit } from '@angular/core';
 import {
   BehaviorSubject,
   Observable,
+  catchError,
+  combineLatest,
+  concatMap,
   debounceTime,
+  map,
   of,
   switchMap,
   tap,
@@ -22,7 +26,13 @@ import {
 } from 'src/app/models/response';
 import { SelectedCheckOption } from '../search/components/side-bar-filter/side-bar-filter.component';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { OccupancyOption } from 'src/app/models/model';
 import * as moment from 'moment';
 import { ProgressSpinnerService } from './progress-spinner.service';
@@ -32,25 +42,23 @@ import { log } from 'console';
 @Injectable({
   providedIn: 'root',
 })
-export class FilterProductService implements OnInit {
+export class FilterProductService{
   private productFilterRequestBSub: BehaviorSubject<ProductFilterRequest | null> =
     new BehaviorSubject<ProductFilterRequest | null>(null);
   productFilterRequest$ = this.productFilterRequestBSub.asObservable();
 
-  private searchedProductResponseBSub: BehaviorSubject<SearchedProductResponse | null> =
-    new BehaviorSubject<SearchedProductResponse | null>(null);
-  searchedProductResponse$ = this.searchedProductResponseBSub.asObservable();
+  searchedProductResponseBSub: BehaviorSubject<SearchedProductResponse | null> = new BehaviorSubject<SearchedProductResponse | null>(null);
+  searchedProductResponse$: Observable<SearchedProductResponse | null> = this.searchedProductResponseBSub.asObservable();
 
-  nextSearchedProductResponse(value: SearchedProductResponse | null) {
-    this.searchedProductResponseBSub.next(value);
-  }
-  get currSearchedProductResponseValue() {
-    return this.searchedProductResponseBSub.value;
-  }
+  autocompletes$!: Observable<AutocompleteSearchResponse[] | null>;
+
   nextProductFilterRequest(value: ProductFilterRequest) {
     this.productFilterRequestBSub.next(value);
   }
   hotelFormGroup!: FormGroup;
+  get getHotelFormGroup(): FormGroup {
+    return this.hotelFormGroup;
+  }
   get currProductFilterRequest() {
     return this.productFilterRequestBSub.value;
   }
@@ -75,17 +83,26 @@ export class FilterProductService implements OnInit {
   get roomControl(): FormControl {
     return this.occupancyGroup.get('rooms') as FormControl;
   }
+  get valueControl(): FormControl {
+    return this.hotelFormGroup.get('value') as FormControl;
+  }
   occupancyOptions!: OccupancyOption[];
   minStartDate!: Date;
   minEndDate!: Date;
+  private searchBSub: BehaviorSubject<string> = new BehaviorSubject<string>('');
+  search$: Observable<string> = this.searchBSub.asObservable();
+  nextSearchValue(value: string) {
+    this.searchBSub.next(value);
+  }
   constructor(
     private _httpClient: HttpClient,
     private _route: ActivatedRoute,
     private _router: Router,
     private _fb: FormBuilder,
     private _progressSpinnerService: ProgressSpinnerService,
-    private _hotelService: HotelService,
+    private _hotelService: HotelService
   ) {
+    /* Validate min date of Mat-datepicker */
     this.minStartDate = new Date();
     this.minEndDate = moment(this.minStartDate).add(1, 'day').toDate();
     this.occupancyOptions = [
@@ -110,6 +127,7 @@ export class FilterProductService implements OnInit {
         name: 'children',
       },
     ];
+    /* Setup Standard Filter FormGroup */
     this.hotelFormGroup = this._fb.group({
       search: ['', Validators.required],
       startDate: [new Date(this.minStartDate), Validators.required],
@@ -119,52 +137,83 @@ export class FilterProductService implements OnInit {
         adults: [this.occupancyOptions[1].value, Validators.required],
         children: [this.occupancyOptions[2].value, Validators.required],
       }),
-      value: ["", Validators.required],
-      type: ["", Validators.required]
+      value: ['', Validators.required],
+      type: ['', Validators.required],
     });
-    /* debounce time Search Control */
-    this.autocompleteSearchs$ = this.searchControl.valueChanges.pipe(
+    /* Setup Autocompletes for search by Detect change search$ */
+    this.autocompletes$ = this.search$.pipe(
       debounceTime(500),
       switchMap((search: string) => {
-        this._progressSpinnerService.next(true);
-        if (search.trim()) {
-          return this._hotelService.getAutocompleteSearch(search);
+        if (search && search.trim().length > 0) {
+          return this._hotelService.getAutocompleteSearch(search).pipe();
         }
-        return of([]);
+        return of(null);
       }),
-      tap((response) => {
-        this._progressSpinnerService.next(false);
-      })
     );
-  }
-  autocompleteSearchs$!: Observable<AutocompleteSearchResponse[]>;
-  ngOnInit(): void {
-    this.hotelFormGroup.valueChanges.subscribe(v => console.log(v))
+    /* Detect change state filter to reassign for Standard Filter FormGroup and update state of SearchedProduct after API response */
+    this.productFilterRequest$.pipe(
+      switchMap((filter) => {
+        if (filter) {
+          return this.filterProduct(filter).pipe(
+            map((response) => {
+              let curFilter: ProductFilterRequest =
+                this.currProductFilterRequest!;
+              const {
+                startDate,
+                endDate,
+                search,
+                adults,
+                children,
+                rooms,
+                type,
+                value,
+              } = curFilter;
+              this.hotelFormGroup.setValue({
+                search,
+                startDate,
+                endDate,
+                occupancy: {
+                  rooms,
+                  adults,
+                  children,
+                },
+                type,
+                value,
+              });
+              return response.data;
+            })
+          );
+        } else {
+          return of(null);
+        }
+      }),
+    ).subscribe(response => {
+      console.log(response);
+      
+      this.searchedProductResponseBSub.next(response)
+      this._progressSpinnerService.next(false)
+    });
   }
   updateOccupancy(occupancy: OccupancyOption, action: '+' | '-') {
-    let curValue: number = Number.parseInt(this.occupancyGroup.get(occupancy.name)!.value)
+    let curValue: number = Number.parseInt(
+      this.occupancyGroup.get(occupancy.name)!.value
+    );
     if (action === '+') {
-      curValue++
+      curValue++;
       this.occupancyGroup.get(occupancy.name)?.patchValue(curValue);
     } else {
-      curValue--
+      curValue--;
       this.occupancyGroup.get(occupancy.name)?.patchValue(curValue);
     }
-    console.log(curValue)
   }
   selectAutocomplete(autocompleteSearch: AutocompleteSearchResponse) {
-    this.hotelFormGroup
-      .get('search')!
-      .patchValue(autocompleteSearch.name);
+    this.searchControl.patchValue(autocompleteSearch.name);
     this.hotelFormGroup.get('type')!.patchValue(autocompleteSearch.type);
-    this.hotelFormGroup
-      .get('value')!
-      .patchValue(autocompleteSearch.value);
+    this.hotelFormGroup.get('value')!.patchValue(autocompleteSearch.value);
   }
   onSubmitHotelFormGroup() {
     const { search, startDate, endDate, occupancy, value, type } =
       this.hotelFormGroup.value;
-    console.log(this.hotelFormGroup.value)
     const navigationExtras: NavigationExtras = {
       queryParams: {
         textToSearch: search,

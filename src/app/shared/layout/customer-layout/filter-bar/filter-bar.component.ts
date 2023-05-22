@@ -1,3 +1,4 @@
+import { ParamMap } from '@angular/router';
 import {
   Component,
   ElementRef,
@@ -7,11 +8,12 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { log } from 'console';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { FilterProductService } from 'src/app/customer/services/filter-product.service';
 import { OccupancyOption } from 'src/app/models/model';
 import { ProductFilterRequest } from 'src/app/models/request';
 import { AutocompleteSearchResponse } from 'src/app/models/response';
+import { ProgressSpinnerService } from 'src/app/customer/services/progress-spinner.service';
 
 @Component({
   selector: 'app-filter-bar',
@@ -34,12 +36,11 @@ export class FilterBarComponent implements OnInit {
   enableOverlay: boolean = false;
   isEnableOccupancy = false;
   ageOptions!: string[];
-  hotelAndHomeForm: any;
   hotelFormGroup!: FormGroup;
   privateHomeFormGroup!: FormGroup;
   isEnableAutocompleteSearch: boolean = true;
   isShowFilterBar: boolean = false;
-  autocompleteSearchs$!: Observable<AutocompleteSearchResponse[]>;
+  autocompleteSearchs$!: Observable<AutocompleteSearchResponse[] | null>;
   overlayState: { isShow: boolean; currElement: Element | undefined } = {
     isShow: false,
     currElement: undefined,
@@ -54,7 +55,8 @@ export class FilterBarComponent implements OnInit {
   }
   constructor(
     private _fb: FormBuilder,
-    public filterProductService: FilterProductService
+    public filterProductService: FilterProductService,
+    private _progressSpinnerService: ProgressSpinnerService
   ) {
     this.privateHomeFormGroup = this._fb.group({
       place: '',
@@ -66,6 +68,7 @@ export class FilterBarComponent implements OnInit {
         children: filterProductService.occupancyOptions[2].value,
       }),
     });
+    this.hotelFormGroup = this.filterProductService.hotelFormGroup
   }
 
   ngAfterViewChecked(): void {
@@ -96,40 +99,11 @@ export class FilterBarComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.hotelFormGroup = this.filterProductService.hotelFormGroup;
-    this.autocompleteSearchs$ = this.filterProductService.autocompleteSearchs$;
-    this.filterProductService.productFilterRequest$.subscribe(
-      (filter: ProductFilterRequest | null) => {
-        if (filter) {
-          console.log(filter);
-          const {
-            startDate,
-            endDate,
-            search,
-            adults,
-            children,
-            rooms,
-            type,
-            value,
-          } = filter;
-          this.hotelFormGroup.patchValue({
-            search,
-            startDate,
-            endDate,
-            occupancy: {
-              rooms,
-              adults,
-              children,
-            },
-            type,
-            value,
-          });
-        }
+    this.autocompleteSearchs$ = this.filterProductService.autocompletes$.pipe((tap(autocompletes => {
+      if (autocompletes) {
+        this._progressSpinnerService.next(false)
       }
-    );
-    // this.filterProductService.hotelFormGroup.valueChanges.subscribe(v => console.log(v))
-    this.hotelFormGroup.valueChanges.subscribe((v) => console.log(v));
-    this.overlayState$.subscribe(v => console.log(v))
+    })))
   }
   updateOverlayState(element: Element) {
     let { isShow, currElement } = this.curOverlayState;
@@ -166,41 +140,40 @@ export class FilterBarComponent implements OnInit {
       currElement: undefined,
     });
   }
-  @HostListener('window:scroll', ['$event'])
-  onScroll(event: Event) {
-    // Gọi hàm xử lý sự kiện scroll ở đây
-    if (this.occupancyPopup) {
-      const occupancyPopupTop =
-        this.occupancyPopup.nativeElement.getBoundingClientRect().top;
-      if (occupancyPopupTop < 0) {
-        this.overlayState.currElement = undefined;
-        this.overlayState.isShow = false;
-        this.isEnableOccupancy = false;
-      }
-    }
-    const homeBannerBottom =
-      this.homeBanner.nativeElement.getBoundingClientRect().bottom;
+  // @HostListener('window:scroll', ['$event'])
+  // onScroll(event: Event) {
+  //   // Gọi hàm xử lý sự kiện scroll ở đây
+  //   if (this.occupancyPopup) {
+  //     const occupancyPopupTop =
+  //       this.occupancyPopup.nativeElement.getBoundingClientRect().top;
+  //     if (occupancyPopupTop < 0) {
+  //       this.overlayState.currElement = undefined;
+  //       this.overlayState.isShow = false;
+  //       this.isEnableOccupancy = false;
+  //     }
+  //   }
+  //   const homeBannerBottom =
+  //     this.homeBanner.nativeElement.getBoundingClientRect().bottom;
 
-    if (homeBannerBottom < 0) {
-      this.isShowFilterBar = true;
-    } else {
-      this.isShowFilterBar = false;
-    }
-  }
+  //   if (homeBannerBottom < 0) {
+  //     this.isShowFilterBar = true;
+  //   } else {
+  //     this.isShowFilterBar = false;
+  //   }
+  // }
   selectAutocomplete(autocompleteSearch: AutocompleteSearchResponse) {
-    this.hotelFormGroup
-      .get('search')!
-      .patchValue(autocompleteSearch.name);
+    this.hotelFormGroup.get('search')!.patchValue(autocompleteSearch.name);
     this.hotelFormGroup.get('type')!.patchValue(autocompleteSearch.type);
-    this.hotelFormGroup
-      .get('value')!
-      .patchValue(autocompleteSearch.value);
+    this.hotelFormGroup.get('value')!.patchValue(autocompleteSearch.value);
   }
   updateOccupancy(occupancy: OccupancyOption, action: '+' | '-') {
-    this.filterProductService.updateOccupancy(occupancy, action)
+    this.filterProductService.updateOccupancy(occupancy, action);
   }
-  onSubmitHotelFormGroup(){
-    this.filterProductService.onSubmitHotelFormGroup()
-    this.onClickOverlay()
+  onSubmitHotelFormGroup() {
+    this.filterProductService.onSubmitHotelFormGroup();
+    this.onClickOverlay();
+  }
+  onKeyupSearch(value: string) {
+    this.filterProductService.nextSearchValue(value)
   }
 }

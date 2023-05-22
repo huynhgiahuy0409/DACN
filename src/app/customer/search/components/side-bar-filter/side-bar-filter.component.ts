@@ -23,12 +23,14 @@ import {
   map,
   Observable,
   of,
+  pipe,
   switchMap,
   take,
   tap,
   timeout,
 } from 'rxjs';
 import { FilterProductService } from 'src/app/customer/services/filter-product.service';
+import { ProgressSpinnerService } from 'src/app/customer/services/progress-spinner.service';
 import {
   OptionFilterRequest,
   ProductFilterRequest,
@@ -76,7 +78,8 @@ export interface SelectedCheckOption {
   styleUrls: ['./side-bar-filter.component.scss'],
 })
 export class SideBarFilterComponent
-  implements OnInit, OnChanges, AfterViewInit {
+  implements OnInit, OnChanges, AfterViewInit
+{
   searchedProduct$!: Observable<SearchedProductResponse | null>;
   minFinalPrice!: number;
   maxFinalPrice!: number;
@@ -154,14 +157,16 @@ export class SideBarFilterComponent
     private _productFilterService: FilterProductService,
     private cdr: ChangeDetectorRef,
     private _route: ActivatedRoute,
-    private _router: Router
+    private _router: Router,
+    private _progressSpinnerService: ProgressSpinnerService
   ) {
     this.filterFormGroup = this.__fb.group({});
   }
-  ngAfterViewInit(): void { }
+  ngAfterViewInit(): void {}
 
-  ngOnChanges(changes: SimpleChanges): void { }
+  ngOnChanges(changes: SimpleChanges): void {}
   ngOnInit(): void {
+    /* Replace QueryPrams after debounceTime filter range */
     this.priceFrom$.subscribe((value) => {
       if (value) {
         const queryParams = { ...this._route.snapshot.queryParams };
@@ -204,61 +209,72 @@ export class SideBarFilterComponent
           }
           this.changeLeftSlider('update');
           this.changeRightSlider('update');
+        }else{
+          this.priceFrom = 0
+          this.priceTo = 0
         }
       }
     );
     /* Fetch options for filterbar */
-    this._productFilterService.productFilterRequest$
-      .pipe(
-        switchMap((filter) => {
-          let benefitOptions$ = this._productFilterService.findBenefitOptions(
-            filter!
-          );
-          let userRateOptions$ = this._productFilterService.findUserRateOptions(
-            filter!
-          );
-          let hotelFacilities$ =
-            this._productFilterService.findHotelFacilityOptions(filter!);
-          let discountOptions$ = this._productFilterService.findDiscountOptions(
-            filter!
-          );
-          return combineLatest([
+    combineLatest([this._productFilterService.productFilterRequest$, this._productFilterService.searchedProductResponse$]).pipe(
+      switchMap(response => {
+        let filter = response[0]
+        /* Setup sidebar options */
+        let benefitOptions$ = this._productFilterService.findBenefitOptions(
+          filter!
+        );
+        let userRateOptions$ = this._productFilterService.findUserRateOptions(
+          filter!
+        );
+        let hotelFacilities$ =
+          this._productFilterService.findHotelFacilityOptions(filter!);
+        let discountOptions$ = this._productFilterService.findDiscountOptions(
+          filter!
+        );
+        return combineLatest([
             benefitOptions$,
             userRateOptions$,
             hotelFacilities$,
             discountOptions$,
           ]);
-        })
-      )
-      .subscribe((options) => {
-        const curFilter: ProductFilterRequest =
-          this._productFilterService.currProductFilterRequest!;
-        const optionFilter: OptionFilterRequest | undefined =
-          curFilter!.optionFilter;
-        let benefitOptions: FilterOptionItemResponse[] = options[0];
-        console.log(benefitOptions)
-        let userRateOptions: FilterOptionItemResponse[] = options[1];
-        let hotelFacilityOptions: FilterOptionItemResponse[] = options[2];
-        let discountOptions: FilterOptionItemResponse[] = options[3];
-        const discountValue: string | null =
+      })
+    ).subscribe((options) => {
+      const curFilter: ProductFilterRequest =
+        this._productFilterService.currProductFilterRequest!;
+      const optionFilter: OptionFilterRequest | undefined =
+        curFilter!.optionFilter;
+      let benefitOptions: FilterOptionItemResponse[] = options[0];
+      let userRateOptions: FilterOptionItemResponse[] = options[1];
+      let hotelFacilityOptions: FilterOptionItemResponse[] = options[2];
+      let discountOptions: FilterOptionItemResponse[] = options[3];
+      const discountValue: string | null =
         optionFilter && optionFilter.discount ? optionFilter.discount : null;
-        const benefits: number[] | undefined =
-          optionFilter && optionFilter.benefits
-            ? optionFilter.benefits
-            : undefined;
-        const hotelFacilities: number[] | undefined =
+      const benefits: number[] | undefined =
+        optionFilter && optionFilter.benefits
+          ? optionFilter.benefits
+          : undefined;
+      const hotelFacilities: number[] | undefined =
         optionFilter && optionFilter.hotelFacilities
           ? optionFilter.hotelFacilities
           : undefined;
-        const rate: string | null =
-          optionFilter && optionFilter.guestRating
-            ? optionFilter.guestRating
-            : null;
-        this.setupFilterOptions(this.filterFields[0], discountOptions, discountValue)
-        this.setupFilterOptions(this.filterFields[1], hotelFacilityOptions, hotelFacilities)
-        this.setupFilterOptions(this.filterFields[2], userRateOptions, rate)
-        this.setupFilterOptions(this.filterFields[3], benefitOptions, benefits)
-      });
+      const rate: string | null =
+        optionFilter && optionFilter.guestRating
+          ? optionFilter.guestRating
+          : null;
+      this.setupFilterOptions(
+        this.filterFields[0],
+        discountOptions,
+        discountValue
+      );
+      this.setupFilterOptions(
+        this.filterFields[1],
+        hotelFacilityOptions,
+        hotelFacilities
+      );
+      this.setupFilterOptions(this.filterFields[2], userRateOptions, rate);
+      this.setupFilterOptions(this.filterFields[3], benefitOptions, benefits);
+    });
+   
   }
   private buildCheckboxOptions(
     fetchedOptions: FilterOptionItemResponse[],
@@ -270,7 +286,7 @@ export class SideBarFilterComponent
         const { name, value, total } = filterOptionResponse;
         let checked =
           seletedIds &&
-            seletedIds?.includes(Number.parseInt(filterOptionResponse.value))
+          seletedIds?.includes(Number.parseInt(filterOptionResponse.value))
             ? true
             : false;
         if (checked) {
@@ -345,8 +361,9 @@ export class SideBarFilterComponent
       ((this.priceFrom - this.minFinalPrice) /
         (this.maxFinalPrice - this.minFinalPrice)) *
       100;
-    this.thumbLeft.nativeElement.style.left = `calc(${percent}% - ${percent * (thumbWidth / 100)
-      }px)`;
+    this.thumbLeft.nativeElement.style.left = `calc(${percent}% - ${
+      percent * (thumbWidth / 100)
+    }px)`;
 
     this.range.nativeElement.style.left = percent + '%';
     if (this.priceFrom + 1 == this.priceTo) {
@@ -369,8 +386,9 @@ export class SideBarFilterComponent
       ((this.priceTo - this.minFinalPrice) /
         (this.maxFinalPrice - this.minFinalPrice)) *
       100;
-    this.thumbRight.nativeElement.style.right = `calc(${100 - percent}% - ${100 - percent
-      }*${thumbWidth / 100}px)`;
+    this.thumbRight.nativeElement.style.right = `calc(${100 - percent}% - ${
+      100 - percent
+    }*${thumbWidth / 100}px)`;
     this.range.nativeElement.style.right = 100 - percent + '%';
 
     if (this.priceTo + 1 == this.priceFrom) {
@@ -383,31 +401,41 @@ export class SideBarFilterComponent
     }
   }
   changeSelectedOption(sltOption: SelectedCheckOption) {
-    this._productFilterService.changeSelectedOption(sltOption)
+    this._productFilterService.changeSelectedOption(sltOption);
   }
   clearSelectedOption() {
     let queryParams = { ...this._route.snapshot.queryParams };
-   
-    this.selectedField.selectedCheckOptions.forEach(
-      (item) => {
-        item.checked = false
-        item.value = ""
-      }
-      );
-      this.filterFields.forEach(field => {
+
+    this.selectedField.selectedCheckOptions.forEach((item) => {
+      item.checked = false;
+      item.value = '';
+    });
+    this.filterFields.forEach((field) => {
       delete queryParams[field.name];
-      field.value = ""
-    })
+      field.value = '';
+    });
     this._router.navigate([], {
       queryParams,
     });
   }
-  private setupFilterOptions(field: FilterField, filterOptionItems: FilterOptionItemResponse[], sltValues: any){
-      const {type } = field 
-      if(type === 'radio'){
-        field.radioOptions = this.buildRadioOptions(filterOptionItems, field, sltValues)
-      }else if(type === 'checkbox'){
-        field.checkOptions = this.buildCheckboxOptions(filterOptionItems, field.name, sltValues)
-      }
+  private setupFilterOptions(
+    field: FilterField,
+    filterOptionItems: FilterOptionItemResponse[],
+    sltValues: any
+  ) {
+    const { type } = field;
+    if (type === 'radio') {
+      field.radioOptions = this.buildRadioOptions(
+        filterOptionItems,
+        field,
+        sltValues
+      );
+    } else if (type === 'checkbox') {
+      field.checkOptions = this.buildCheckboxOptions(
+        filterOptionItems,
+        field.name,
+        sltValues
+      );
+    }
   }
 }
