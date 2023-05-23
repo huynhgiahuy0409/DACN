@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Cart, CartItem } from 'src/app/models/model';
-import { getDateInString, getNightNumber } from 'src/app/shared/utils/DateUtils';
+import { getDateFromArray, getDateInString, getNightNumber } from 'src/app/shared/utils/DateUtils';
 import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 import { CartService } from '../services/cart.service';
 import { parseISO } from 'date-fns';
 import { ToastrService } from 'ngx-toastr';
+import { HOTEL_IMG } from 'src/app/models/constance';
 
 @Component({
   selector: 'app-cart',
@@ -17,6 +18,7 @@ export class CartComponent implements OnInit {
   session_id: string = localStorage.getItem("sessionId") || "";
 
   chosenItems: any[] = [];
+  readonly BASE_IMG: string = HOTEL_IMG;
 
   constructor(private cartService: CartService, private toastrService: ToastrService) {
   }
@@ -57,18 +59,19 @@ export class CartComponent implements OnInit {
     return totalPrice;
   }
 
-  getDateInPlain(dateNum: string) {
-    const parsed = parseISO(dateNum).getTime()
+  getDateInPlain(dateNum: number[]) {
+    const parsedArray = getDateFromArray(dateNum);
+    const parsed = parseISO(parsedArray).getTime()
     return getDateInString(parsed);
   }
 
-  getNightInNumber(startDate: string, endDate: string) {
-    const start = parseISO(startDate).getTime()
-    const end = parseISO(endDate).getTime()
+  getNightInNumber(startDate: number[], endDate: number[]) {
+    const start = parseISO(getDateFromArray(startDate)).getTime()
+    const end = parseISO(getDateFromArray(endDate)).getTime()
     return getNightNumber(start, end);
   }
 
-  getPriceByNights(fromDate: string, toDate: string, price: number) {
+  getPriceByNights(fromDate: number[], toDate: number[], price: number) {
     return this.formatMoney(this.getNightInNumber(fromDate, toDate) * price);
   }
 
@@ -101,5 +104,9 @@ export class CartComponent implements OnInit {
 
   isAvailable(status: string) {
     return status === "AVAILABLE";
+  }
+
+  getDateFromArray(arr: number[]) {
+    return String(getDateFromArray(arr));
   }
 }

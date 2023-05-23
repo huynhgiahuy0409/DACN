@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Cart, CartItem, ReservationRequest } from 'src/app/models/model';
-import { getDateNoYearTitle, getNightNumber } from 'src/app/shared/utils/DateUtils';
+import { getDateFromArray, getDateInString, getDateNoYearTitle, getNightNumber } from 'src/app/shared/utils/DateUtils';
 import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 import { PaymentService } from '../services/payment.service';
 import { parseISO } from 'date-fns';
@@ -43,15 +43,16 @@ export class CheckoutComponent implements OnInit {
     return Math.round(rating / 2);
   }
 
-  getDateInPlain(date: string) {
-    const parsed = parseISO(date).getTime()
-    return getDateNoYearTitle(parsed);
+  getDateInPlain(dateNum: number[]) {
+    const parsedArray = getDateFromArray(dateNum);
+    const parsed = parseISO(parsedArray).getTime()
+    return getDateInString(parsed);
   }
 
-  getNightLabel(startDate: string, endDate: string) {
-    const start = parseISO(startDate).getTime()
-    const end = parseISO(endDate).getTime()
-    return getNightNumber(start, end) + " đêm";
+  getNightLabel(startDate: number[], endDate: number[]) {
+    const start = parseISO(getDateFromArray(startDate)).getTime()
+    const end = parseISO(getDateFromArray(endDate)).getTime()
+    return getNightNumber(start, end);
   }
 
   toggleShowAmenitiesItem(index: number) {
@@ -75,18 +76,17 @@ export class CheckoutComponent implements OnInit {
       return total + (this.getNightInNumber(item.fromDate, item.toDate) * item.room.finalPrice);
     }
       , 0);
-    // return totalPrice + (totalPrice * 10 / 100);
     return totalPrice;
   }
 
-  getPriceByNights(fromDate: string, toDate: string, price: number) {
-    return this.formatPrice(this.getNightInNumber(fromDate, toDate) * price);
+  getNightInNumber(startDate: number[], endDate: number[]) {
+    const start = parseISO(getDateFromArray(startDate)).getTime()
+    const end = parseISO(getDateFromArray(endDate)).getTime()
+    return getNightNumber(start, end);
   }
 
-  getNightInNumber(startDate: string, endDate: string) {
-    const start = parseISO(startDate).getTime()
-    const end = parseISO(endDate).getTime()
-    return getNightNumber(start, end);
+  getPriceByNights(fromDate: number[], toDate: number[], price: number) {
+    return getMoneyFormat(this.getNightInNumber(fromDate, toDate) * price);
   }
 
   onProceedToPayment() {
@@ -100,8 +100,8 @@ export class CheckoutComponent implements OnInit {
           price: item.room.rentalPrice,
           adult: item.adult,
           children: item.child,
-          startDate: item.fromDate,
-          endDate: item.toDate,
+          startDate: new Date(getDateFromArray(item.fromDate)).getTime().toString(),
+          endDate: new Date(getDateFromArray(item.toDate)).getTime().toString(),
           discountPercent: 0,
           username: "",//if user is logged in pls put username here
           hotelId: item.hotel.id,

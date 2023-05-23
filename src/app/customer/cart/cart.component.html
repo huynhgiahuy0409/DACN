@@ -18,7 +18,7 @@
             </div>
             <div class="d-flex-bh flex-wrap-bh cart-list__box cart-item" *ngFor="let item of cart">
                 <div class="item-img">
-                    <img [src]="item.bannerImage" alt="image" width="68px">
+                    <img [src]="BASE_IMG+item.bannerImage" alt="image" width="68px">
                 </div>
                 <div class="item-information">
                     <p class="item-name">{{item.hotel.name}}</p>

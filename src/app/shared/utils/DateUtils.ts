@@ -14,3 +14,7 @@ export const getNightNumber = (startDate: number, endDate: number) => {
     const nightNumber = Math.round((end.getTime() - start.getTime()) / (1000 * 3600 * 24));
     return nightNumber;
 }
+
+export const getDateFromArray = (arr: number[]) => {
+    return arr[0] + "-" + (arr[1] > 10 ? arr[1] : "0" + arr[1]) + "-" + (arr[2] > 10 ? arr[2] : "0" + arr[2]);
+}

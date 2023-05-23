@@ -2,8 +2,8 @@ export interface CartItem {
   id: number;
   adult: number;
   child: number;
-  fromDate: string;
-  toDate: string;
+  fromDate: number[];
+  toDate: number[];
   hotel: HotelResponse;
   room: RoomResponse;
   sessionId: string;
