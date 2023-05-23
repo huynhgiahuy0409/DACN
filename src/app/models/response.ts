@@ -19,6 +19,10 @@ export interface SearchedProductResponse {
     minFinalPrice: number
     maxFinalPrice: number
 }
+export interface ImageResponse{
+    isThumbnail: boolean,
+    url: string
+}
 export interface SearchedProductItemResponse {
     name: string;
     benefits: string[];
@@ -33,6 +37,7 @@ export interface SearchedProductItemResponse {
     isDeals: boolean;
     isOnlinePayment: boolean;
     isFreeCancellation: boolean;
+    hotelImages: ImageResponse[]
 }
 export interface ProvinceResponse {
     id: number,

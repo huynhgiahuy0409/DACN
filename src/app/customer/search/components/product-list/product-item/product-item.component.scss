@@ -37,6 +37,8 @@
 
 .product__item__body .left__wrapper .product-image__wrapper .product-image__thumbnail img {
     width: 100%;
+    min-height: 200px;
+    max-height: 200px;
     object-fit: cover;
     display: block;
 }

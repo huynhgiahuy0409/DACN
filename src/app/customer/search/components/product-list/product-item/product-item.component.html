@@ -6,9 +6,9 @@
         <div class="col l-4">
           <div class="left__wrapper">
             <div class="product-image__wrapper">
-              <div class="product-image__thumbnail">
-                <img
-                  src="https://pix8.agoda.net/hotelImages/594/5940302/5940302_19031215540072930735.jpg?ca=8&ce=1&s=1024x768"
+              <div class="product-image__thumbnail" >
+                <img 
+                  [src]="thumbImage? thumbImage.url: null"
                   alt=""
                 />
               </div>
@@ -16,12 +16,12 @@
                 <div class="row no-gutters">
                   <div
                     class="col l-3 product-image__review-item"
-                    *ngFor="let image of [1, 1, 1, 1]; last as lastIdx"
-                    (mouseenter)="isHoverReviewItem = true"
+                    *ngFor="let image of hotelImages; last as lastIdx"
+                    (mouseenter)="hoverImage(image)"
                     (mouseleave)="isHoverReviewItem = false"
                   >
                     <img
-                      src="https://pix8.agoda.net/hotelImages/594/5940302/5940302_19031215540072930735.jpg?ca=8&ce=1&s=1024x768"
+                      [src]="image? image.url: null"
                       alt=""
                     />
                     <div class="overlay" *ngIf="lastIdx">
@@ -32,7 +32,7 @@
                 <div class="image-zoom" *ngIf="isHoverReviewItem">
                   <div class="image__wrapper">
                     <img
-                      src="https://pix8.agoda.net/hotelImages/594/5940302/5940302_19031215540072930735.jpg?ca=8&ce=1&s=1024x768"
+                      [src]="hoveredImage.url"
                       alt=""
                     />
                     <div class="description__wrapper">
