@@ -1,12 +1,11 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Cart, CartItem, ReservationRequest } from 'src/app/models/model';
-import { getDateFromArray, getDateInString, getDateNoYearTitle, getNightNumber } from 'src/app/shared/utils/DateUtils';
-import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
-import { PaymentService } from '../services/payment.service';
 import { parseISO } from 'date-fns';
 import { HOTEL_IMG } from 'src/app/models/constance';
+import { CartItem, ReservationRequest } from 'src/app/models/model';
+import { getDateFromArray, getDateInString, getNightNumber } from 'src/app/shared/utils/DateUtils';
+import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
+import { PaymentService } from '../services/payment.service';
 
 @Component({
   selector: 'app-checkout',
@@ -103,8 +102,8 @@ export class CheckoutComponent implements OnInit {
           price: item.room.rentalPrice,
           adult: item.adult,
           children: item.child,
-          startDate: new Date(getDateFromArray(item.fromDate)).getTime().toString(),
-          endDate: new Date(getDateFromArray(item.toDate)).getTime().toString(),
+          startDate: getDateFromArray(item.fromDate),
+          endDate: getDateFromArray(item.toDate),
           discountPercent: 0,
           username: "",//if user is logged in pls put username here
           hotelId: item.hotel.id,
