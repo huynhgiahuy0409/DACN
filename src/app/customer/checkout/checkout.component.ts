@@ -6,6 +6,7 @@ import { getDateFromArray, getDateInString, getDateNoYearTitle, getNightNumber }
 import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 import { PaymentService } from '../services/payment.service';
 import { parseISO } from 'date-fns';
+import { HOTEL_IMG } from 'src/app/models/constance';
 
 @Component({
   selector: 'app-checkout',
@@ -18,6 +19,8 @@ export class CheckoutComponent implements OnInit {
   showWaitingOverlay: boolean = false;
   chosenItems: CartItem[] = [];
   showAmenitiesItem: number[] = [];
+
+  readonly BASE_IMG: string = HOTEL_IMG;
 
   customerInformationFormGroup = this._formBuilder.group({
     family_name: ['', Validators.compose([Validators.required])],
@@ -52,7 +55,7 @@ export class CheckoutComponent implements OnInit {
   getNightLabel(startDate: number[], endDate: number[]) {
     const start = parseISO(getDateFromArray(startDate)).getTime()
     const end = parseISO(getDateFromArray(endDate)).getTime()
-    return getNightNumber(start, end);
+    return getNightNumber(start, end) + " đêm";
   }
 
   toggleShowAmenitiesItem(index: number) {
