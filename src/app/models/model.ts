@@ -1,3 +1,5 @@
+import { HotelResponse, RoomResponse } from "./response";
+
 export interface CartItem {
   id: number;
   adult: number;
@@ -35,24 +37,6 @@ export interface Benefit {
   code: string;
 }
 
-export interface HotelResponse {
-  id: number;
-  name: string;
-  description: string;
-  averagePoints: number;
-  status: string;
-}
-
-export interface RoomResponse {
-  id: number;
-  name: string;
-  maxAdults: number;
-  maxChildren: number;
-  status: string;
-  originPrice: number;
-  rentalPrice: number;
-  finalPrice: number;
-}
 
 export interface ApiResponse {
   data: string;

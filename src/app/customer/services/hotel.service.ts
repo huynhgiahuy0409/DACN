@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Observable, map, of, switchMap } from 'rxjs';
 import { URL_API } from 'src/app/models/constance';
 import { ApiResponse } from 'src/app/models/model';
-import { APIResponse, AutocompleteSearchResponse } from 'src/app/models/response';
+import { ProductFilterRequest } from 'src/app/models/request';
+import { APIResponse, AutocompleteSearchResponse, ProductDetailResponse } from 'src/app/models/response';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,17 @@ export class HotelService {
         return of(response.data)
       })
     )
+  }
+  public findDetailHotel(hotelId: number, productFilterRequest: ProductFilterRequest): Observable<ProductDetailResponse>{
+    productFilterRequest.value = hotelId
+    let url = URL_API.concat(`/api/hotel/${hotelId}`);
+    return this._httpClient.post<ProductDetailResponse>(
+      url,
+      productFilterRequest,
+      {
+        responseType: 'json',
+      }
+    );
   }
 
 }

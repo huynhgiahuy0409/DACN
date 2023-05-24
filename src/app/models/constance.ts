@@ -12,5 +12,7 @@ export const FIND_ALL_FAVORITE_HOTEL = `${API_PREFIX}/favorites/findAllByUsernam
 export const DELETE_FAVORITE_HOTEL_BY_ID = `${API_PREFIX}/favorites/deleteById`;
 
 export const URL_API = "http://localhost:8080";
+export const URL_CLIENT = "http://localhost:4200";
+
 export const DIRECT_LINK = `${URL_API}/uploads`
 export const ONE_DOLLAR_IN_USD = 23456;

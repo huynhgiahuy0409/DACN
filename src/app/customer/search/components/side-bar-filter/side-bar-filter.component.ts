@@ -247,7 +247,7 @@ export class SideBarFilterComponent
       let userRateOptions: FilterOptionItemResponse[] = options[1];
       let hotelFacilityOptions: FilterOptionItemResponse[] = options[2];
       let discountOptions: FilterOptionItemResponse[] = options[3];
-      const discountValue: string | null =
+      const discountValue: number | null =
         optionFilter && optionFilter.discount ? optionFilter.discount : null;
       const benefits: number[] | undefined =
         optionFilter && optionFilter.benefits
@@ -257,7 +257,7 @@ export class SideBarFilterComponent
         optionFilter && optionFilter.hotelFacilities
           ? optionFilter.hotelFacilities
           : undefined;
-      const rate: string | null =
+      const rate: number | null =
         optionFilter && optionFilter.guestRating
           ? optionFilter.guestRating
           : null;

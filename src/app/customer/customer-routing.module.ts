@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CustomerComponent } from './customer.component';
+import { ProductDetailComponent } from './product-detail/product-detail.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,10 @@ const routes: Routes = [
         path: "favorite-list",
         loadChildren: () => import('./favorite-list/favorite-list.module').then((m) => m.FavoriteListModule)
       },
+      {
+        path: ":hotel-name/:type",
+        component: ProductDetailComponent
+      }
     ],
   },
 ];

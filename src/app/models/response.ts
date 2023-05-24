@@ -24,6 +24,7 @@ export interface ImageResponse{
     url: string
 }
 export interface SearchedProductItemResponse {
+    productId: number
     name: string;
     benefits: string[];
     address: AddressResponse;
@@ -92,4 +93,36 @@ export interface FilterOptionItemResponse {
     value: any,
     name: string,
     total: number
+}
+export interface HotelResponse{
+    id: number;
+    name: string;
+    description: string
+    averagePoints: number
+    status: string
+    isFreeCancellation: boolean
+    isDeals: boolean
+    hotelImages: ImageResponse[]
+    address: AddressResponse
+    starRating: number
+    averageRating: AverageRatingResponse;
+    facilities: FacilityResponse[];
+}
+export interface RoomResponse{
+    id: number;
+    name: string
+    maxAdults: number
+    maxChildren: number
+    status: string
+    originPrice: number
+    rentalPrice: number
+    finalPrice: number
+}
+export interface ProductDetailResponse{
+    hotel: HotelResponse
+    rooms: RoomResponse[]
+}
+export interface FacilityResponse{
+    name: string,
+    icon: string
 }

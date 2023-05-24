@@ -140,6 +140,14 @@ export class FilterProductService{
       value: ['', Validators.required],
       type: ['', Validators.required],
     });
+
+    this.startDateControl.valueChanges.subscribe(startDate => {
+      console.log(startDate)
+      this.minStartDate = new Date(startDate);
+      this.minEndDate = moment(this.minStartDate).add(1, 'day').toDate();
+      this.endDateControl.patchValue(this.minEndDate)
+    })
+
     /* Setup Autocompletes for search by Detect change search$ */
     this.autocompletes$ = this.search$.pipe(
       debounceTime(500),

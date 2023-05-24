@@ -1,4 +1,5 @@
-<div class="product-item__wrapper grid">
+<a class="product-item__wrapper grid" (click)="seletectProductItem(searchedProduct)" >
+  <!-- <a [href]="url">aaaa</a> -->
   <div class="product__item" [class.searched]="isSearchedProduct">
     <div class="product__item__header"></div>
     <div class="product__item__body">
@@ -52,7 +53,7 @@
                   {{ searchedProduct.name }}
                 </h3>
                 <div class="star-rating__wrapper">
-                  <app-start-rating [cover]="computeStarCover(searchedProduct.starRating)"></app-start-rating>
+                  <app-start-rating [starRating]="searchedProduct.starRating"></app-start-rating>
                 </div>
                 <div class="address__wrapper">
                   <app-location-maker-svg
@@ -105,8 +106,7 @@
                 </div>
                 <div class="discount__wrapper">
                   <app-tag-svg class="mr-r-5"></app-tag-svg>
-                  Mã giảm giá {{ searchedProduct.discount.name }} đã được áp
-                  dụng - {{ searchedProduct.discount.percent }}%
+                  Mã giảm giá {{ searchedProduct.discount.name }} - {{ searchedProduct.discount.percent }}%
                 </div>
               </div>
             </div>
@@ -153,18 +153,11 @@
                   }}</span>
                 </div>
               </div>
-              <div class="price__item">
-                <div class="origin-price__wrapper">
-                  <span>{{
-                    searchedProduct.rentalPrice | currency : "VND"
-                  }}</span>
-                </div>
-              </div>
               <span class="fs-12 mr-b-5">Thuê phòng ngay, giá chỉ từ</span>
               <div class="price__item">
                 <div class="rental-price__wrapper">
                   <span>{{
-                    searchedProduct.finalPrice | currency : "VND"
+                    searchedProduct.rentalPrice | currency : "VND"
                   }}</span>
                 </div>
               </div>
@@ -175,4 +168,4 @@
       </div>
     </div>
   </div>
-</div>
+</a>

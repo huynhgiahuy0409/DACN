@@ -1,39 +1,31 @@
+import { URL_API } from 'src/app/models/constance';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { log } from 'console';
-import { Observable, concatMap, filter, forkJoin, map, of, switchMap, tap, timeout } from 'rxjs';
-import { FilterProductService } from 'src/app/customer/services/filter-product.service';
-import { ProgressSpinnerService } from 'src/app/customer/services/progress-spinner.service';
-import {
-  OptionFilterRequest,
-  ProductFilterRequest,
-} from 'src/app/models/request';
-import {
-  AddressResponse,
-  AverageRatingResponse,
-  DiscountResponse,
-  SearchedProductItemResponse,
-  SearchedProductResponse,
-} from 'src/app/models/response';
+import { Observable, map, switchMap, tap } from 'rxjs';
+import { ProductFilterRequest } from 'src/app/models/request';
+import { FilterProductService } from '../services/filter-product.service';
+import { ProgressSpinnerService } from '../services/progress-spinner.service';
+import { HotelResponse, ProductDetailResponse } from 'src/app/models/response';
+import { HotelService } from '../services/hotel.service';
 
 @Component({
-  selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss'],
+  selector: 'app-product-detail',
+  templateUrl: './product-detail.component.html',
+  styleUrls: ['./product-detail.component.scss']
 })
-export class ProductListComponent implements OnInit {
-  searchedProductResponse$!: Observable<SearchedProductResponse | null>;
-  constructor(
-    private _route: ActivatedRoute,
+export class ProductDetailComponent implements OnInit {
+  productDetail$!: Observable<ProductDetailResponse>
+  minPrice!: number
+  constructor( private _route: ActivatedRoute,
     private _productFilterService: FilterProductService,
-    private _progressSpinnerService: ProgressSpinnerService
-  ) { }
+    private _hotelService: HotelService,
+    private _progressSpinnerService: ProgressSpinnerService) { }
 
   ngOnInit(): void {
     /* Detect change value from QueryParams to update filter state */
-    this._route.queryParamMap
+    this.productDetail$ = this._route.queryParamMap
       .pipe(
-        tap((paramsAsMap: any) => {
+        switchMap((paramsAsMap: any) => {
           this._progressSpinnerService.next(true);
           const {
             textToSearch,
@@ -78,11 +70,10 @@ export class ProductListComponent implements OnInit {
             },
           };
           this._productFilterService.nextProductFilterRequest(productFilterRequest)
+          return this._hotelService.findDetailHotel(value, productFilterRequest)
         }),
+      )
       
-      ).subscribe()
-      
-      /* asssign searchedProductResponse from Service */
-      this.searchedProductResponse$ = this._productFilterService.searchedProductResponse$
   }
+
 }
