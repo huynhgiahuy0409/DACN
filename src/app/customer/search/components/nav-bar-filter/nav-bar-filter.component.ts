@@ -34,7 +34,7 @@ export class NavBarFilterComponent implements OnInit {
         currProductFilterRequest.productSortRequest = undefined
       } else if (value === "name") {
         currProductFilterRequest.productSortRequest = {
-          direction: "desc",
+          direction: "asc",
           property: "name"
         }
       } else if (value === "price") {

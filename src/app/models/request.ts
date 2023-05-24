@@ -1,5 +1,5 @@
 export interface ProductFilterRequest {
-    search: string;
+    search?: string;
     startDate: string;
     endDate: string;
     rooms: number;
@@ -21,8 +21,8 @@ export interface SaveFavoriteHotelRequest {
 export interface OptionFilterRequest{
     hotelFacilities?: number[],
     benefits?: number[],
-    guestRating?: string,
-    discount?: string,
+    guestRating?: number,
+    discount?: number,
     priceFrom?: number,
     priceTo?: number
 }

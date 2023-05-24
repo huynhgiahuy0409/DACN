@@ -1,0 +1,38 @@
+.pi__container {
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 16px 0;
+}
+.image__wrapper {
+  width: 100%;
+  height: 140px;
+}
+.image__wrapper:nth-child(1){
+  margin-bottom: 8px;
+}
+.image__wrapper.thumb{
+  width: 100%;
+  height: 100%;
+  margin-bottom: 0;
+}
+.image__wrapper.thumb img{
+    height: 288px;
+}
+
+.image__wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.image__group {
+  margin-left: 8px;
+  height: 100%;
+}
+// .image__group img{
+//     width: 100%;
+//     height: 140px;
+//     object-fit: cover;
+// }
+.image__group img:nth-child(2) {
+  margin-top: 8px;
+}
