@@ -5,6 +5,7 @@ import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 import { FavoriteHotelService } from '../services/favorite-hotel.service';
 import { FavoriteHotelResponse } from 'src/app/models/response';
 import { ToastrService } from 'ngx-toastr';
+import { HOTEL_IMG } from 'src/app/models/constance';
 
 @Component({
   selector: 'app-favorite-list',
@@ -26,6 +27,8 @@ export class FavoriteListComponent implements OnInit {
     left: "30%",
     width: "33px"
   }
+
+  readonly BASE_IMG: string = HOTEL_IMG;
 
 
   @ViewChild('calendar') calendar!: ElementRef;
