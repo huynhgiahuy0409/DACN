@@ -15,15 +15,14 @@ export interface CartItem {
   roomType: string;
   benefits: Benefit[];
   status: string;
+  discountPercent: number;
 }
 
 export interface ReservationRequest {
-  price: number;
   adult: number;
   children: number;
   startDate: string;
   endDate: string;
-  discountPercent: number;
   username: string;
   hotelId: number;
   roomId: number;

@@ -74,11 +74,19 @@ export class CheckoutComponent implements OnInit {
   }
 
   getTotalPrice() {
-    const totalPrice = this.chosenItems.reduce((total, item) => {
-      return total + (this.getNightInNumber(item.fromDate, item.toDate) * item.room.finalPrice);
+    const totalPrice = this.chosenItems.reduce((total, item: CartItem) => {
+      return total + (this.getNightInNumber(item.fromDate, item.toDate) * this.getPriceAfterDiscount(item.room.originPrice,
+        item.discountPercent));
     }
       , 0);
     return totalPrice;
+  }
+
+  getPriceAfterDiscount(price: number, discount: number) {
+    if (discount > 0)
+      return price - (price * (discount / 100));
+    else
+      return price;
   }
 
   getNightInNumber(startDate: number[], endDate: number[]) {
@@ -87,8 +95,8 @@ export class CheckoutComponent implements OnInit {
     return getNightNumber(start, end);
   }
 
-  getPriceByNights(fromDate: number[], toDate: number[], price: number) {
-    return getMoneyFormat(this.getNightInNumber(fromDate, toDate) * price);
+  getPriceByNights(fromDate: number[], toDate: number[], originalPrice: number, discountPercent: number) {
+    return getMoneyFormat(this.getNightInNumber(fromDate, toDate) * this.getPriceAfterDiscount(originalPrice, discountPercent));
   }
 
   onProceedToPayment() {
@@ -99,13 +107,11 @@ export class CheckoutComponent implements OnInit {
       const phone = this.customerInformationFormGroup.get('phone')?.value || "";
       this.chosenItems.forEach(item => {
         finalItems.push({
-          price: item.room.rentalPrice,
           adult: item.adult,
           children: item.child,
           startDate: getDateFromArray(item.fromDate),
           endDate: getDateFromArray(item.toDate),
-          discountPercent: 0,
-          username: "",//if user is logged in pls put username here
+          username: "",//if user is logged in pls put username here ( at here we will create a random user with random username and password )
           hotelId: item.hotel.id,
           roomId: item.room.id,
           fullName: fullName,
@@ -120,7 +126,7 @@ export class CheckoutComponent implements OnInit {
       this.paymentService.createToken().subscribe(data => {
         if (data.access_token && data.token_type) {
           localStorage.setItem("payment_token", data.access_token);
-          this.paymentService.createPayment(data.access_token, data.token_type, this.chosenItems).subscribe(data => {
+          this.paymentService.createPayment(data.access_token, data.token_type, this.getTotalPrice()).subscribe(data => {
             if (data.links) {
               localStorage.setItem("payment_id", data.id);
               window.location.href = data.links[1].href;

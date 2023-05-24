@@ -35,6 +35,7 @@ export class CheckPaymentStatusComponent implements OnInit {
             next: (res) => {
               this.cartService.deleteItemsFromCart(ids).subscribe((res) => {
                 console.log(res);
+                // localStorage.removeItem("sessionId");
                 localStorage.removeItem("finalItems");
                 localStorage.removeItem("chosenItems");
                 localStorage.removeItem("payment_token");

@@ -235,7 +235,9 @@
                         <p class="item-name">{{item.hotel.name}}</p>
                     </div>
                     <div class="price-column__second">
-                        <p class="text-end">{{getPriceByNights(item.fromDate,item.toDate,item.room.finalPrice)}}</p>
+                        <p class="text-end">
+                            {{getPriceByNights(item.fromDate,item.toDate,item.room.originPrice,item.discountPercent)}}
+                        </p>
                     </div>
                 </div>
             </div>

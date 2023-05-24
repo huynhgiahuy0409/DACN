@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Cart, CartItem } from 'src/app/models/model';
-import { getDateFromArray, getDateInString, getNightNumber } from 'src/app/shared/utils/DateUtils';
-import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
-import { CartService } from '../services/cart.service';
 import { parseISO } from 'date-fns';
 import { ToastrService } from 'ngx-toastr';
 import { HOTEL_IMG } from 'src/app/models/constance';
+import { CartItem } from 'src/app/models/model';
+import { getDateFromArray, getDateInString, getNightNumber } from 'src/app/shared/utils/DateUtils';
+import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -52,11 +52,19 @@ export class CartComponent implements OnInit {
   }
 
   getTotalPrice() {
-    const totalPrice = this.chosenItems.reduce((total, item) => {
-      return total + (this.getNightInNumber(item.fromDate, item.toDate) * item.room.finalPrice);
+    const totalPrice = this.chosenItems.reduce((total, item: CartItem) => {
+      return total + (this.getNightInNumber(item.fromDate, item.toDate) * this.getPriceAfterDiscount(item.room.originPrice,
+        item.discountPercent));
     }
       , 0);
     return totalPrice;
+  }
+
+  getPriceAfterDiscount(price: number, discount: number) {
+    if (discount > 0)
+      return price - (price * (discount / 100));
+    else
+      return price;
   }
 
   getDateInPlain(dateNum: number[]) {
@@ -71,23 +79,24 @@ export class CartComponent implements OnInit {
     return getNightNumber(start, end);
   }
 
-  getPriceByNights(fromDate: number[], toDate: number[], price: number) {
-    return this.formatMoney(this.getNightInNumber(fromDate, toDate) * price);
+  getPriceByNights(fromDate: number[], toDate: number[], originalPrice: number, discountPercent: number) {
+    return this.formatMoney(this.getNightInNumber(fromDate, toDate) * this.getPriceAfterDiscount(originalPrice, discountPercent));
   }
 
   onDeleteItemFromCart(id: number) {
     this.chosenItems = this.chosenItems.filter(item => item.id !== id);
     this.cart = this.cart.filter(item => item.id !== id);
 
-    this.cartService.deleteItemFromCart(id).subscribe(
-      (res) => {
+    this.cartService.deleteItemFromCart(id).subscribe({
+      next: (res) => {
         if (res.statusCode === 200) {
           this.toastrService.success(res.message);
         }
       },
-      (error) => {
+      error: (error) => {
         this.toastrService.error(error.error.message);
-      });
+      }
+    });
   }
 
   convertToString(value: number) {

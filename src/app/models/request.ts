@@ -18,7 +18,18 @@ export interface SaveFavoriteHotelRequest {
     hotelId: number;
     username: string;
 }
-export interface OptionFilterRequest{
+
+export interface AddToCartRequest {
+    adult: number;
+    child: number;
+    fromDate: string;//yyyy-mm-dd
+    toDate: string;
+    hotelId: number;
+    roomId: number;
+    sessionId: string;
+}
+
+export interface OptionFilterRequest {
     hotelFacilities?: number[],
     benefits?: number[],
     guestRating?: number,
