@@ -29,6 +29,11 @@ export interface AddToCartRequest {
     sessionId: Nullable<string>;
 }
 
+export interface FindCartItemRequest {
+    sessionId: Nullable<string>;
+    roomId: number;
+}
+
 export interface OptionFilterRequest {
     hotelFacilities?: number[],
     benefits?: number[],

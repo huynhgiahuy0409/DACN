@@ -1,3 +1,5 @@
+import { Benefit } from "./model";
+
 export interface APIResponse<T> {
     data: T,
     message: string,
@@ -129,32 +131,18 @@ export interface FacilityResponse {
 
 export interface AddToCartResponse {
     id: number;
-    address: string;
     adult: number;
-    bannerImage: string;
-    benefits: {
-        name: string; code: string;
-    }[];
     child: number;
-    discountPercent: number;
     fromDate: number[];
-    hotel: {
-        averagePoints: number; id: number;
-        name: string;
-        status: string;
-    };
-    room: {
-        id: number;
-        maxAdults: number;
-        maxChildren: number;
-        name: string;
-        originPrice: number;
-        rentalPrice: number;
-        status: any;
-    };
-    roomType: string;
-    sessionId: string;
-    status: string;
     toDate: number[];
+    hotel: HotelResponse;
+    room: RoomResponse;
+    sessionId: string;
+    address: string;
+    bannerImage: string;
     totalReviews: number;
+    roomType: string;
+    benefits: Benefit[];
+    status: string;
+    discountPercent: number;
 }
