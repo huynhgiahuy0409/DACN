@@ -56,7 +56,7 @@ export class PhotosComponent implements OnInit {
       this.roomService.room= value;
       console.log(this.roomService.room)
 
-
+      console.log("hehe")
 
 
     })
