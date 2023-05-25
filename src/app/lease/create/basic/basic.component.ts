@@ -138,7 +138,7 @@ export class BasicComponent implements OnInit {
 
 
 
-
+    this.room= this.rfBasic.value;
 
 
 
@@ -168,6 +168,6 @@ export class RoomHotel {
 
   hotel!:HotelDescription;
 
-  discounts!: Discount[];
+  discount!: Discount;
 }
 

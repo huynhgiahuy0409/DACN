@@ -39,59 +39,48 @@
     </div>
   </div>
 
-  <div class="panel-description">
-    <p>Gợi ý vui chơi ăn uống tại địa phương (không bắt buộc)</p>
-    <span>Ngợi ý vui chơi ăn uống tại địa phương (không bắt buộc)</span>
-    <div class="panel-description-form">
-      <textarea
-        rows="5"
+  <div class="panel-payment">
+    <p>FreeCancelation</p>
+    <span>Vui lòng chọn.</span>
+    <div class="panel-payment-form">
 
+      <div class="payment-item" *ngFor="let item of _frees">
+        <input type="radio"
 
-        placeholder="Ví dụ:
-• 5 phút đi bộ đến điểm tham quan phổ biến
-• Cách quán ăn nổi tiếng 10 phút đi bộ
-• Chỉ 5 phút đi bộ đến quán bar nhộn nhịp"></textarea>
-      <small>
-        5000
-      </small>
+               value="{{item.title}}"
+               formControlName="isFreeCancellation"
+        >
+        <div class="payment-name">
+          <p style="font-weight: normal">
+            {{item.title}}
+          </p>
+
+        </div>
+      </div>
+
     </div>
   </div>
-  <div class="panel-description">
-    <p>Quy tắc của chỗ nghỉ (tùy chọn)</p>
-    <span>Báo trước cho du khách những quy định cụ thể trong nhà</span>
-    <div class="panel-description-form">
-      <textarea
-        rows="5"
+  <div class="panel-payment">
+    <p>Deals</p>
+    <span>Vui lòng chọn.</span>
+    <div class="panel-payment-form">
 
+      <div class="payment-item" *ngFor="let item of _deals">
+        <input type="radio"
 
-        placeholder="Ví dụ:
-• Không tụ tập hay tổ chức tiệc tùng
-• Giữ yên lặng sau 11:00 PM
-• Không xả rác xuống đường ống"></textarea>
-      <small>
-        5000
-      </small>
+               value="{{item.title}}"
+               formControlName="isDeal"
+        >
+        <div class="payment-name">
+          <p style="font-weight: normal">
+            {{item.title}}
+          </p>
+
+        </div>
+      </div>
+
     </div>
   </div>
-
-  <div class="panel-description">
-    <p>Khách có thể đến chỗ nghỉ bằng cách nào?</p>
-    <span>Hãy giúp khách dễ dàng tìm được chỗ nghỉ và giảm khả năng hủy bỏ và các vấn đề vào ngày nhận phòng. Chúng tôi sẽ gửi những hướng dẫn này cho khách sau khi xác nhận đặt phòng cùng với địa chỉ của quý đối tác và đường dẫn đến bản đồ Google. Quý đối tác cũng</span>
-    <div class="panel-description-form">
-      <textarea
-        rows="5"
-
-
-        placeholder="Ví dụ:
-• Đi tàu tuyến sân bay đến... (từ sân bay ra thành phố)
-• Chuyển tuyến tàu lửa hướng đi đến ga... (đi lại trong thành phố)
-• Vui lòng gửi tin nhắn cho tôi sau khi chuyển tàu (hướng dẫn cá nhân)"></textarea>
-      <small>
-        5000
-      </small>
-    </div>
-  </div>
-
 
 </form>
 <div class="action-description">

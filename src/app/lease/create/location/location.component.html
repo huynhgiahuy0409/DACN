@@ -22,38 +22,12 @@
         <input type="text" placeholder="Điền vào đây" formControlName="street">
       </div>
       <div class="panel-location-input">
-        <p>Tên tòa nhà, tầng và căn hộ (không bắt buộc)</p>
+        <p>Tên tòa nhà, tầng và căn hộ</p>
         <input type="text" placeholder="Điền vào đây" >
       </div>
-      <div class="panel-location-input-two">
-        <div class="panel-location-input-two-item">
-          <p>Quốc gia</p>
-          <select id="country"  (change)="changeCountry($event)">
-            <option *ngFor="let data of countryData" value="{{data.country}}">
-              {{data.country}}
-            </option>
 
-          </select>
-        </div>
-        <div class="panel-location-input-two-item">
-          <p>Tiểu bang / Tỉnh</p>
-          <select id="city">
-            <option *ngFor="let item of city" value="{{item}}">
-              {{item}}
-            </option>
-          </select>
-        </div>
-      </div>
 
-        <div class="panel-location-input-map">
-          <p>
-            Vị trí trên bản đồ
-          </p>
-          <span>
-            Đây có phải là vị trí chính xác của chỗ nghỉ không? Nếu không thì hãy kéo cái ghim đến vị trí chính xác.
-          </span>
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.214525476953!2d106.78957301525111!3d10.871281660407313!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3175276398969f7b%3A0x9672b7efd0893fc4!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBOw7RuZyBMw6JtIFRwLiBI4buTIENow60gTWluaA!5e0!3m2!1svi!2s!4v1680435517906!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
+
     </div>
   </div>
 </form>

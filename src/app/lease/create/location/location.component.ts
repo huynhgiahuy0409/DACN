@@ -51,7 +51,7 @@ export class LocationComponent implements OnInit {
 
 
 
-
+  this.ha=this.rfLocation.value;
 
 
 

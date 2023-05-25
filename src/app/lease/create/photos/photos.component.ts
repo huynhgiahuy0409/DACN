@@ -23,7 +23,7 @@ export class PhotosComponent implements OnInit {
 
   hi!: HotelImage;
   rh!:{ rentalPrice: number; name: string; hotel: HotelDescription; id: number; maxAdults: number; originPrice: number; maxChildren: number ,
-    discounts: Discount[];}
+    discount: Discount;}
   submitForm() {
 
 
@@ -48,7 +48,7 @@ export class PhotosComponent implements OnInit {
       maxAdults:this.roomService.room.maxAdults,
       rentalPrice:this.roomService.room.rentalPrice,
       originPrice:this.roomService.room.originPrice,
-      discounts:[this.roomService.discount],
+      discount:this.roomService.discount,
 
       hotel:this.hotelProfileService.hotelDescription
     }

@@ -35,7 +35,7 @@ export class PricingComponent implements OnInit {
       {
         id: 3,
         title: 'Khác',
-        desc: 'Giảm giá theo dịch vụ của phonòng',
+        desc: 'Giảm giá theo dịch vụ của phòng',
         isSelected: false
       }
     ]
@@ -63,7 +63,7 @@ export class PricingComponent implements OnInit {
 
     hotel: HotelDescription;
 
-    discounts:    Discount[];
+    discount:    Discount;
   };
 
   submitForm() {
@@ -85,7 +85,7 @@ export class PricingComponent implements OnInit {
       originPrice:this.roomService.room.originPrice,
       rentalPrice:this.roomService.room.rentalPrice,
       hotel:this.roomService.room.hotel,
-      discounts:  [this.roomService.discount]
+      discount:  this.roomService.discount
 
     }
     console.log(this.ro);

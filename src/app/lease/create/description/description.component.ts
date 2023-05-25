@@ -23,6 +23,40 @@ export class DescriptionComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,private hotelProfileService:HotelProfileService, private addressService :AddressService,private roomService : RoomService) {
   }
  hd!:HotelDescription;
+  _frees: FreeCancellation[] = [];
+  _deals: Deal[] = [];
+  getAll() {
+    this._frees = [
+      {
+        id: 1,
+        title: true,
+
+        isSelected: false
+      },
+      {
+        id: 2,
+        title: false,
+
+        isSelected: false
+      },
+
+    ]
+    this._deals = [
+      {
+        id: 1,
+        title: true,
+
+        isSelected: false
+      },
+      {
+        id: 2,
+        title: false,
+
+        isSelected: false
+      },
+
+    ]
+  }
   submitForm(){
 
     this.hd ={
@@ -30,7 +64,10 @@ export class DescriptionComponent implements OnInit {
        name :this.rfDescription.controls['name'].value,
       description:this.rfDescription.controls['description'].value,
       address:this.addressService.hotelAddress,
+      isFreeCancellation:this.rfDescription.controls['isFreeCancellation'].value,
+      isDeals:this.rfDescription.controls['isDeal'].value,
       rooms:[this.roomService.room],
+
 
     };
 
@@ -47,11 +84,12 @@ export class DescriptionComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    this.getAll()
     this.rfDescription= this.formBuilder.group({
       name : ['',Validators.required],
       description : ['',Validators.required],
-
-
+      isFreeCancellation: ['',Validators.required],
+      isDeal: ['',Validators.required],
     });
   }
 
@@ -63,6 +101,9 @@ export  class HotelDescription{
   description:string='';
 
   address!:HotelAddress;
+
+  isFreeCancellation:boolean=false;
+  isDeals:boolean=false;
   rooms:RoomHotel[]=[];
 
 
@@ -79,3 +120,16 @@ export  class HotelImage{
 
   hotel!:HotelDescription;
 }
+class FreeCancellation {
+  id: number | undefined;
+  title: boolean=false;
+
+  isSelected: boolean = false;
+}
+class Deal{
+  id: number | undefined;
+  title: boolean=false;
+
+  isSelected: boolean = false;
+}
+
