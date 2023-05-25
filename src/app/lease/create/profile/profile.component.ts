@@ -58,22 +58,12 @@ export class ProfileComponent implements OnInit {
   hp!: HotelProfile;
 
   submitForm() {
-    this.hp =
-      {
-        id: 0,
-        basic: this.hotelProfileService.basic
-        ,
-        location: this.hotelProfileService.location,
-        description: this.hotelProfileService.description,
-        amenities: this.hotelProfileService.amenities,
-        pricing: this.hotelProfileService.pricing,
-        photos: this.hotelProfileService.photos,
-        profile: this.rfProfile.value
-      }
-    this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock, this.hp).subscribe(value => {
 
-      this.hotelProfileService.profile = value.profile;
-    })
+    console.log(this.rfProfile.value)
+
+
+
+
   }
 
   ngOnInit(): void {

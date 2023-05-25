@@ -3,6 +3,8 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HotelProfileService} from "../../../services/lease/hotel-profile.service";
 import {BasicComponent} from "../basic/basic.component";
 import {HotelProfile} from "../../../models/model";
+import {HotelAddress, HotelDescription} from "../description/description.component";
+import {AddressService} from "../../../services/lease/address.service";
 
 @Component({
   selector: 'app-location',
@@ -38,66 +40,35 @@ export class LocationComponent implements OnInit {
   }
 
   rfLocation!:FormGroup;
-  constructor(private formBuilder: FormBuilder,private hotelProfileService:HotelProfileService) {
+  constructor(private formBuilder: FormBuilder,private addressService:AddressService) {
   }
-  hp!: HotelProfile;
+  ha!:HotelAddress;
+  hd!:HotelDescription;
   submitForm(){
 
-    this.hp =
-      {
-        id: 0,
-        basic: this.hotelProfileService.basic
-        ,
-        location: this.rfLocation.value,
-        description: {
-          move: "",
-          descHouse: "",
-          nameHouse: "",
-          rule: "",
-          suggest: "",
-          star: 0
-        },
-        amenities: {
-          recomendation: []
-        },
-        pricing: {
-          price: 0,
-          payment: "",
-          managerChannel: ""
-        },
-        photos: {
-          file: "",
-          fileSource: []
-        },
-        profile: {
-          typeHost: "",
-          company: {
-            addressCompany: "",
-            nameCompany: "",
-            codeAreaCompany: ""
-          },
-          mySelf: {
-            date: "",
-            firstName: "",
-            lastName: ""
-          }
-        },
-      }
 
 
-    this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock,this.hp).subscribe(value => {
 
-      this.hotelProfileService.location=value.location;
-    })
 
+
+
+
+
+
+  this.addressService.createAddress(this.ha).subscribe(value => {
+    this.addressService.id_lock=value.id;
+
+    this.addressService.hotelAddress=value;
+    console.log(this.addressService.id_lock)
+    console.log(this.addressService.hotelAddress)
+  })
   }
   ngOnInit(): void {
     this.rfLocation= this.formBuilder.group({
-      address : ['',Validators.required],
 
-      house : ['',Validators.required],
-      country : ['',Validators.required],
-      city : ['',Validators.required],
+      street : ['',Validators.required],
+
+
 
 
     });

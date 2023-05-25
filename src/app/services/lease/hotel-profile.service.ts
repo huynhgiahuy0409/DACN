@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Amenities, Basic, Description, HotelProfile, Location, Photos, Pricing, Profile} from "../../models/model";
+import {HotelAddress, HotelDescription} from "../../lease/create/description/description.component";
 
 @Injectable({
   providedIn: 'root'
@@ -9,36 +9,32 @@ import {Amenities, Basic, Description, HotelProfile, Location, Photos, Pricing, 
 export class HotelProfileService {
 
 
-  private baseUrl = "http://localhost:8080/api/v1/";
+  private baseUrl = "http://localhost:8080/api/hotel/";
+
+
 
   id_lock: number = 1;
-  basic!: Basic;
-  location!:Location
 
-  description!: Description;
-
-  amenities!: Amenities;
-  pricing!: Pricing;
-  photos!: Photos;
-  profile!: Profile;
+  hotelDescription!:HotelDescription;
+  hotelAddress!:HotelAddress;
 
   constructor(private httpClient: HttpClient) {
   }
 
-  getAllHotelProfiles(): Observable<HotelProfile[]> {
-    return this.httpClient.get<HotelProfile[]>(`${this.baseUrl}hotel_profiles`);
+  getAllHotelDescriptions(): Observable<HotelDescription[]> {
+    return this.httpClient.get<HotelDescription[]>(`${this.baseUrl}hotel_profiles`);
   }
 
-  createHotelProfile(hotelProfile: HotelProfile): Observable<HotelProfile> {
-    return this.httpClient.post<HotelProfile>(`${this.baseUrl}hotel_profile`, hotelProfile);
+  createHotelDescription(hotelDescription: HotelDescription): Observable<HotelDescription> {
+    return this.httpClient.post<HotelDescription>(`${this.baseUrl}hotel_profile`, hotelDescription);
   }
 
-  updateHotelProfile(id: number, hotelProfile: HotelProfile): Observable<HotelProfile> {
-    return this.httpClient.put<HotelProfile>(`${this.baseUrl}hotel_profiles/${id}`, hotelProfile);
+  updateHotelDescription(id: number, hotelDescription: HotelDescription): Observable<HotelDescription> {
+    return this.httpClient.put<HotelDescription>(`${this.baseUrl}hotel_profiles/${id}`, hotelDescription);
   }
 
-  deleteHotelProfile(id: number): Observable<HotelProfile> {
-    return this.httpClient.delete<HotelProfile>(`${this.baseUrl}hotel_profiles/${id}`);
+  deleteHotelDescription(id: number): Observable<HotelDescription> {
+    return this.httpClient.delete<HotelDescription>(`${this.baseUrl}hotel_profiles/${id}`);
 
   }
 }

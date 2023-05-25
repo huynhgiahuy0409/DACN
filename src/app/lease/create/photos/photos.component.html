@@ -15,9 +15,9 @@
 
 
         <input
-          formControlName="file"
+          formControlName="url"
           class="input-file"
-          type="file" (change)="onSelect($event)" multiple>
+          type="file" (change)="onSelect($event)" >
 
 
     </div>
@@ -48,7 +48,7 @@
       <ng-container *ngIf="show==true">
         <div class="show-img">
           <img
-            *ngFor="let url of urls"
+
             [src]="url" alt=""
            >
         </div>
@@ -66,7 +66,7 @@
 
     <button class="btn-photos-submit">
       <a
-        [routerLink]="['/lease/create/profile']"
+        [routerLink]="['/home']"
       (click)="submitForm()"
       >TIẾP THEO</a>
     </button>

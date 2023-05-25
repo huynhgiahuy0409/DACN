@@ -1,7 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+
 import {HotelProfileService} from "../../../services/lease/hotel-profile.service";
-import {HotelProfile} from "../../../models/model";
+import {RoomService} from "../../../services/lease/room.service";
+
+import {HotelDescription} from "../description/description.component";
+
 
 @Component({
   selector: 'app-pricing',
@@ -18,14 +22,20 @@ export class PricingComponent implements OnInit {
     this._paymentList = [
       {
         id: 1,
-        title: 'Tiền gửi trực tiếp vào ngân hàng',
-        desc: 'Qua hệ thống thanh toán được bảo mật của Agoda, chúng tôi sẽ chuyển khoản trực tiếp vào tài khoản ngân hàng của bạn sau khi khách hàng đã trả phòng.',
+        title: 'WEEKENDSALE',
+        desc: 'Tuần lễ giảm giá cho tất cả khách hàng khi đặt phòng',
         isSelected: false
       },
       {
         id: 2,
-        title: 'Chuyển khoản PayPal',
-        desc: 'Bạn sẽ được yêu cầu điền thông tin đăng nhập PayPal, chúng tôi sẽ thanh toán vào tài khoản PayPal của bạn sau khi khách hàng đã trả phòng.',
+        title: 'BLACKFRIDAY',
+        desc: 'Ngày thứ 6 đen tối , giảm giá cho khách hàng đi đúng vào ngày thứ 6',
+        isSelected: false
+      },
+      {
+        id: 3,
+        title: 'Khác',
+        desc: 'Giảm giá theo dịch vụ của phonòng',
         isSelected: false
       }
     ]
@@ -37,59 +47,77 @@ export class PricingComponent implements OnInit {
 
   rfPricing!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private hotelProfileService: HotelProfileService) {
+  constructor(private formBuilder: FormBuilder, private hotelProfileService: HotelProfileService, private roomService: RoomService) {
   }
 
-  hp!: HotelProfile;
+  dc!: Discount;
+  ro!: {
+    id: number, name: string;
+
+
+    maxAdults: number;
+    maxChildren: number;
+
+    originPrice: number;
+    rentalPrice: number;
+
+    hotel: HotelDescription;
+
+    discounts:    Discount[];
+  };
 
   submitForm() {
-    this.hp =
-      {
-        id: 0,
-        basic: this.hotelProfileService.basic
-        ,
-        location: this.hotelProfileService.location,
-        description: this.hotelProfileService.description,
-        amenities: this.hotelProfileService.amenities,
-        pricing: this.rfPricing.value,
-        photos: {
-          file: "",
-          fileSource: []
-        },
-        profile: {
-          typeHost: "",
-          company: {
-            addressCompany: "",
-            nameCompany: "",
-            codeAreaCompany: ""
-          },
-          mySelf: {
-            date: "",
-            firstName: "",
-            lastName: ""
-          }
-        },
-      }
-    this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock, this.hp).subscribe(value => {
 
-      this.hotelProfileService.pricing = value.pricing;
+    this.dc = this.rfPricing.value
+    console.log(this.rfPricing.value)
+    this.roomService.createDiscount(this.dc).subscribe(value => {
+      this.roomService.discount = value;
+      this.roomService.id_lock_discount=value.id;
+      console.log(this.roomService.discount);
+
+
+    });
+    this.ro = {
+      id: this.roomService.id_lock,
+      name:this.roomService.room.name,
+      maxAdults:this.roomService.room.maxAdults,
+      maxChildren:this.roomService.room.maxChildren,
+      originPrice:this.roomService.room.originPrice,
+      rentalPrice:this.roomService.room.rentalPrice,
+      hotel:this.roomService.room.hotel,
+      discounts:  [this.roomService.discount]
+
+    }
+    console.log(this.ro);
+    this.roomService.updateRoomHotel(this.roomService.id_lock,this.ro).subscribe(value => {
+
+      this.roomService.room=value;
+
+
     })
+
+
   }
 
   ngOnInit(): void {
     this.getAll();
     this.rfPricing = this.formBuilder.group({
 
-      managerChannel: ['', Validators.required],
 
-      price: ['', Validators.required],
-      payment: ['', Validators.required],
+      discountPercent: ['', Validators.required],
+      name: ['', Validators.required],
 
 
     });
   }
 
 
+}
+
+export interface Discount {
+  id: number;
+  discountPercent: number;
+  name: string;
 }
 
 class payment {
