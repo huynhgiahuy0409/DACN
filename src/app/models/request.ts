@@ -19,14 +19,14 @@ export interface SaveFavoriteHotelRequest {
     username: string;
 }
 
+type Nullable<T> = T | null;
 export interface AddToCartRequest {
     adult: number;
     child: number;
     fromDate: string;//yyyy-mm-dd
     toDate: string;
-    hotelId: number;
     roomId: number;
-    sessionId: string;
+    sessionId: Nullable<string>;
 }
 
 export interface OptionFilterRequest {

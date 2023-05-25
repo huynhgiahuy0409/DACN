@@ -21,3 +21,8 @@ export const getDateFromArray = (arr: number[]) => {
 export const getDateFromArrayInFormat = (arr: number[]) => {
     return (arr[2] > 10 ? arr[2] : "0" + arr[2]) + "/" + (arr[1] > 10 ? arr[1] : "0" + arr[1]) + "/" + arr[0];
 }
+
+export const getDateInFormat = (date: Date) => {
+    return date.getFullYear() + "-" + ((date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : "0" + (date.getMonth() + 1))
+        + "-" + (date.getDate() > 10 ? date.getDate() : "0" + date.getDate());
+}

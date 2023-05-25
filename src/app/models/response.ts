@@ -19,7 +19,7 @@ export interface SearchedProductResponse {
     minFinalPrice: number
     maxFinalPrice: number
 }
-export interface ImageResponse{
+export interface ImageResponse {
     isThumbnail: boolean,
     url: string
 }
@@ -94,7 +94,7 @@ export interface FilterOptionItemResponse {
     name: string,
     total: number
 }
-export interface HotelResponse{
+export interface HotelResponse {
     id: number;
     name: string;
     description: string
@@ -108,7 +108,7 @@ export interface HotelResponse{
     averageRating: AverageRatingResponse;
     facilities: FacilityResponse[];
 }
-export interface RoomResponse{
+export interface RoomResponse {
     id: number;
     name: string
     maxAdults: number
@@ -118,11 +118,43 @@ export interface RoomResponse{
     rentalPrice: number
     finalPrice: number
 }
-export interface ProductDetailResponse{
+export interface ProductDetailResponse {
     hotel: HotelResponse
     rooms: RoomResponse[]
 }
-export interface FacilityResponse{
+export interface FacilityResponse {
     name: string,
     icon: string
+}
+
+export interface AddToCartResponse {
+    id: number;
+    address: string;
+    adult: number;
+    bannerImage: string;
+    benefits: {
+        name: string; code: string;
+    }[];
+    child: number;
+    discountPercent: number;
+    fromDate: number[];
+    hotel: {
+        averagePoints: number; id: number;
+        name: string;
+        status: string;
+    };
+    room: {
+        id: number;
+        maxAdults: number;
+        maxChildren: number;
+        name: string;
+        originPrice: number;
+        rentalPrice: number;
+        status: any;
+    };
+    roomType: string;
+    sessionId: string;
+    status: string;
+    toDate: number[];
+    totalReviews: number;
 }

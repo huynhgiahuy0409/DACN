@@ -5,6 +5,7 @@ import { ADD_TO_CART, DELETE_BY_IDS } from 'src/app/models/constance';
 import { DELETE_ITEM_FROM_CART, GET_CART_BY_SESSION_ID } from 'src/app/models/constance';
 import { ApiResponse, CartItem } from 'src/app/models/model';
 import { AddToCartRequest } from 'src/app/models/request';
+import { AddToCartResponse } from 'src/app/models/response';
 
 @Injectable({
   providedIn: 'root'
@@ -19,8 +20,8 @@ export class CartService {
   };
   constructor(private httpClient: HttpClient) { }
 
-  addItemToCart(item: AddToCartRequest) {
-    return this.httpClient.post(`${ADD_TO_CART}`, item);
+  addItemToCart(item: AddToCartRequest): Observable<AddToCartResponse> {
+    return this.httpClient.post<AddToCartResponse>(`${ADD_TO_CART}`, item);
   }
 
   getCartItemsBySessionId(sessionId: string): Observable<CartItem[]> {
