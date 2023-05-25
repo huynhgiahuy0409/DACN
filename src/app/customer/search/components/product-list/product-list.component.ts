@@ -1,165 +1,88 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, of, timeout } from 'rxjs';
-export interface Product {
-  name: string;
-  address: string;
-  benefits: string[];
-  startRating: number;
-  originalPrice: number;
-  rentalPrice: number;
-  averageRating: AverageRating;
-  reviewImages: Image[];
-  topBadges: TopBadge[];
-  propertyCards: PropertyCard[]
-}
-export interface SearchedHotelResponse {
-}
-interface AverageRating {
-  name: string;
-  points: number;
-  reviews: number;
-}
-interface TopBadge {
-  name: string;
-  icon: string
-}
-interface PropertyCard {
-  name: string;
-  icon: string
-}
-interface Image {
-  url: string;
-  isThumbnail: boolean;
-}
+import { ActivatedRoute } from '@angular/router';
+import { log } from 'console';
+import { Observable, concatMap, filter, forkJoin, map, of, switchMap, tap, timeout } from 'rxjs';
+import { FilterProductService } from 'src/app/customer/services/filter-product.service';
+import { ProgressSpinnerService } from 'src/app/customer/services/progress-spinner.service';
+import {
+  OptionFilterRequest,
+  ProductFilterRequest,
+} from 'src/app/models/request';
+import {
+  AddressResponse,
+  AverageRatingResponse,
+  DiscountResponse,
+  SearchedProductItemResponse,
+  SearchedProductResponse,
+} from 'src/app/models/response';
+
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
 })
 export class ProductListComponent implements OnInit {
-  products$!: Observable<Product[]>;
-  constructor() {}
+  searchedProductResponse$!: Observable<SearchedProductResponse | null>;
+  constructor(
+    private _route: ActivatedRoute,
+    private _productFilterService: FilterProductService,
+    private _progressSpinnerService: ProgressSpinnerService
+  ) { }
 
   ngOnInit(): void {
-    this.products$ = of<Product[]>([
-      {
-        name: 'Adaline Hotel & Suite',
-        address: 'Quan 1, TP Ho Chi Minh',
-        benefits: ["benefit 1", "benefit 2", "benefit 3"],
-        startRating: 2,
-        originalPrice: 1300000,
-        rentalPrice: 360000,
-        averageRating: {
-          name: 'xuất sắc',
-          points: 8,
-          reviews: 1348,
-        },
-        topBadges: [
-          {
-            name: "Spring tin tưởng",
-            icon: 'preferred'
-          },
-          {
-            name: "Cảnh biển",
-            icon: 'sea-view'
-          },
-          {
-            name: "Travel sustainable",
-            icon: 'sustainable'
-          },
-        ],
-        reviewImages: [],
-        propertyCards: [
-          {
-            name: 'Online Payment',
-            icon: 'online-payment'
-          },
-          {
-            name: 'Giao dịch trong nước',
-            icon: 'domestic-deal'
-          },
-        ]
-      },
-      {
-        name: 'Adaline Hotel & Suite',
-        address: 'Quan 1, TP Ho Chi Minh',
-        benefits: ["benefit 1", "benefit 2", "benefit 3"],
-        startRating: 2,
-        originalPrice: 1300000,
-        rentalPrice: 360000,
-        averageRating: {
-          name: 'xuất sắc',
-          points: 8,
-          reviews: 1348,
-        },
-        topBadges: [
-          {
-            name: "Spring tin tưởng",
-            icon: 'preferred'
-          },
-          {
-            name: "Cảnh biển",
-            icon: 'sea-view'
-          },
-          {
-            name: "Travel sustainable",
-            icon: 'sustainable'
-          },
-        ],
-        reviewImages: [],
-        propertyCards: [
-          {
-            name: 'Online Payment',
-            icon: 'online-payment'
-          },
-          {
-            name: 'Giao dịch trong nước',
-            icon: 'domestic-deal'
-          },
-        ]
-      },
-      {
-        name: 'Adaline Hotel & Suite',
-        address: 'Quan 1, TP Ho Chi Minh',
-        benefits: ["benefit 1", "benefit 2", "benefit 3"],
-        startRating: 2,
-        originalPrice: 1300000,
-        rentalPrice: 360000,
-        averageRating: {
-          name: 'xuất sắc',
-          points: 8,
-          reviews: 1348,
-        },
-        topBadges: [
-          {
-            name: "Spring tin tưởng",
-            icon: 'preferred'
-          },
-          {
-            name: "Cảnh biển",
-            icon: 'sea-view'
-          },
-          {
-            name: "Travel sustainable",
-            icon: 'sustainable'
-          },
-        ],
-        reviewImages: [],
-        propertyCards: [
-          {
-            name: 'Online Payment',
-            icon: 'online-payment'
-          },
-          {
-            name: 'Giao dịch trong nước',
-            icon: 'domestic-deal'
-          },
-        ]
-      },
-    
-    ]).pipe(
-      timeout(5000)
-    )
-    ;
+    /* Detect change value from QueryParams to update filter state */
+    this._route.queryParamMap
+      .pipe(
+        tap((paramsAsMap: any) => {
+          this._progressSpinnerService.next(true);
+          const {
+            textToSearch,
+            checkIn,
+            checkOut,
+            rooms,
+            adults,
+            children,
+            value,
+            type,
+            property,
+            direction,
+            hotelFacilities,
+            benefits,
+            guestRating,
+            discount,
+            priceFrom,
+            priceTo,
+          } = paramsAsMap.params;
+          const productFilterRequest: ProductFilterRequest = {
+            search: textToSearch,
+            startDate: checkIn,
+            endDate: checkOut,
+            rooms: rooms,
+            adults: adults,
+            children: children,
+            value: value,
+            type: type,
+            productSort: {
+              property: property,
+              direction: direction,
+            },
+            optionFilter: {
+              priceFrom: priceFrom,
+              priceTo: priceTo,
+              discount: discount,
+              guestRating: guestRating,
+              benefits: benefits ? benefits.split(',').map(Number) : undefined,
+              hotelFacilities: hotelFacilities
+                ? hotelFacilities.split(',').map(Number)
+                : undefined,
+            },
+          };
+          this._productFilterService.nextProductFilterRequest(productFilterRequest)
+        }),
+      
+      ).subscribe()
+      
+      /* asssign searchedProductResponse from Service */
+      this.searchedProductResponse$ = this._productFilterService.searchedProductResponse$
   }
 }

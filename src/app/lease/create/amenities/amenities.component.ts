@@ -52,44 +52,10 @@ export class AmenitiesComponent implements OnInit {
   hp!: HotelProfile;
 
   submitForm() {
+
     console.log(this.rfAmenities.value)
-    // this.hp =
-    //   {
-    //     id: 0,
-    //     basic: this.hotelProfileService.basic
-    //     ,
-    //     location: this.hotelProfileService.location,
-    //     description: this.hotelProfileService.description,
-    //     amenities: this.rfAmenities.value,
-    //     pricing: {
-    //       price: 0,
-    //       payment: "",
-    //       managerChannel: ""
-    //     },
-    //     photos: {
-    //       file: "",
-    //       fileSource: []
-    //     },
-    //     profile: {
-    //       typeHost: "",
-    //       company: {
-    //         addressCompany: "",
-    //         nameCompany: "",
-    //         codeAreaCompany: ""
-    //       },
-    //       mySelf: {
-    //         date: "",
-    //         firstName: "",
-    //         lastName: ""
-    //       }
-    //     },
-    //   }
-    // this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock, this.hp).subscribe(value => {
-    //
-    //   this.hotelProfileService.amenities = value.amenities;
-    //   console.log('amenities')
-    //   console.log(this.hotelProfileService.amenities)
-    // })
+
+
   }
 
   ngOnInit(): void {

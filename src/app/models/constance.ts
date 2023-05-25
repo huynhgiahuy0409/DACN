@@ -1,71 +1,21 @@
-import { Amenity, Cart, Room } from "./model";
+export const API_PREFIX = "/api";
 
-//demo
-export const amenities: Amenity[] = [
-    {
-        id: 1,
-        name: 'Wifi',
-    },
-    {
-        id: 2,
-        name: 'Bãi đậu xe',
-    },
-];
+export const GET_CART_BY_SESSION_ID = `${API_PREFIX}/carts/getCartBySessionId`;
+export const DELETE_ITEM_FROM_CART = `${API_PREFIX}/carts/deleteItemFromCart`;
+export const DELETE_BY_IDS = `${API_PREFIX}/carts/deleteByIds`;
+export const ADD_TO_CART = `${API_PREFIX}/carts/addToCart`
 
-//demo
-export const rooms: Room[] = [
-    {
-        id: 1,
-        type: 'Phòng đơn',
-        beds: 1,
-        price: 1000000,
-        adult: 1,
-        child: 0,
-        amenities: amenities
-    },
-    {
-        id: 2,
-        type: 'Phòng đôi',
-        beds: 2,
-        price: 2000000,
-        adult: 2,
-        child: 0,
-        amenities: amenities
-    },
-]
+export const ADD_RESERVATION = `${API_PREFIX}/reservations/saveReservation`;
+export const ADD_ALL_RESERVATION = `${API_PREFIX}/reservations/saveAllReservation`;
 
-//demo
-export const cart: Cart = {
-    items: [
-        {
-            id: 1,
-            name: 'Product 1',
-            price: 1000000,
-            location: 'Location 1',
-            image: 'https://pix8.agoda.net/hotelImages/2279980/-1/08635f845557c87d704ed9cf15c583d1.jpg?ca=7&ce=1&s=828x464&ar=16x9',
-            avgRating: 10.0,
-            reviews: 100,
-            units: 1,
-            special_feature: 'Special Feature 1',
-            start_date: 1680102315647,
-            end_date: 1680170095140,
-            rooms: rooms
-        },
-        {
-            id: 2,
-            name: 'Product 2',
-            price: 2000000,
-            location: 'Location 2',
-            image: 'https://pix8.agoda.net/hotelImages/2279980/-1/08635f845557c87d704ed9cf15c583d1.jpg?ca=7&ce=1&s=828x464&ar=16x9',
-            avgRating: 9.5,
-            reviews: 200,
-            units: 2,
-            special_feature: 'Special Feature 2',
-            start_date: 1680102315647,
-            end_date: 1680170095140,
-            rooms: rooms
-        },
-    ]
-};
+export const SAVE_FAVORITE_HOTEL = `${API_PREFIX}/favorites/save`;
+export const FIND_ALL_FAVORITE_HOTEL = `${API_PREFIX}/favorites/findAllByUsername`;
+export const DELETE_FAVORITE_HOTEL_BY_ID = `${API_PREFIX}/favorites/deleteById`;
+
+export const URL_API = "http://localhost:8080";
+export const URL_CLIENT = "http://localhost:4200";
+
+export const DIRECT_LINK = `${URL_API}/uploads`
+export const HOTEL_IMG = `${DIRECT_LINK}/hotel-img/`;
 
 export const ONE_DOLLAR_IN_USD = 23456;

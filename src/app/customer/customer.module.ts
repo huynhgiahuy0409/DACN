@@ -4,16 +4,15 @@ import { RouterModule } from '@angular/router';
 
 import { AngularMaterialModule } from '../shared/angular-material/angular-material.module';
 import { CustomerLayoutModule } from '../shared/layout/customer-layout/customer-layout.module';
+import { FilterBarModule } from '../shared/layout/customer-layout/filter-bar/filter-bar.module';
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerComponent } from './customer.component';
-import { DemoComponent } from './demo/demo.component';
-import { FilterBarModule } from '../shared/layout/customer-layout/filter-bar/filter-bar.module';
+import { ProductDetailModule } from './product-detail/product-detail.module';
 
 
 @NgModule({
   declarations: [
-    CustomerComponent,
-    DemoComponent,
+    CustomerComponent
   ],
   imports: [
     CommonModule,
@@ -21,7 +20,8 @@ import { FilterBarModule } from '../shared/layout/customer-layout/filter-bar/fil
     CustomerLayoutModule,
     AngularMaterialModule,
     RouterModule,
-    FilterBarModule
+    FilterBarModule,
+    ProductDetailModule
   ]
 })
 export class CustomerModule { }

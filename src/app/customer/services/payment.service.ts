@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Cart, PaymentResponse, PaymentResultResponse, PaypalToken } from 'src/app/models/model';
+import { PaymentResponse, PaymentResultResponse, PaypalToken } from 'src/app/models/model';
 import { convertVNDToUSD } from 'src/app/shared/utils/MoneyUtils';
 
 @Injectable({
@@ -25,16 +25,12 @@ export class PaymentService {
     return this.httpClient.post<PaypalToken>('https://api.sandbox.paypal.com/v1/oauth2/token', data, { headers });
   }
 
-  createPayment(access_token: string, token_type: string, cart: Cart) {
+  createPayment(access_token: string, token_type: string, price: number) {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `${token_type} ${access_token}`,
       'Paypal-Request-Id': (Math.random() + 1).toString(36).substring(7)
     });
-
-    const totalPrice = cart.items.reduce((total, item) => {
-      return total + item.price;
-    }, 0);
 
     const data = {
       "intent": "CAPTURE",
@@ -43,7 +39,7 @@ export class PaymentService {
           "reference_id": "d9f80740-38f0-11e8-b467-0ed5f89f718b",
           "amount": {
             "currency_code": "USD",
-            "value": convertVNDToUSD(totalPrice + (totalPrice * 10 / 100)),
+            "value": convertVNDToUSD(price),
           }
         }
       ],
@@ -55,7 +51,7 @@ export class PaymentService {
             "brand_name": "SPRING HOTEL",
             "locale": "en-US",
             "landing_page": "LOGIN",
-            "shipping_preference": "SET_PROVIDED_ADDRESS",
+            // "shipping_preference": "SET_PROVIDED_ADDRESS",
             "user_action": "PAY_NOW",
             "return_url": "http://localhost:4200/checkout/payment/status",
             "cancel_url": "http://localhost:4200/checkout/payment/status"

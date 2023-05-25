@@ -27,6 +27,7 @@ export class PhotosComponent implements OnInit {
   submitForm() {
 
 
+
     this.hi = {
       id: 0,
       isThumbnail: true,
@@ -54,6 +55,10 @@ export class PhotosComponent implements OnInit {
     this.roomService.updateRoomHotel(this.roomService.id_lock,this.rh).subscribe(value => {
       this.roomService.room= value;
       console.log(this.roomService.room)
+
+
+
+
     })
 
   }

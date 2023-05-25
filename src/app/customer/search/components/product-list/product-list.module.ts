@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ProductListComponent } from './product-list.component';
 import { ProductItemComponent } from './product-item/product-item.component';
 import { AngularMaterialModule } from 'src/app/shared/angular-material/angular-material.module';
+import { RouterModule } from '@angular/router';
+import { CustomerRoutingModule } from 'src/app/customer/customer-routing.module';
 
 
 
@@ -15,11 +17,13 @@ import { AngularMaterialModule } from 'src/app/shared/angular-material/angular-m
   imports: [
     CommonModule,
     SvgAsTemplateModule,
-    AngularMaterialModule
+    AngularMaterialModule,
+    CustomerRoutingModule,
+    RouterModule
   ],
   exports: [
     ProductListComponent,
-    ProductItemComponent
+    ProductItemComponent,
   ]
 })
 export class ProductListModule { }

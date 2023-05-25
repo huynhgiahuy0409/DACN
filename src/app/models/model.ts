@@ -1,16 +1,46 @@
+import { HotelResponse, RoomResponse } from "./response";
+
 export interface CartItem {
   id: number;
+  adult: number;
+  child: number;
+  fromDate: number[];
+  toDate: number[];
+  hotel: HotelResponse;
+  room: RoomResponse;
+  sessionId: string;
+  address: string;
+  bannerImage: string;
+  totalReviews: number;
+  roomType: string;
+  benefits: Benefit[];
+  status: string;
+  discountPercent: number;
+}
+
+export interface ReservationRequest {
+  adult: number;
+  children: number;
+  startDate: string;
+  endDate: string;
+  username: string;
+  hotelId: number;
+  roomId: number;
+  fullName: string;
+  email: string;
+  phone: string;
+}
+
+export interface Benefit {
   name: string;
-  price: number;
-  location: string;
-  image: string;
-  avgRating: number;
-  reviews: number;
-  units: number;
-  special_feature: string;
-  start_date: number;
-  end_date: number;
-  rooms: Room[];
+  code: string;
+}
+
+
+export interface ApiResponse {
+  data: string;
+  message: string;
+  statusCode: number
 }
 
 export interface Room {
@@ -68,17 +98,17 @@ export interface PaymentResultResponse {
   intent: string;
   links: PaymentLink[];
   status: string;
-    payer: { payment_method: string };
-    state: string;
-    transactions: PaymentTransaction[];
+  payer: { payment_method: string };
+  state: string;
+  transactions: PaymentTransaction[];
 }
 
 export interface PaymentResultResponse {
-    cart: string;
-    create_time: string;
-    intent: string;
-    links: PaymentLink[];
-    status: string;
+  cart: string;
+  create_time: string;
+  intent: string;
+  links: PaymentLink[];
+  status: string;
 }
 
 export interface RedirectInfo {
@@ -86,14 +116,12 @@ export interface RedirectInfo {
   path: string,
   icon?: string
 }
-export interface Occupancy {
+export interface OccupancyOption {
   idx: number;
   label: string;
   subLabel?: string;
   value: number;
-  childOptions?: string[];
-  add(occupancy: Occupancy): void;
-  remove(occupancy: Occupancy): void;
+  name: string
 }
 
 export interface Basic {
@@ -164,7 +192,7 @@ export interface Profile {
 }
 
 export interface HotelProfile {
-  id:number  ;
+  id: number;
   basic: Basic;
   location: Location;
   description: Description;
@@ -172,6 +200,7 @@ export interface HotelProfile {
   pricing: Pricing;
   photos: Photos;
   profile: Profile;
+
 }
 export  interface  ProvinceFinal{
 code:string;
@@ -236,3 +265,4 @@ username:String;
 
 
 }
+

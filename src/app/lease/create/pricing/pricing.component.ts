@@ -67,6 +67,7 @@ export class PricingComponent implements OnInit {
   };
 
   submitForm() {
+
     this.dc = this.rfPricing.value
     console.log(this.rfPricing.value)
     this.roomService.createDiscount(this.dc).subscribe(value => {
@@ -91,6 +92,8 @@ export class PricingComponent implements OnInit {
     this.roomService.updateRoomHotel(this.roomService.id_lock,this.ro).subscribe(value => {
 
       this.roomService.room=value;
+
+
     })
 
 

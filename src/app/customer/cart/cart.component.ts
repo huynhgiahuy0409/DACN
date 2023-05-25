@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { cart } from 'src/app/models/constance';
-import { Cart } from 'src/app/models/model';
-import { getDateInString } from 'src/app/shared/utils/DateUtils';
+import { parseISO } from 'date-fns';
+import { ToastrService } from 'ngx-toastr';
+import { HOTEL_IMG } from 'src/app/models/constance';
+import { CartItem } from 'src/app/models/model';
+import { getDateFromArray, getDateInString, getNightNumber } from 'src/app/shared/utils/DateUtils';
 import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -11,14 +14,19 @@ import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 })
 export class CartComponent implements OnInit {
 
-  cart: Cart = cart;
+  cart: CartItem[] = [];
+  session_id: string = localStorage.getItem("sessionId") || "";
 
   chosenItems: any[] = [];
+  readonly BASE_IMG: string = HOTEL_IMG;
 
-  constructor() { }
+  constructor(private cartService: CartService, private toastrService: ToastrService) {
+  }
 
   ngOnInit(): void {
-    // this.cart.items = [];
+    this.cartService.getCartItemsBySessionId(this.session_id).subscribe((res) => {
+      this.cart = res;
+    });
   }
 
   formatMoney(amount: number) {
@@ -33,8 +41,9 @@ export class CartComponent implements OnInit {
     const { checked, source } = $event;
     const id = Number(source.id);
 
-    const itemInCart = this.cart.items.find(item => item.id === id);
+    const itemInCart = this.cart.find(item => item.id === id);
     const itemChosen = this.chosenItems.find(item => item.id === id);
+
     if (checked && itemInCart && !itemChosen) {
       this.chosenItems.push(itemInCart);
     } else {
@@ -43,27 +52,70 @@ export class CartComponent implements OnInit {
   }
 
   getTotalPrice() {
-    const totalPrice = this.chosenItems.reduce((total, item) => {
-      return total + item.price;
+    const totalPrice = this.chosenItems.reduce((total, item: CartItem) => {
+      return total + (this.getNightInNumber(item.fromDate, item.toDate) * this.getPriceAfterDiscount(item.room.originPrice,
+        item.discountPercent));
     }
       , 0);
     return totalPrice;
   }
 
-  getDateInPlain(dateNum: number) {
-    return getDateInString(dateNum);
+  getPriceAfterDiscount(price: number, discount: number) {
+    if (discount > 0)
+      return price - (price * (discount / 100));
+    else
+      return price;
+  }
+
+  getDateInPlain(dateNum: number[]) {
+    const parsedArray = getDateFromArray(dateNum);
+    const parsed = parseISO(parsedArray).getTime()
+    return getDateInString(parsed);
+  }
+
+  getNightInNumber(startDate: number[], endDate: number[]) {
+    const start = parseISO(getDateFromArray(startDate)).getTime()
+    const end = parseISO(getDateFromArray(endDate)).getTime()
+    return getNightNumber(start, end);
+  }
+
+  getPriceByNights(fromDate: number[], toDate: number[], originalPrice: number, discountPercent: number) {
+    return this.formatMoney(this.getNightInNumber(fromDate, toDate) * this.getPriceAfterDiscount(originalPrice, discountPercent));
   }
 
   onDeleteItemFromCart(id: number) {
     this.chosenItems = this.chosenItems.filter(item => item.id !== id);
-    this.cart.items = this.cart.items.filter(item => item.id !== id);
+    this.cart = this.cart.filter(item => item.id !== id);
+
+    this.cartService.deleteItemFromCart(id).subscribe({
+      next: (res) => {
+        if (res.statusCode === 200) {
+          this.toastrService.success(res.message);
+        }
+      },
+      error: (error) => {
+        this.toastrService.error(error.error.message);
+      }
+    });
   }
 
   convertToString(value: number) {
     return String(value);
   }
 
+  onSaveChosenItems() {
+    localStorage.setItem("chosenItems", JSON.stringify(this.chosenItems));
+  }
+
   isChecked(id: number) {
     return this.chosenItems.find(item => item.id === id);
+  }
+
+  isAvailable(status: string) {
+    return status === "AVAILABLE";
+  }
+
+  getDateFromArray(arr: number[]) {
+    return String(getDateFromArray(arr));
   }
 }

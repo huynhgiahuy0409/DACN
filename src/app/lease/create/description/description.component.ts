@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HotelProfileService} from "../../../services/lease/hotel-profile.service";
 import {AddressService} from "../../../services/lease/address.service";
-import {RoomHotel} from "../basic/basic.component";
+
 import {RoomService} from "../../../services/lease/room.service";
+import {RoomHotel} from "../basic/basic.component";
 
 @Component({
   selector: 'app-description',
@@ -23,6 +24,7 @@ export class DescriptionComponent implements OnInit {
   }
  hd!:HotelDescription;
   submitForm(){
+
     this.hd ={
       id:0,
        name :this.rfDescription.controls['name'].value,
@@ -31,6 +33,9 @@ export class DescriptionComponent implements OnInit {
       rooms:[this.roomService.room],
 
     };
+
+
+
 
    this.hotelProfileService.createHotelDescription(this.hd).subscribe(value => {
      this.hotelProfileService.id_lock =value.id;

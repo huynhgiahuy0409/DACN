@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { cart } from 'src/app/models/constance';
-import { Cart } from 'src/app/models/model';
-import { getDateNoYearTitle, getNightNumber } from 'src/app/shared/utils/DateUtils';
+import { parseISO } from 'date-fns';
+import { HOTEL_IMG } from 'src/app/models/constance';
+import { CartItem, ReservationRequest } from 'src/app/models/model';
+import { getDateFromArray, getDateInString, getNightNumber } from 'src/app/shared/utils/DateUtils';
 import { getMoneyFormat } from 'src/app/shared/utils/MoneyUtils';
 import { PaymentService } from '../services/payment.service';
 
@@ -16,8 +16,10 @@ export class CheckoutComponent implements OnInit {
   headerComponent!: HTMLElement;
 
   showWaitingOverlay: boolean = false;
-  cart: Cart = cart;
+  chosenItems: CartItem[] = [];
   showAmenitiesItem: number[] = [];
+
+  readonly BASE_IMG: string = HOTEL_IMG;
 
   customerInformationFormGroup = this._formBuilder.group({
     family_name: ['', Validators.compose([Validators.required])],
@@ -30,6 +32,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.chosenItems = localStorage.getItem("chosenItems") ? JSON.parse(localStorage.getItem("chosenItems")!) : [];
     this.headerComponent = document.getElementsByClassName('header-container').item(0) as HTMLElement;
     this.headerComponent.style.display = "none";
   }
@@ -42,12 +45,16 @@ export class CheckoutComponent implements OnInit {
     return Math.round(rating / 2);
   }
 
-  getDateInPlain(date: number) {
-    return getDateNoYearTitle(date);
+  getDateInPlain(dateNum: number[]) {
+    const parsedArray = getDateFromArray(dateNum);
+    const parsed = parseISO(parsedArray).getTime()
+    return getDateInString(parsed);
   }
 
-  getNightInNumber(startDate: number, endDate: number) {
-    return getNightNumber(startDate, endDate) + " đêm";
+  getNightLabel(startDate: number[], endDate: number[]) {
+    const start = parseISO(getDateFromArray(startDate)).getTime()
+    const end = parseISO(getDateFromArray(endDate)).getTime()
+    return getNightNumber(start, end) + " đêm";
   }
 
   toggleShowAmenitiesItem(index: number) {
@@ -67,20 +74,59 @@ export class CheckoutComponent implements OnInit {
   }
 
   getTotalPrice() {
-    const totalPrice = this.cart.items.reduce((total, item) => {
-      return total + item.price;
+    const totalPrice = this.chosenItems.reduce((total, item: CartItem) => {
+      return total + (this.getNightInNumber(item.fromDate, item.toDate) * this.getPriceAfterDiscount(item.room.originPrice,
+        item.discountPercent));
     }
       , 0);
-    return totalPrice + (totalPrice * 10 / 100);
+    return totalPrice;
+  }
+
+  getPriceAfterDiscount(price: number, discount: number) {
+    if (discount > 0)
+      return price - (price * (discount / 100));
+    else
+      return price;
+  }
+
+  getNightInNumber(startDate: number[], endDate: number[]) {
+    const start = parseISO(getDateFromArray(startDate)).getTime()
+    const end = parseISO(getDateFromArray(endDate)).getTime()
+    return getNightNumber(start, end);
+  }
+
+  getPriceByNights(fromDate: number[], toDate: number[], originalPrice: number, discountPercent: number) {
+    return getMoneyFormat(this.getNightInNumber(fromDate, toDate) * this.getPriceAfterDiscount(originalPrice, discountPercent));
   }
 
   onProceedToPayment() {
     if (this.customerInformationFormGroup.valid) {
+      const finalItems: ReservationRequest[] = [];
+      const fullName = this.customerInformationFormGroup.get('family_name')?.value + " " + this.customerInformationFormGroup.get('surname')?.value;
+      const email = this.customerInformationFormGroup.get('email')?.value || "";
+      const phone = this.customerInformationFormGroup.get('phone')?.value || "";
+      this.chosenItems.forEach(item => {
+        finalItems.push({
+          adult: item.adult,
+          children: item.child,
+          startDate: getDateFromArray(item.fromDate),
+          endDate: getDateFromArray(item.toDate),
+          username: "",//if user is logged in pls put username here ( at here we will create a random user with random username and password )
+          hotelId: item.hotel.id,
+          roomId: item.room.id,
+          fullName: fullName,
+          email: email,
+          phone: phone,
+        });
+      });
+
+      localStorage.setItem("finalItems", JSON.stringify(finalItems));
+
       this.showWaitingOverlay = true;
       this.paymentService.createToken().subscribe(data => {
         if (data.access_token && data.token_type) {
           localStorage.setItem("payment_token", data.access_token);
-          this.paymentService.createPayment(data.access_token, data.token_type, this.cart).subscribe(data => {
+          this.paymentService.createPayment(data.access_token, data.token_type, this.getTotalPrice()).subscribe(data => {
             if (data.links) {
               localStorage.setItem("payment_id", data.id);
               window.location.href = data.links[1].href;
@@ -90,6 +136,4 @@ export class CheckoutComponent implements OnInit {
       });
     }
   }
-
-  // getPaymentStatus()
 }

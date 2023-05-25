@@ -122,8 +122,6 @@ export class BasicComponent implements OnInit {
 
     });
 
-
-
   }
 
 
@@ -137,10 +135,10 @@ export class BasicComponent implements OnInit {
     this.submitted = true;
 
 
-    this.room =
 
 
-        this.rfBasic.value;
+
+
 
 
 

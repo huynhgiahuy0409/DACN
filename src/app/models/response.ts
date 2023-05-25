@@ -1,68 +1,128 @@
-export interface OptionResponse{
+export interface APIResponse<T> {
+    data: T,
+    message: string,
+    statusCode: number
+}
+
+export interface OptionResponse {
+    value: number,
     label: string,
     code: string,
 }
-export interface ImageResponse{
+export interface ImageResponse {
     url: string;
     isThumbnail: boolean;
 }
-export interface SearchedHotelResponse {
-    previewImages: ImageResponse[],
-    hotelName: string,
-    district: DistrictResponse,
-    province: ProvinceResponse,
-    averageRating: AverageRatingResponse,
-    benefits: string[],
-    discount: DiscountResponseEntity
+export interface SearchedProductResponse {
+    searchedProduct: SearchedProductItemResponse
+    relativeSearchedProducts: SearchedProductItemResponse[]
+    minFinalPrice: number
+    maxFinalPrice: number
 }
-export interface DiscountResponseEntity{
-    name: string,
-    icon: string,
+export interface ImageResponse{
+    isThumbnail: boolean,
+    url: string
 }
-export interface AddressResponse{
-
+export interface SearchedProductItemResponse {
+    productId: number
+    name: string;
+    benefits: string[];
+    address: AddressResponse;
+    starRating: number;
+    originalPrice: number;
+    rentalPrice: number;
+    finalPrice: number;
+    averageRating: AverageRatingResponse;
+    discount: DiscountResponse;
+    isSearchedHotel: boolean;
+    isDeals: boolean;
+    isOnlinePayment: boolean;
+    isFreeCancellation: boolean;
+    hotelImages: ImageResponse[]
 }
-export interface ProvinceResponse{
+export interface ProvinceResponse {
     id: number,
     name: string,
     code: string,
 }
-export interface DistrictResponse{
+export interface DistrictResponse {
     id: number,
     name: string,
     prefix: string,
 }
 
-
-// export interface Product {
-//     name: string;
-//     address: string;
-//     benefits: string[];
-//     startRating: number;
-//     originalPrice: number;
-//     rentalPrice: number;
-//     averageRating: AverageRating;
-//     reviewImages: Image[];
-//     topBadges: TopBadge[];
-//     propertyCards: PropertyCard[]
-//   }
-//   export interface SearchedHotelResponse {
-//   }
-  interface AverageRatingResponse {
+export interface AverageRatingResponse {
     name: string;
     points: number;
     reviews: number;
-  }
-//   interface TopBadge {
-//     name: string;
-//     icon: string
-//   }
-//   interface PropertyCard {
-//     name: string;
-//     icon: string
-//   }
-//   interface Image {
-//     url: string;
-//     isThumbnail: boolean;
-//   }
-
+}
+export interface AutocompleteSearchResponse {
+    name: string,
+    category: string,
+    value: string,
+    type: string,
+}
+export interface AddressResponse {
+    id: number,
+    street: string
+    province: string,
+    district: string,
+    ward: string
+}
+export interface DiscountResponse {
+    name: string,
+    percent: number
+}
+export interface FilterOptionItemResponse {
+    value: any,
+    name: string,
+    total: number
+}
+export interface FavoriteHotelResponse {
+    id: number;
+    hotelId: number;
+    bannerUrl: string;
+    name: string;
+    address: string;
+    avgRating: number;
+    totalRating: number;
+    originPrice: number;
+    finalPrice: number;
+}
+export interface FilterOptionItemResponse {
+    value: any,
+    name: string,
+    total: number
+}
+export interface HotelResponse{
+    id: number;
+    name: string;
+    description: string
+    averagePoints: number
+    status: string
+    isFreeCancellation: boolean
+    isDeals: boolean
+    hotelImages: ImageResponse[]
+    address: AddressResponse
+    starRating: number
+    averageRating: AverageRatingResponse;
+    facilities: FacilityResponse[];
+}
+export interface RoomResponse{
+    id: number;
+    name: string
+    maxAdults: number
+    maxChildren: number
+    status: string
+    originPrice: number
+    rentalPrice: number
+    finalPrice: number
+}
+export interface ProductDetailResponse{
+    hotel: HotelResponse
+    rooms: RoomResponse[]
+}
+export interface FacilityResponse{
+    name: string,
+    icon: string
+}

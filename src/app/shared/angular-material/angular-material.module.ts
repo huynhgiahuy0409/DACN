@@ -11,7 +11,12 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
-import {MatRadioModule} from '@angular/material/radio';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import {MatSliderModule} from '@angular/material/slider';
+
 @NgModule({
   declarations: [],
   exports: [
@@ -25,7 +30,11 @@ import {MatRadioModule} from '@angular/material/radio';
     MatStepperModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatRadioModule
+    MatRadioModule,
+    MatAutocompleteModule,
+    MatProgressSpinnerModule,
+    MatCardModule,
+    MatSliderModule
   ]
 })
 export class AngularMaterialModule { }

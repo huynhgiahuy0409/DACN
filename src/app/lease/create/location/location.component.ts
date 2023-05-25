@@ -34,7 +34,6 @@ export class LocationComponent implements OnInit {
 
   changeCountry(event: any) {
     const country = event.target.value;
-    console.log(country)
     if (!country) return;
     this.city = this.countryData.find((data) => data.country === country)?.city || [];
 
@@ -47,7 +46,11 @@ export class LocationComponent implements OnInit {
   hd!:HotelDescription;
   submitForm(){
 
-   this.ha=this.rfLocation.value;
+
+
+
+
+
 
 
 

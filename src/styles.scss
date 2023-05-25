@@ -3,12 +3,13 @@
 @import "./assets/my-style/my-flex.scss";
 @import "./assets/my-style/grid.scss";
 @import "./assets/my-style/layout.scss";
+@import "ngx-toastr/toastr";
 
 :root {
   --primary-color: #5390f9;
   --primary-hover-color: #ebf0fcb5;
-  --filter-bar-color: rgb(31,39,76);
-  --star-color: rgb(223,85,4);
+  --filter-bar-color: rgb(31, 39, 76);
+  --star-color: rgb(223, 85, 4);
   --accent-color: #ff557d;
   --primary-text-color: black;
   --white-color: #fff;
@@ -84,7 +85,7 @@ html {
   font-size: 62.5%;
 }
 
-input {
+input[type="text"] {
   display: inline-block;
   background-color: #fff;
   width: 100%;
@@ -109,4 +110,20 @@ i.icon-bo {
   height: 24px;
   vertical-align: middle;
   text-indent: -9999px;
+}
+
+.spinner__wrapper {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+}
+.spinner__wrapper body {
+  overflow: hidden;
 }

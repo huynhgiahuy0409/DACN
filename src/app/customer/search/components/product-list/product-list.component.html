@@ -1,8 +1,28 @@
-<div class="product-list__wrapper">
-    <ul class="product__list">
-        <ng-container *ngFor="let product of products$ | async">
-            <app-product-item [product]="product">
-            </app-product-item>
-        </ng-container>
+<ng-container
+  *ngIf="searchedProductResponse$ | async as searchedProductResponse"
+>
+  <div class="product-list__wrapper">
+    <ul class="product__list" *ngIf="searchedProductResponse; else none">
+      <ng-container *ngIf="searchedProductResponse.searchedProduct">
+        <app-product-item
+          [searchedProduct]="searchedProductResponse.searchedProduct"
+          [isSearchedProduct]="true"
+        >
+        </app-product-item>
+      </ng-container>
+      <ng-container
+        *ngFor="
+          let relativeSearchedProduct of searchedProductResponse.relativeSearchedProducts
+        "
+      >
+        <app-product-item [searchedProduct]="relativeSearchedProduct">
+        </app-product-item>
+      </ng-container>
     </ul>
-</div>
+  </div>
+</ng-container>
+<ng-template #none>
+  <div>
+    <div>Không có sản phẩm cho kết quả này</div>
+  </div>
+</ng-template>
