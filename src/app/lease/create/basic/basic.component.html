@@ -36,25 +36,17 @@
   <div class="panel-business">
     <p>Cơ sở kinh doanh</p>
     <div class="panel-business-form">
-      <label>Loại hình</label>
-      <p>Chọn một loại hình chỗ nghỉ</p>
-      <ul class="list-business">
-        <li class="item-business" *ngFor="let i of _listComparisonBusiness">
-          <button>
-            <mat-icon>{{i.icon}}</mat-icon>
+      <label>Tên Loại hình</label>
+      <div class="panel-business-1-form-input">
+        <input type="text" formControlName="name">
 
-            <span (click)="changValueComparisonBusiness(i.name)">
-                {{i.name}}
-              </span>
-          </button>
-        </li>
+      </div>
 
 
-      </ul>
       <label>Bạn không thấy loại hình lưu trú cần có? Muốn đăng mặt bằng riêng hoặc phòng ở chung?</label>
       <a>Hãy đăng lên Agoda YCS</a>
       <div class="panel-business-form-input">
-        <input type="text" formControlName="numComparisionBusiness" >
+        <input type="text">
         <span>mét vuông</span>
       </div>
 
@@ -66,113 +58,57 @@
     <div class="panel-detail-room-form">
       <div class="panel-detail-room-form-item">
         <label>Sức chứa</label>
-        <p>Số lượng người tối đa có thể ngủ thoải mái theo số lượng giường và sofa cung cấp.</p>
+        <p>Số lượng người lớn tối đa.</p>
         <div class="panel-detail-room-form-input">
-          <button (click)="minusAccommodations()">
+          <button (click)="minusAdult()">
             <p>-</p>
 
           </button>
-          <input type="text" min="1" max="30" formControlName="numAccommodations" [(ngModel)]="numAccommodations">
-          <button (click)="plusAccommodations()">
+          <input type="text" min="1" max="30" formControlName="maxAdults" [(ngModel)]="maxAdults">
+          <button (click)="plusAdult()">
             <p>+</p>
           </button>
         </div>
       </div>
       <div class="panel-detail-room-form-item">
-        <label>Phòng tắm</label>
-        <p>Chỉ đếm số lượng phòng tắm trong nơi ở của bạn, không phải phòng tắm chung trong toà nhà hoặc chung cư.
+        <label>Sức chứa</label>
+        <p>Số lượng trẻ em tối đa.
 
         </p>
         <div class="panel-detail-room-form-input">
-          <button (click)="minusBathroom()">
+          <button (click)="minusChildren()">
             <p>-</p>
 
           </button>
-          <input type="text" min="1" max="30" formControlName="numBathroom" [(ngModel)]="numBathroom">
-          <button (click)="plusBathroom()">
+          <input type="text" min="1" max="30" formControlName="maxChildren" [(ngModel)]="maxChildren">
+          <button (click)="plusChildren()">
             <p>+</p>
           </button>
         </div>
       </div>
       <div class="panel-detail-room-form-item">
-        <label>Phòng ngủ</label>
-        <p>Nếu chỗ ở của bạn là phòng gác mái hoặc studio, số lượng phòng ngủ là 0.
+        <label>Giá niêm yết</label>
 
-        </p>
-        <div class="panel-detail-room-form-input">
-          <button (click)="minusBedroom()">
-            <p>-</p>
-
-          </button>
-          <input type="text" min="1" max="30" formControlName="numBedroom" [(ngModel)]="numBedroom">
-          <button (click)="plusBedroom()">
-            <p>+</p>
-          </button>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="panel-detail-room-form">
-      <div class="panel-detail-room-form-item">
-        <label>Phòng 1</label>
-        <div class="panel-detail-room-form-input-box">
-          <div class="panel-detail-room-form-input-left">
-            <button (click)="minusRoomOne()">
-              <p>-</p>
-
-            </button>
-            <input type="text" min="1" max="30" formControlName="numRoomOne" [(ngModel)]="numberRoomOne">
-            <button (click)="plusRoomOne()">
-              <p>+</p>
-            </button>
-          </div>
-          <div class="panel-detail-room-form-input-right">
-            <select formControlName="typeRoomOne" [(ngModel)]="defaultTypeRoomOne">
-              <option selected>Giường đơn</option>
-              <option>Giường đôi nhỏ</option>
-              <option>Giường đôi</option>
-              <option>Giường đôi lớn</option>
-            </select>
-          </div>
-        </div>
-        <div class="add-bedtype-text">
-          THÊM LOẠI GIƯỜNG KHÁC
+        <div class="panel-business-1-form-input">
+          <input type="text" formControlName="originPrice">
+          <span>đ</span>
         </div>
 
       </div>
       <div class="panel-detail-room-form-item">
-        <label>Không gian chung</label>
-        <p>Có thêm giường ở khu vực không gian chung không?</p>
-        <div class="panel-detail-room-form-input-box">
-          <div class="panel-detail-room-form-input-left">
-            <button (click)="minusCommon()">
-              <p>-</p>
+        <label>Giá sau khi giảm</label>
 
-            </button>
-            <input type="text" min="1" max="30" formControlName="numCommon" [(ngModel)]="numberCommon">
-            <button (click)="plusCommon()">
-              <p>+</p>
-            </button>
-          </div>
-          <div class="panel-detail-room-form-input-right">
-            <select formControlName="typeCommon" [(ngModel)]="defaultTypeCommon">
-              <option selected>Giường đơn</option>
-              <option>Giường đôi nhỏ</option>
-              <option>Giường đôi</option>
-              <option>Giường đôi lớn</option>
-            </select>
-          </div>
-        </div>
-        <div class="add-bedtype-text">
-          THÊM LOẠI GIƯỜNG KHÁC
+        <div class="panel-business-1-form-input">
+          <input type="text" formControlName="rentalPrice">
+          <span>đ</span>
         </div>
 
       </div>
     </div>
+
+
   </div>
+
 
 </form>
 <div class="action-basic">
@@ -180,11 +116,12 @@
   <button class="btn-basic-submit"
 
   >
-        <a
+    <a
+      [routerLink]="['/lease/create/location']"
 
-          [routerLink]="['/lease/create/location']"
-          (click)="onSubmit()"
-        >TIẾP THEO</a>
+
+      (click)="onSubmit()"
+    >TIẾP THEO</a>
 
   </button>
 </div>

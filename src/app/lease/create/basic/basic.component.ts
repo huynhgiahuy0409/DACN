@@ -1,8 +1,20 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
-import {Amenities, Basic, Description, HotelProfile, Location, Photos, Pricing, Profile} from "../../../models/model";
-import {HotelProfileService} from "../../../services/lease/hotel-profile.service";
+import {
+  Amenities,
+  Amenity,
+  Basic,
+  Description,
+  HotelProfile,
+  Location,
+  Photos,
+  Pricing,
+  Profile
+} from "../../../models/model";
+import {RoomService} from "../../../services/lease/room.service";
+import {HotelDescription} from "../description/description.component";
+import {Discount} from "../pricing/pricing.component";
 
 @Component({
   selector: 'app-basic',
@@ -10,27 +22,27 @@ import {HotelProfileService} from "../../../services/lease/hotel-profile.service
   styleUrls: ['./basic.component.scss']
 })
 export class BasicComponent implements OnInit {
-  numAccommodations = 0;
+  maxAdults = 0;
 
-  plusAccommodations() {
-    this.numAccommodations = this.numAccommodations + 1;
+  plusAdult() {
+    this.maxAdults = this.maxAdults + 1;
   }
 
-  minusAccommodations() {
-    if (this.numAccommodations != 0) {
-      this.numAccommodations = this.numAccommodations - 1;
+  minusAdult() {
+    if (this.maxAdults != 0) {
+      this.maxAdults = this.maxAdults - 1;
     }
   }
 
-  numBathroom = 0;
+  maxChildren = 0;
 
-  plusBathroom() {
-    this.numBathroom = this.numBathroom + 1;
+  plusChildren() {
+    this.maxChildren = this.maxChildren + 1;
   }
 
-  minusBathroom() {
-    if (this.numBathroom != 0) {
-      this.numBathroom = this.numBathroom - 1;
+  minusChildren() {
+    if (this.maxChildren != 0) {
+      this.maxChildren = this.maxChildren - 1;
     }
   }
 
@@ -70,33 +82,9 @@ export class BasicComponent implements OnInit {
     }
   }
 
-  _listComparisonBusiness: comparisonBussiness[] = [];
 
 
-  getAllListComparisonBusiness() {
-    this._listComparisonBusiness = [
-      {
-        icon: 'home',
-        name: 'Toàn bộ căn hộ',
-        isSelected: false
-      },
-      {
-        icon: 'home',
-        name: 'Toàn bộ nhà trệt',
-        isSelected: false
-      },
-      {
-        icon: 'home',
-        name: 'Toàn bộ nhà riêng',
-        isSelected: false
-      },
-      {
-        icon: 'home',
-        name: 'Biệt thự',
-        isSelected: false
-      }
-    ]
-  }
+
 
   changValueComparisonBusiness(name: string) {
 
@@ -107,7 +95,7 @@ export class BasicComponent implements OnInit {
 
   rfBasic!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private hotelProfileService: HotelProfileService) {
+  constructor(private formBuilder: FormBuilder, private roomService: RoomService) {
   }
 
   defaultTypeRoomOne: string = 'Giường đơn';
@@ -118,25 +106,22 @@ export class BasicComponent implements OnInit {
   basic!: Basic;
   id_lock!:number;
   ngOnInit(): void {
-    this.getAllListComparisonBusiness();
+
 
 
     this.rfBasic = this.formBuilder.group({
-      typeComparisionBusiness: ['', Validators.required],
+      name: ['', Validators.required],
 
-      numComparisionBusiness: ['', Validators.required],
-      numAccommodations: ['', Validators.required],
-      numBathroom: ['', Validators.required],
 
-      numBedroom: ['', Validators.required],
+      maxAdults: ['', Validators.required],
+      maxChildren: ['', Validators.required],
 
-      numRoomOne: ['', Validators.required],
-      typeRoomOne: ['', Validators.required],
-      numCommon: ['', Validators.required],
-      typeCommon: ['', Validators.required],
+      originPrice:['', Validators.required],
+      rentalPrice:['', Validators.required],
+
 
     });
-    console.log(this.rfBasic.controls['typeComparisionBusiness'].value,)
+
 
 
   }
@@ -144,7 +129,7 @@ export class BasicComponent implements OnInit {
 
   submitted = false;
 
-  hp!: HotelProfile;
+ room!:RoomHotel;
 
 
 
@@ -152,71 +137,39 @@ export class BasicComponent implements OnInit {
     this.submitted = true;
 
 
-    this.hp =
-      {
-        id: 0,
-        basic: this.rfBasic.value
-        ,
-        location: {
-          address: "",
-          city: "",
-          country: "",
-          house: ""
-        },
-        description: {
-          move: "",
-          descHouse: "",
-          nameHouse: "",
-          rule: "",
-          suggest: "",
-          star: 0
-        },
-        amenities: {
-          recomendation: []
-        },
-        pricing: {
-          price: 0,
-          payment: "",
-          managerChannel: ""
-        },
-        photos: {
-          file: "",
-          fileSource: []
-        },
-        profile: {
-          typeHost: "",
-          company: {
-            addressCompany: "",
-            nameCompany: "",
-            codeAreaCompany: ""
-          },
-          mySelf: {
-            date: "",
-            firstName: "",
-            lastName: ""
-          }
-        },
-      }
+    this.room =
 
 
-    this.hotelProfileService.createHotelProfile(this.hp).subscribe(value => {
+        this.rfBasic.value;
 
-      this.hotelProfileService.id_lock=value.id;
-      this.hotelProfileService.basic=value.basic;
-      console.log('id lock')
-      console.log(this.hotelProfileService.id_lock);
-      console.log('basic')
-      console.log(this.hotelProfileService.basic);
+
+
+
+
+    this.roomService.createRoomHotel(this.room).subscribe(value => {
+      this.roomService.room=value;
+      console.log(this.roomService.room)
+      this.roomService.id_lock=value.id;
+      console.log(this.roomService.id_lock);
+
 
     })
-
   }
 }
 
-class comparisonBussiness {
-  icon: string = '';
-  name: string = '';
+export class RoomHotel {
+  id: number =0;
+  name: string ='';
 
-  isSelected: boolean = false;
+
+  maxAdults: number =0;
+  maxChildren: number =0;
+
+  originPrice: number =0;
+  rentalPrice: number =0;
+
+  hotel!:HotelDescription;
+
+  discounts!: Discount[];
 }
 

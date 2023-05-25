@@ -173,3 +173,66 @@ export interface HotelProfile {
   photos: Photos;
   profile: Profile;
 }
+export  interface  ProvinceFinal{
+code:string;
+name:string;
+domain:string;
+
+}
+export  interface  DistrictFinal{
+  id:number;
+  createBy:string;
+  createDate:string;
+  modifiedDate:Date;
+  street:string;
+  name:string;
+  prefix:string;
+  province:ProvinceFinal;
+}
+export interface  WardFinal{
+  id:number;
+  createBy:string;
+  createDate:string;
+  modifiedDate:Date;
+  name:string;
+  prefix:string;
+  district:DistrictFinal;
+  province:ProvinceFinal;
+}
+export  interface  AddressFinal{
+  id:number;
+  createBy:string;
+  createDate:string;
+  modifiedDate:Date;
+  street:string;
+
+  district:DistrictFinal;
+
+  ward:WardFinal;
+
+  province:ProvinceFinal;
+}
+
+export  interface HotelProfileFinal{
+  id:number;
+
+  createBy:string;
+  createDate:Date;
+
+  modifiedBy:string;
+
+  modifiedDate:Date;
+  name:String;
+
+  description:String;
+
+averagePoints:number;
+status:String;
+
+address:AddressFinal;
+
+username:String;
+
+
+
+}

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {HotelProfileService} from "../../../services/lease/hotel-profile.service";
-import {HotelProfile} from "../../../models/model";
+import {AddressService} from "../../../services/lease/address.service";
+import {RoomHotel} from "../basic/basic.component";
+import {RoomService} from "../../../services/lease/room.service";
 
 @Component({
   selector: 'app-description',
@@ -17,65 +19,58 @@ export class DescriptionComponent implements OnInit {
   this.rfDescription.controls['star'].setValue(r);
   }
   rfDescription!:FormGroup;
-  constructor(private formBuilder: FormBuilder,private hotelProfileService:HotelProfileService ) {
+  constructor(private formBuilder: FormBuilder,private hotelProfileService:HotelProfileService, private addressService :AddressService,private roomService : RoomService) {
   }
-  hp!: HotelProfile;
+ hd!:HotelDescription;
   submitForm(){
-    console.log(this.rfDescription.value)
-    this.hp =
-      {
-        id: 0,
-        basic: this.hotelProfileService.basic
-        ,
-        location:this.hotelProfileService.location,
-        description: this.rfDescription.value,
-        amenities: {
-          recomendation: []
-        },
-        pricing: {
-          price: 0,
-          payment: "",
-          managerChannel: ""
-        },
-        photos: {
-          file: "",
-          fileSource: []
-        },
-        profile: {
-          typeHost: "",
-          company: {
-            addressCompany: "",
-            nameCompany: "",
-            codeAreaCompany: ""
-          },
-          mySelf: {
-            date: "",
-            firstName: "",
-            lastName: ""
-          }
-        },
-      }
-    this.hotelProfileService.updateHotelProfile(this.hotelProfileService.id_lock,this.hp).subscribe(value => {
+    this.hd ={
+      id:0,
+       name :this.rfDescription.controls['name'].value,
+      description:this.rfDescription.controls['description'].value,
+      address:this.addressService.hotelAddress,
+      rooms:[this.roomService.room],
 
-      this.hotelProfileService.description=value.description;
-      console.log('description')
-      console.log(this.hotelProfileService.description)
-    })
+    };
 
+   this.hotelProfileService.createHotelDescription(this.hd).subscribe(value => {
+     this.hotelProfileService.id_lock =value.id;
+
+     this.hotelProfileService.hotelDescription=value;
+     console.log(this.hotelProfileService.id_lock);
+     console.log(this.hotelProfileService.hotelDescription)
+   })
 
   }
   ngOnInit(): void {
     this.rfDescription= this.formBuilder.group({
-      nameHouse : ['',Validators.required],
-      descHouse : ['',Validators.required],
+      name : ['',Validators.required],
+      description : ['',Validators.required],
 
-      suggest : ['',Validators.required],
-      rule : ['',Validators.required],
-      move : ['',Validators.required],
-      star :['']
 
     });
   }
 
 
+}
+export  class HotelDescription{
+  id:number=0;
+  name:string='';
+  description:string='';
+
+  address!:HotelAddress;
+  rooms:RoomHotel[]=[];
+
+
+
+}
+export  class HotelAddress{
+  id:number=0;
+  street:string =''
+}
+export  class HotelImage{
+  id:number=0;
+  isThumbnail:boolean=false;
+  url:string='';
+
+  hotel!:HotelDescription;
 }

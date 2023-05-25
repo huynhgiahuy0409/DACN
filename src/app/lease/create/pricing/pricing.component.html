@@ -14,52 +14,32 @@
       giá hằng đêm.</p>
 
   </div>
-  <div class="panel-channel">
-    <p>Người quản lý kênh (không bắt buộc)</p>
-    <span>Vui lòng chọn người quản lý kênh để khớp giá và khả năng cung cấp phòng của quý đối tác. Sau đó một thư điện tử sẽ được gửi cho quý đối tác để làm việc này. Nếu không nhận được thư điện tử này thì vui lòng liên lạc với chúng tôi để được hỗ trợ.</span>
-    <div class="panel-channel-form">
-      <p>Quý đối tác muốn dùng người quản lý kênh cho chỗ nghỉ này không?</p>
-      <div class="channel-item" *ngFor="let cm of _channelManager">
-        <input type="radio"
 
-
-               value="{{cm.name}}"
-               formControlName="managerChannel"
-        >
-
-        <span>
-          {{cm.name}}
-            </span>
-
-      </div>
-
-    </div>
-  </div>
   <div class="panel-price">
-    <p>Giá mỗi đêm</p>
-    <span>Vui lòng nhập giá mỗi đêm của quý đối tác cho chỗ nghỉ này. Nếu quý đối tác đang dùng người quản lý kênh thì chúng tôi sẽ đồng bộ các giá này giữa các nền tảng một khi đã khớp giá.Tìm hiểu về giá, tiền hoa hồng, và thu nhập.</span>
+    <p>Giảm Giá theo % cho khách hàng vào dịp lễ</p>
+    <span>Vui lòng nhập % giảm giá của quý đối tác cho chỗ nghỉ này. Nếu quý đối tác đang dùng người quản lý kênh thì chúng tôi sẽ đồng bộ các giá này giữa các nền tảng một khi đã khớp giá.Tìm hiểu về giá, tiền hoa hồng, và thu nhập.</span>
     <div class="panel-price-form">
       <p>Lượng người tối đa có thể ngủ ở chỗ bạn là 4</p>
       <div class="panel-price-form-input">
-        <p>Giá mỗi đêm</p>
+        <p>Giảm giá </p>
         <div class="panel-price-form-input-price">
-          <input type="number"  formControlName="price">
-          <span>EUR</span>
+          <input type="number"  formControlName="discountPercent">
+          <span>%</span>
         </div>
       </div>
 
     </div>
   </div>
   <div class="panel-payment">
-    <p>Hình thức thanh toán</p>
-    <span>Vui lòng chọn hình thức thanh toán. Các thông tin bổ sung sẽ được yêu cầu thêm sau khi đăng lên Agoda. [Lưu ý quan trọng] Vì lý do an ninh, khoản thanh toán đầu tiên cho bạn sẽ là 30 ngày kể từ ngày trả phòng của đặt phòng đầu tiên. Đối với các đặt phòng kế tiếp, thanh toán sẽ được thực hiện 24 giờ sau ngày khách rời đi.</span>
+    <p>Tên loại giảm giá</p>
+    <span>Vui lòng chọn hình thức giảm giá. Các thông tin bổ sung sẽ được yêu cầu thêm sau khi đăng lên Agoda..</span>
     <div class="panel-payment-form">
 
       <div class="payment-item" *ngFor="let item of _paymentList">
         <input type="radio"
 
                value="{{item.title}}"
- formControlName="payment"
+ formControlName="name"
 >
         <div class="payment-name">
           <p>

@@ -14,7 +14,7 @@
     <span>Hãy tận dụng, và làm cho nó nghe có vẻ hấp dẫn. Đừng lo lắng, chúng tôi sẽ tạo các ngôn ngữ khác bằng mẫu dịch chuẩn</span>
     <div class="panel-description-form">
       <input type="text"
-             formControlName="nameHouse"
+             formControlName="name"
              placeholder="Ví dụ: Romantic beach getaway, perfect for honeymooners" >
       <small>
         50
@@ -27,7 +27,7 @@
     <div class="panel-description-form">
       <textarea
         rows="5"
-        formControlName="descHouse"
+        formControlName="description"
 
         placeholder="Ví dụ:
 • Cách phương tiện công cộng 5 phút đi bộ
@@ -45,7 +45,7 @@
     <div class="panel-description-form">
       <textarea
         rows="5"
-        formControlName="suggest"
+
 
         placeholder="Ví dụ:
 • 5 phút đi bộ đến điểm tham quan phổ biến
@@ -62,7 +62,7 @@
     <div class="panel-description-form">
       <textarea
         rows="5"
-        formControlName="rule"
+
 
         placeholder="Ví dụ:
 • Không tụ tập hay tổ chức tiệc tùng
@@ -80,7 +80,7 @@
     <div class="panel-description-form">
       <textarea
         rows="5"
-        formControlName="move"
+
 
         placeholder="Ví dụ:
 • Đi tàu tuyến sân bay đến... (từ sân bay ra thành phố)
@@ -92,21 +92,7 @@
     </div>
   </div>
 
-  <div class="panel-description">
-    <p>Xếp hạng sao</p>
-    <span>Đánh giá để giúp khách hàng hình dung cụ thể hơn về nơi ở.
-    <a href="#">Bạn cần trợ giúp?</a>
-    </span>
-    <div class="panel-description-star">
-      <ng-container *ngFor="let i of stars">
-        <a class="star-rate" [ngClass]="{'star-active':i<=rating}"
-           (click)="updateRating(i)"
-        >★</a>
-      </ng-container>
 
-
-    </div>
-  </div>
 </form>
 <div class="action-description">
   <a>LƯU VÀ THOÁT</a>
@@ -116,8 +102,11 @@
     </button>
 
     <button class="btn-description-submit">
-      <a [routerLink]="['/lease/create/amenities']"
-      (click)="submitForm()"
+      <a
+        [routerLink]="['/lease/create/amenities']"
+
+
+        (click)="submitForm()"
       >TIẾP THEO</a>
     </button>
   </div>
