@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-<<<<<<< HEAD
-=======
 
->>>>>>> tuan
 @Injectable({
   providedIn: 'root'
 })
@@ -13,11 +10,7 @@ export class ProgressSpinnerService {
   constructor() {
     this.isActive$.subscribe(v => console.log("Spinner " + v))
   }
-<<<<<<< HEAD
-  next(value: boolean){
-=======
   next(value: boolean) {
->>>>>>> tuan
     this.isActiveBSub.next(value)
   }
 }
