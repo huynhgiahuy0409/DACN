@@ -112,6 +112,7 @@ export interface PaymentResultResponse {
 }
 
 export interface RedirectInfo {
+<<<<<<< HEAD
   label: string,
   path: string,
   icon?: string
@@ -266,3 +267,34 @@ username:String;
 
 }
 
+=======
+    label: string,
+    path: string,
+    icon?: string
+}
+export interface Occupancy {
+    idx: number;
+    label: string;
+    subLabel?: string;
+    value: number;
+    childOptions?: string[];
+    add(occupancy: Occupancy): void;
+    remove(occupancy: Occupancy): void;
+  }
+
+  // DTO
+  export interface UserDTO {
+    id: number,
+    username: string,
+    email: string,
+    dob: Date,
+    gender: string,
+    fullName: string,
+    phone: string,
+    createdDate: string
+}
+export interface JWTDTO {
+    token: string,
+    tokenExpirationDate: Date
+}
+>>>>>>> tuan

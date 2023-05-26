@@ -1,0 +1,142 @@
+<div class="login-container">
+  <div class="row align-items-center ">
+      <div class="form-group-second">
+        <div class="mat-tab-example">
+          <mat-tab-group animationDuration="10ms">
+            <mat-tab label="EMAIL">
+              <form class="login-form"  [formGroup]="signInFG">
+                <div class="email-ex">
+                  <span class="email-first">Email</span>
+                  <input type="text" class="form-control" placeholder="Email" id="email" formControlName="username" >
+                </div>
+                <span class="password-first">Mật khẩu</span>
+                <input type="text" class="form-control" placeholder="Mật khẩu" id="password" formControlName="password" >
+                <div>
+                  <button type="submit" class="login" (click)="onClickSignIn(signInFG.value)"
+                  [disabled]="signInFG.invalid" >Đăng Nhập</button>
+                </div>
+                <div class="footer-container-link"> <a id="create-account" (click)="navigateToSignUp()">Tạo tài khoản</a>
+                  <a id="forgot-pass" [routerLink]="['/auth/forget']" (click)="onClickForgetPassword()">Quên mật khẩu?</a>
+                </div>
+                <div class="divider d-flex align-items-center my-4">
+                  <p id="login-or" class="text-center mx-3 mb-0 text-muted">hoặc đăng nhập bằng</p>
+                </div>
+                <div id="gird2">
+                  <div class="button-google">
+                    <div class="icon-google">
+                      <img src="https://cdn6.agoda.net/images/universal-login/google-logo-v2.svg" alt="">
+                    </div>
+                    <div class="btn-gg">
+                      <a href="#!" role="button" id="text-gg">
+                        Google
+                      </a>
+                    </div>
+                  </div>
+                  <div class="gird3">
+                    <div class="button-facebook">
+                      <div class="icon-facebook">
+                        <img src="https://cdn6.agoda.net/images/universal-login/facebook-logo.svg" alt="">
+                      </div>
+                      <div class="btn-fb">
+                        <a href="#!" role="button" id="text-fb">
+                          Facebook
+                        </a>
+                      </div>
+                    </div>
+                    <div class="button-apple">
+                      <div class="icon-apple">
+                        <img src="https://cdn6.agoda.net/images/universal-login/apple-logo.svg" alt="">
+                      </div>
+                      <div class="btn-ap">
+                        <a href="#!" role="button" id="text-ap">
+                          Apple
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="gird4">
+                  <span>
+                    <span class="mb-5 pb-lg-2">Khi đăng nhập, tôi đồng ý với các </span>
+                    <a href="#!"> Điều khoản sử dụng </a>
+                    <span class="mb-5 pb-lg-2">và</span>
+                    <a href="#!"> Chính sách bảo mật </a>
+                    <span class="spring-hotel"> của Spring Hotel </span>
+                  </span>
+                </div>
+              </form>
+            </mat-tab>
+            <mat-tab label="DI ĐỘNG">
+              <form class="login-form" action="">
+                <div class="form-example-didong">
+                  <div class="phone-example">
+                    <div class="text-phone">
+                      <span id="tx-phone">Số di động</span>
+                    </div>
+                    <div class="input-text-phone">
+                      <input type="tel" id="phone" name="phone" placeholder="Số di động" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}">
+                    </div>
+                  </div>
+                </div>
+                <span class="password-first">Mật khẩu</span>
+                <input type="text" class="form-control" placeholder="Mật khẩu" id="password">
+                <div>
+                  <button type="submit" class="login">Đăng Nhập</button>
+                </div>
+                <div class="footer-container-link">
+                  <a href="#!" id="create-account">Tạo tài khoản</a>
+                  <a href="#!" id="forgot-pass">Quên mật khẩu?</a>
+                </div>
+                <div class="divider d-flex align-items-center my-4">
+                  <p id="login-or" class="text-center mx-3 mb-0 text-muted">hoặc đăng nhập bằng</p>
+                </div>
+                <div id="gird2">
+                  <div class="button-google">
+                    <div class="icon-google">
+                      <img src="https://cdn6.agoda.net/images/universal-login/google-logo-v2.svg" alt="">
+                    </div>
+                    <div class="btn-gg">
+                      <a href="#!" role="button" id="text-gg">
+                        Google
+                      </a>
+                    </div>
+                  </div>
+                  <div class="gird3">
+                    <div class="button-facebook">
+                      <div class="icon-facebook">
+                        <img src="https://cdn6.agoda.net/images/universal-login/facebook-logo.svg" alt="">
+                      </div>
+                      <div class="btn-fb">
+                        <a href="#!" role="button" id="text-fb">
+                          Facebook
+                        </a>
+                      </div>
+                    </div>
+                    <div class="button-apple">
+                      <div class="icon-apple">
+                        <img src="https://cdn6.agoda.net/images/universal-login/apple-logo.svg" alt="">
+                      </div>
+                      <div class="btn-ap">
+                        <a href="#!" role="button" id="text-ap">
+                          Apple
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="gird4">
+                  <span>
+                    <span class="mb-5 pb-lg-2">Khi đăng nhập, tôi đồng ý với các </span>
+                    <a href="#!"> Điều khoản sử dụng </a>
+                    <span class="mb-5 pb-lg-2">và</span>
+                    <a href="#!"> Chính sách bảo mật </a>
+                    <span class="spring-hotel"> của Spring Hotel </span>
+                  </span>
+                </div>
+              </form>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+  </div>
+</div>

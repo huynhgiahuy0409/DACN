@@ -23,9 +23,14 @@
     "@angular/router": "^14.2.0",
     "date-fns": "^2.29.3",
     "font-awesome": "^4.7.0",
+<<<<<<< HEAD
     "install": "^0.13.0",
     "moment": "^2.29.4",
     "ngx-toastr": "^15.2.0",
+=======
+    "jwt-decode": "^3.1.2",
+    "ngx-cookie-service": "^14.0.0",
+>>>>>>> tuan
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

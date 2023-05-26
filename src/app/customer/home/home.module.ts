@@ -9,6 +9,7 @@ import { HomeBannerComponent } from './home-banner/home-banner.component';
 import { SvgAsTemplateModule } from 'src/app/shared/svg-as-template/svg-as-template.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     ReactiveFormsModule,
     FilterBarModule,
-    RouterModule
+    RouterModule,
+    HttpClientModule
   ]
 })
 export class HomeModule { }

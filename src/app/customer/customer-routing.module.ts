@@ -27,6 +27,7 @@ const routes: Routes = [
         loadChildren: () => import('./checkout/checkout.module').then((m) => m.CheckoutModule)
       },
       { path: 'search', loadChildren: () => import('./search/search.module').then(m => m.SearchModule) },
+<<<<<<< HEAD
       {
         path: "login",
         loadChildren: () => import('./login/login.module').then((m) => m.LoginModule)
@@ -43,6 +44,9 @@ const routes: Routes = [
         path: ":hotel-name/:type",
         component: ProductDetailComponent
       }
+=======
+      { path: 'auth',  loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule) }
+>>>>>>> tuan
     ],
   },
 ];

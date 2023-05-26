@@ -1,10 +1,30 @@
 export const API_PREFIX = "/api";
 
+<<<<<<< HEAD
 export const GET_CART_BY_SESSION_ID = `${API_PREFIX}/carts/getCartBySessionId`;
 export const DELETE_ITEM_FROM_CART = `${API_PREFIX}/carts/deleteItemFromCart`;
 export const DELETE_BY_IDS = `${API_PREFIX}/carts/deleteByIds`;
 export const ADD_TO_CART = `${API_PREFIX}/carts/addToCart`
 export const GET_CART_ITEM_BY_SESSION_ROOM_ID = `${API_PREFIX}/carts/getBySessionIdAndRoomId`;
+=======
+export const TEXT_SPACE_REGEX = "^[a-zA-Z\\s]*$"
+export const NUMBER_REGEX = "^[0-9]*$"
+
+export const URL_API = "http://localhost:8080"
+
+
+//demo
+export const amenities: Amenity[] = [
+    {
+        id: 1,
+        name: 'Wifi',
+    },
+    {
+        id: 2,
+        name: 'Bãi đậu xe',
+    },
+];
+>>>>>>> tuan
 
 export const ADD_RESERVATION = `${API_PREFIX}/reservations/saveReservation`;
 export const ADD_ALL_RESERVATION = `${API_PREFIX}/reservations/saveAllReservation`;

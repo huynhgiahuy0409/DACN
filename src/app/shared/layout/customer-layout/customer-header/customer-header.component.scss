@@ -7,7 +7,7 @@
     padding:  0 16px;
     position: sticky;
     top: 0;
-    z-index: 9999;
+    z-index: 999;
 }
 .header-container .logo-wrapper{
     width: 150px;
@@ -24,3 +24,28 @@
 .cart-wrapper{
     margin: 0 16px
 }
+.login-success{
+  display: flex;
+  align-items: center;
+}
+.login-success .avatar{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+.login-success .logout{
+  color: #000;
+  font-weight: 500;
+}
+.login-success .logout:hover{
+  color: var(--primary-color);
+  text-decoration: underline;
+  cursor: pointer;
+}
+

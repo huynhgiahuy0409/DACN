@@ -7,7 +7,15 @@ import { CustomerLayoutModule } from '../shared/layout/customer-layout/customer-
 import { FilterBarModule } from '../shared/layout/customer-layout/filter-bar/filter-bar.module';
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerComponent } from './customer.component';
+<<<<<<< HEAD
 import { ProductDetailModule } from './product-detail/product-detail.module';
+=======
+import { DemoComponent } from './demo/demo.component';
+import { FilterBarModule } from '../shared/layout/customer-layout/filter-bar/filter-bar.module';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthModule } from './auth/auth.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+>>>>>>> tuan
 
 
 @NgModule({
@@ -20,8 +28,16 @@ import { ProductDetailModule } from './product-detail/product-detail.module';
     CustomerLayoutModule,
     AngularMaterialModule,
     RouterModule,
+<<<<<<< HEAD
     FilterBarModule,
     ProductDetailModule
+=======
+    HttpClientModule,
+    ReactiveFormsModule,
+    AuthModule,
+    FormsModule,
+    FilterBarModule
+>>>>>>> tuan
   ]
 })
 export class CustomerModule { }
