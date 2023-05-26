@@ -1,5 +1,11 @@
 import { Amenity, Cart, Room } from "./model";
 
+export const TEXT_SPACE_REGEX = "^[a-zA-Z\\s]*$"
+export const NUMBER_REGEX = "^[0-9]*$"
+
+export const URL_API = "http://localhost:8080"
+
+
 //demo
 export const amenities: Amenity[] = [
     {

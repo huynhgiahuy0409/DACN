@@ -26,14 +26,7 @@ const routes: Routes = [
         loadChildren: () => import('./checkout/checkout.module').then((m) => m.CheckoutModule)
       },
       { path: 'search', loadChildren: () => import('./search/search.module').then(m => m.SearchModule) },
-      {
-        path: "login",
-        loadChildren: () => import('./login/login.module').then((m) => m.LoginModule)
-      },
-      {
-        path: "register",
-        loadChildren: () => import('./register/register.module').then((m) => m.RegisterModule)
-      },
+      { path: 'auth',  loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule) }
     ],
   },
 ];

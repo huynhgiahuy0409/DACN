@@ -11,9 +11,13 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 @NgModule({
-  declarations: [],
+  declarations: [
+
+  ],
   exports: [
     CommonModule,
     MatButtonModule,
@@ -23,7 +27,10 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatNativeDateModule,
     MatIconModule,
     MatStepperModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDialogModule,
+    MatProgressBarModule,
+    MatTabsModule
   ]
 })
 export class AngularMaterialModule { }

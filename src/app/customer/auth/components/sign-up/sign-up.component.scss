@@ -1,8 +1,4 @@
-.login-container {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-.login-form {
+.register-form {
   background: #fff;
   -webkit-box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
   box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.2);
@@ -10,7 +6,7 @@
   width: 440px;
 }
 
-p.login {
+p.register {
   font-size: 24px;
   padding-left: 15px;
   padding-top: 20px;
@@ -18,16 +14,11 @@ p.login {
   font-style: normal;
 }
 
-p.text-ex {
-  padding-left: 15px;
-  padding-top: 5px;
-}
-
 .mat-tab-example {
   padding-left: 15px;
 }
 
-.email-ex {
+.name-ex {
   padding-top: 25px;
 }
 
@@ -36,7 +27,7 @@ p.text-ex {
   border-radius: 5px;
 }
 
-input#email.form-control {
+input#name.form-control {
   display: flex;
   position: relative;
   width: auto;
@@ -45,15 +36,52 @@ input#email.form-control {
   margin-bottom: 15px;
 }
 
-input#password.form-control {
+
+input#surname.form-control {
   display: flex;
   position: relative;
   width: auto;
   padding-right: 16em;
   margin-top: 5px;
+  margin-bottom: 15px;
 }
 
-button.login {
+
+input#email.form-control {
+  display: flex;
+  position: relative;
+  width: 96%;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+input#password.form-control {
+  display: flex;
+  position: relative;
+  width: 96%;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+input#checkpassword.form-control {
+  display: flex;
+  position: relative;
+  width: 96%;
+  margin-top: 5px;
+  margin-bottom: 15px;
+}
+
+.checkbox-layout {
+  max-width: 410px;
+
+}
+
+.checkbox-layout label.mat-checkbox-layout{
+  white-space: normal;
+}
+
+
+button.register {
   margin-top: 20px;
   margin-bottom: 20px;
   padding-top: 15px;
@@ -66,26 +94,10 @@ button.login {
   background-color: rgb(196, 138, 251);
   font-size: 16px;
   box-shadow: 0 5px 8px 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
 }
 
-.footer-container-link {
-  margin-top: 15px;
-  margin-bottom: 20px;
-  display: flex;
-}
-
-a#create-account {
-  color: blue;
-
-}
-
-a#forgot-pass {
-  margin-left: 16em;
-  color: blue;
-
-}
-
-p#login-or {
+p#continue-or {
   display: block;
   min-width: 1px;
   width: 100%;
@@ -121,6 +133,7 @@ p#login-or {
 
 .gird3 {
   display: flex;
+  border-bottom: 1px solid rgb(221, 223, 226);
 }
 
 .button-facebook {
@@ -184,27 +197,3 @@ p#login-or {
 .gird4 span .spring-hotel {
   margin-left: 14em;
 }
-
-
-.form-example-didong {
-  padding-top: 25px;
-}
-
-.input-text-phone {
-  border: 1px solid rgba(0, 0, 0, .1);
-  border-radius: 5px;
-  width: 406px;
-  margin-bottom: 15px;
-  margin-top: 5px;
-}
-
-
-// .input#phone {
-//   display: flex;
-//   position: relative;
-//   width: auto;
-//   padding-right: 16em;
-//   margin-top: 5px;
-//   margin-bottom: 15px;
-// }
-

@@ -46,3 +46,19 @@ export interface Occupancy {
     add(occupancy: Occupancy): void;
     remove(occupancy: Occupancy): void;
   }
+
+  // DTO
+  export interface UserDTO {
+    id: number,
+    username: string,
+    email: string,
+    dob: Date,
+    gender: string,
+    fullName: string,
+    phone: string,
+    createdDate: string
+}
+export interface JWTDTO {
+    token: string,
+    tokenExpirationDate: Date
+}

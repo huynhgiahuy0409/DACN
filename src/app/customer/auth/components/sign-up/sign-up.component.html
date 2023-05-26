@@ -1,30 +1,47 @@
+<!-- {{signUpFG.errors | json }} -->
 <div class="register-container">
   <div class="row align-items-center ">
     <div class="form-block mx-auto">
-      <form class="register-form" action="#" method="post">
+      <div class="register-form">
         <div class="form-group first">
           <p class="register">Đăng Ký</p>
         </div>
         <div class="form-group-second">
           <div class="mat-tab-example">
 
-            <form class="example-form">
+            <form class="example-form" [formGroup]="signUpFG">
               <div class="name-ex">
                 <span class="name-first">Tên</span>
-                <input type="text" class="form-control" placeholder="Tên" id="name">
+                <input type="email" class="form-control" placeholder="Tên" id="name" formControlName="fullName">
               </div>
               <div class="surname-ex">
-                <span class="surname-first">Họ</span>
-                <input type="text" class="form-control" placeholder="Họ" id="surname">
+                <span class="surname-first">Số điện thoại</span>
+                <input type="text" class="form-control" placeholder="Số điện thoại" id="surname" formControlName="phone">
               </div>
               <div class="email-ex">
                 <span class="email-first">Email</span>
-                <input type="text" class="form-control" placeholder="Email" id="email">
+                <input type="email" class="form-control" placeholder="Email" id="email" formControlName="username">
               </div>
               <span class="password-first">Mật khẩu</span>
-              <input type="text" class="form-control" placeholder="Mật khẩu" id="password">
+              <input type="password" class="form-control" placeholder="Mật khẩu" id="password" formControlName="password">
               <span class="check-password">Xác nhận mật khẩu</span>
-              <input type="text" class="form-control" placeholder="Xác nhận mật khẩu" id="checkpassword">
+              <input type="password" class="form-control" placeholder="Xác nhận mật khẩu" id="checkpassword" formControlName="confirmPassword">
+              <mat-error
+                        *ngIf="confirmPasswordControl!.hasError('invalidPassword')">
+                        Mật khẩu phải chứa ít nhất <strong>một chữ hoa, số, kí
+                            tự đặc biệt</strong>
+                    </mat-error>
+                    <mat-error
+                        *ngIf="confirmPasswordControl!.hasError('notMatch') &&
+                        !confirmPasswordControl!.hasError('required') &&
+                        !confirmPasswordControl!.hasError('invalidPassword')">
+                        Mật khẩu không trùng khớp
+                    </mat-error>
+                    <mat-error
+                        *ngIf="confirmPasswordControl!.hasError('required')">
+                        Mật khẩu <strong>không được để trống</strong>
+                    </mat-error>
+
               <div class="checkbox-layout" style="width: 410px">
                 <label class="mat-checkbox-layout">
                   <mat-checkbox id="mat-checkbox-a-input">
@@ -55,7 +72,11 @@
                 </label>
               </div>
               <div>
-                <button type="submit" class="register">Đăng Ký</button>
+                <button class="register"
+                (click)="onClickSignUp(signUpFG.value)"
+                [disabled]="signUpFG.invalid">
+                <span></span>
+                Đăng Ký</button>
               </div>
               <div class="divider d-flex align-items-center my-4">
                 <p id="continue-or" class="text-center mx-3 mb-0 text-muted">hoặc tiếp tục với</p>
@@ -95,7 +116,7 @@
                 </div>
               </div>
               <div class="login-resume">
-                <button type="submit" class="register">Bạn đã có tài khoản? Đăng nhập</button>
+                <button  class="register" (click)="openSignInDialog()">Bạn đã có tài khoản? Đăng nhập</button>
               </div>
               <div class="gird4">
                 <span>
@@ -109,7 +130,7 @@
             </form>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>

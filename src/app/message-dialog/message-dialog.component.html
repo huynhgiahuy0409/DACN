@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+    {{data.message}}
+</div>
+<mat-dialog-actions *ngIf="data.navigatePages as navigatePages">
+    <ng-container>
+        <ng-container *ngFor="let navigatePage of navigatePages">
+            <ng-container *ngIf="navigatePage === 'login' ">
+                <button color="primary" mat-raised-button (click)="openLoginDialog()" mat-dialog-close>Đăng nhập ngay!</button>
+            </ng-container>
+            <ng-container *ngIf="navigatePage === 'home' ">
+                <button color="primary" mat-button [routerLink]="['/home']" mat-dialog-close>Trở về trang chủ</button>
+            </ng-container>
+            <ng-container *ngIf="navigatePage === 'close' ">
+                <button color="primary" mat-button mat-dialog-close>Đã hiểu</button>
+            </ng-container>
+        </ng-container>
+    </ng-container>
+</mat-dialog-actions>

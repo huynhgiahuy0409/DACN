@@ -8,6 +8,9 @@ import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerComponent } from './customer.component';
 import { DemoComponent } from './demo/demo.component';
 import { FilterBarModule } from '../shared/layout/customer-layout/filter-bar/filter-bar.module';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthModule } from './auth/auth.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -21,6 +24,10 @@ import { FilterBarModule } from '../shared/layout/customer-layout/filter-bar/fil
     CustomerLayoutModule,
     AngularMaterialModule,
     RouterModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    AuthModule,
+    FormsModule,
     FilterBarModule
   ]
 })
