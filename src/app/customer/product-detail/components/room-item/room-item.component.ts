@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DIRECT_LINK } from 'src/app/models/constance';
 import { RoomResponse } from 'src/app/models/response';
 
 @Component({
@@ -9,9 +10,15 @@ import { RoomResponse } from 'src/app/models/response';
 export class RoomItemComponent implements OnInit {
   @Input()
   room!: RoomResponse
+  @Input()
+  isMinPrice: boolean = false
   constructor() { }
 
   ngOnInit(): void {
+    this.room.roomImages = this.room.roomImages.map(image => {
+      return {...image, url: `${DIRECT_LINK}/room-img/${image.url}`}
+    })
+    
   }
 
 }

@@ -62,12 +62,17 @@ export interface AutocompleteSearchResponse {
     value: string,
     type: string,
 }
+
 export interface AddressResponse {
     id: number,
     street: string
     province: string,
     district: string,
     ward: string
+}
+export interface BenefitResponse {
+    name: string,
+    code: string
 }
 export interface DiscountResponse {
     name: string,
@@ -117,6 +122,9 @@ export interface RoomResponse{
     originPrice: number
     rentalPrice: number
     finalPrice: number
+    benefits: BenefitResponse[]
+    discount: DiscountResponse
+    roomImages: ImageResponse[]
 }
 export interface ProductDetailResponse{
     hotel: HotelResponse
