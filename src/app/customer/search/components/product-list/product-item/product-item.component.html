@@ -17,7 +17,7 @@
                 <div class="row no-gutters">
                   <div
                     class="col l-3 product-image__review-item"
-                    *ngFor="let image of hotelImages; last as lastIdx"
+                    *ngFor="let image of hotelImages.slice(0,4); last as lastIdx"
                     (mouseenter)="hoverImage(image)"
                     (mouseleave)="isHoverReviewItem = false"
                   >

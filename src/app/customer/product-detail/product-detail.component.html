@@ -121,8 +121,8 @@
       </div>
     </div>
     <div class="room__container">
-        <ng-container *ngFor="let roomItem of productDetail.rooms">
-            <app-room-item [room]="roomItem"></app-room-item>
+        <ng-container *ngFor="let roomItem of productDetail.rooms; index as idx">
+            <app-room-item [room]="roomItem" [isMinPrice]="idx == 0"></app-room-item>
         </ng-container>
     </div>
   </div>

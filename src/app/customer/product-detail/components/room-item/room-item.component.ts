@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CartService } from 'src/app/customer/services/cart.service';
 import { FilterProductService } from 'src/app/customer/services/filter-product.service';
 import { AddToCartRequest, FindCartItemRequest } from 'src/app/models/request';
+import { DIRECT_LINK } from 'src/app/models/constance';
 import { RoomResponse } from 'src/app/models/response';
 import { getDateInFormat } from 'src/app/shared/utils/DateUtils';
 
@@ -15,12 +16,13 @@ import { getDateInFormat } from 'src/app/shared/utils/DateUtils';
 export class RoomItemComponent implements OnInit {
   @Input()
   room!: RoomResponse
-
   start_date !: string;
   end_date !: string;
   adult!: number;
   children!: number;
   room_id!: number;
+  @Input()
+  isMinPrice: boolean = false
 
   constructor(private _productFilterService: FilterProductService, private cartService: CartService
     , private toastrService: ToastrService, private router: Router) {
@@ -29,8 +31,10 @@ export class RoomItemComponent implements OnInit {
     this.adult = this._productFilterService.adultControl.value;
     this.children = this._productFilterService.childrenControl.value;
   }
-
   ngOnInit(): void {
+    this.room.roomImages = this.room.roomImages.map(image => {
+      return {...image, url: `${DIRECT_LINK}/room-img/${image.url}`}
+    })
     this.room_id = this.room.id
   }
 
