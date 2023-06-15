@@ -1,6 +1,6 @@
 <div class="room__container" [class.min-price-border]="isMinPrice">
     <div class="min-price-tag" [class.min-price-tag]="isMinPrice">Giá thấp nhất</div>
-    <div class="header"> 
+    <div class="header">
         <div class="name">
             {{room.name}}
         </div>
@@ -29,80 +29,51 @@
                     </div>
                 </div>
                 <div class="col l-9">
-                        <div class="row h-fit no-gutters right"  style="overflow: hidden;">
-                            <div class="col l-4">
-                                <div class="label">Giá này đã gồm</div>
-                                <div class="room__info content-col">
-                                    <div class="benefit__wrapper">
-                                        <h5>Lợi ích</h5>
-                                        <div class="benefits">
-                                            <ng-container *ngFor="let b of room.benefits.slice(0,3)" >
-                                                <div class="benefit__item">
-                                                    <i class="fa-solid fa-check"></i>
-                                                    <span>{{b.name}}</span>
-                                                </div>
-                                            </ng-container>
-                                        </div>
+                    <div class="row h-fit no-gutters right" style="overflow: hidden;">
+                        <div class="col l-4">
+                            <div class="label">Giá này đã gồm</div>
+                            <div class="room__info content-col">
+                                <div class="benefit__wrapper">
+                                    <h5>Lợi ích</h5>
+                                    <div class="benefits">
+                                        <ng-container *ngFor="let b of room.benefits.slice(0,3)">
+                                            <div class="benefit__item">
+                                                <i class="fa-solid fa-check"></i>
+                                                <span>{{b.name}}</span>
+                                            </div>
+                                        </ng-container>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col l-2">
-                                <div class="label">Sức chứa</div>
-                                <div class="capacity content-col">
-                                    <div class="capacity__list">
-                                        <div class="capacity__item">
-                                            {{room.maxAdults}} <span>x</span> <i class="fa-solid fa-child"></i>
-                                        </div>
-                                        <div class="capacity__item" *ngIf="room.maxChildren > 0">
-                                            {{room.maxChildren}}  <span>x</span> <i class="fa-solid fa-child-reaching"></i>
-                                        </div>
+                        </div>
+                        <div class="col l-2">
+                            <div class="label">Sức chứa</div>
+                            <div class="capacity content-col">
+                                <div class="capacity__list">
+                                    <div class="capacity__item">
+                                        {{room.maxAdults}} <span>x</span> <i class="fa-solid fa-child"></i>
+                                    </div>
+                                    <div class="capacity__item" *ngIf="room.maxChildren > 0">
+                                        {{room.maxChildren}} <span>x</span> <i class="fa-solid fa-child-reaching"></i>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col l-3">
-                                <div class="label">Thanh toán và huỷ bỏ</div>
-                                <div class="payment content-col">
-                                    <div class="payment__item">
-                                        <strong class="fs-12">Thanh toán</strong>
-                                    </div>
+                        </div>
+                        <div class="col l-3">
+                            <div class="label">Thanh toán và huỷ bỏ</div>
+                            <div class="payment content-col">
+                                <div class="payment__item">
+                                    <strong class="fs-12">Thanh toán</strong>
                                 </div>
-                            </div>
-                            <div class="col l-3">
-                                <div class="label">Giá phòng/đêm</div>
-                                <div class="voucher__wrapper" *ngIf="room.discount as discount">
-                                    <h6 class="voucher-tag">
-                                       {{discount.name}}     {{discount.percent}}%
-                                    </h6>
-                                </div>
-                                <div class="price__wrapper">
-                                    <div class="price__item">
-                                      <div class="origin-price__wrapper">
-                                        <span>{{
-                                            room.originPrice | currency : "VND"
-                                        }}</span>
-                                      </div>
-                                    </div>
-                                    <span class="fs-12 mr-b-5">Giá mỗi đêm rẻ nhất từ</span>
-                                    <div class="price__item">
-                                      <div class="rental-price__wrapper">
-                                        <span>{{
-                                            room.rentalPrice | currency : "VND"
-                                        }}</span>
-                                      </div>
-                                    </div>
-                                    <div class="space m"></div>
-                                    <div class="button__wrapper">
-                                        <button class="w-fit" mat-raised-button color="primary">Đặt ngay</button>
-                                    </div>
-                                    <div class="button__wrapper">
-                                        <button class="w-fit" mat-stroked-button color="primary">Thêm vào xe đẩy hàng</button>
-                                    </div>
-                                    <!-- <div class="free-cancellation" *ngIf="searchedProduct.isFreeCancellation">+ Miễn phí huỷ phòng</div> -->
-                                  </div>
                             </div>
                         </div>
                         <div class="col l-3">
                             <div class="label">Giá phòng/đêm</div>
+                            <div class="voucher__wrapper" *ngIf="room.discount as discount">
+                                <h6 class="voucher-tag">
+                                    {{discount.name}} {{discount.percent}}%
+                                </h6>
+                            </div>
                             <div class="price__wrapper">
                                 <div class="price__item">
                                     <div class="origin-price__wrapper">
@@ -111,34 +82,63 @@
                                             }}</span>
                                     </div>
                                 </div>
+                                <span class="fs-12 mr-b-5">Giá mỗi đêm rẻ nhất từ</span>
                                 <div class="price__item">
-                                    <div class="origin-price__wrapper">
+                                    <div class="rental-price__wrapper">
                                         <span>{{
                                             room.rentalPrice | currency : "VND"
                                             }}</span>
                                     </div>
                                 </div>
-                                <span class="fs-12 mr-b-5">Giá mỗi đêm rẻ nhất từ</span>
-                                <div class="price__item">
-                                    <div class="rental-price__wrapper">
-                                        <span>{{
-                                            room.finalPrice | currency : "VND"
-                                            }}</span>
-                                    </div>
-                                </div>
                                 <div class="space m"></div>
                                 <div class="button__wrapper">
-                                    <button class="w-fit" mat-raised-button color="primary"
-                                        (click)="onProceedToCheckout()">Đặt
-                                        ngay</button>
+                                    <button class="w-fit" mat-raised-button color="primary">Đặt ngay</button>
                                 </div>
                                 <div class="button__wrapper">
-                                    <button class="w-fit" mat-stroked-button color="primary"
-                                        (click)="onAddToCart()">Thêm vào xe đẩy
+                                    <button class="w-fit" mat-stroked-button color="primary">Thêm vào xe đẩy
                                         hàng</button>
                                 </div>
                                 <!-- <div class="free-cancellation" *ngIf="searchedProduct.isFreeCancellation">+ Miễn phí huỷ phòng</div> -->
                             </div>
+                        </div>
+                    </div>
+                    <div class="col l-3">
+                        <div class="label">Giá phòng/đêm</div>
+                        <div class="price__wrapper">
+                            <div class="price__item">
+                                <div class="origin-price__wrapper">
+                                    <span>{{
+                                        room.originPrice | currency : "VND"
+                                        }}</span>
+                                </div>
+                            </div>
+                            <div class="price__item">
+                                <div class="origin-price__wrapper">
+                                    <span>{{
+                                        room.rentalPrice | currency : "VND"
+                                        }}</span>
+                                </div>
+                            </div>
+                            <span class="fs-12 mr-b-5">Giá mỗi đêm rẻ nhất từ</span>
+                            <div class="price__item">
+                                <div class="rental-price__wrapper">
+                                    <span>{{
+                                        room.finalPrice | currency : "VND"
+                                        }}</span>
+                                </div>
+                            </div>
+                            <div class="space m"></div>
+                            <div class="button__wrapper">
+                                <button class="w-fit" mat-raised-button color="primary"
+                                    (click)="onProceedToCheckout()">Đặt
+                                    ngay</button>
+                            </div>
+                            <div class="button__wrapper">
+                                <button class="w-fit" mat-stroked-button color="primary" (click)="onAddToCart()">Thêm
+                                    vào xe đẩy
+                                    hàng</button>
+                            </div>
+                            <!-- <div class="free-cancellation" *ngIf="searchedProduct.isFreeCancellation">+ Miễn phí huỷ phòng</div> -->
                         </div>
                     </div>
                 </div>
