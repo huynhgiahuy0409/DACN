@@ -2,12 +2,12 @@
   padding: 16px;
   border-radius: 5px;
   border: 1px solid #ccc;
-  margin-bottom: 20px
+  margin-bottom: 20px;
 }
-.pd-container .line-box .label{
+.pd-container .line-box .label {
   font-size: 1.8rem;
   font-weight: 500;
-  margin-bottom: 16px
+  margin-bottom: 16px;
 }
 .product-info__container .tab__list {
   display: flex;
@@ -32,101 +32,122 @@
   margin: 0 10px;
   font-weight: 450;
 }
-.product-info__container .short-desc .hotel-name__wrapper{
-    margin-bottom: 10px;
+.product-info__container .short-desc .hotel-name__wrapper {
+  margin-bottom: 10px;
 }
-.product-info__container .short-desc .hotel-name{
-    font-size: 2.6rem;
-    font-weight: 500;
-    margin-right: 8px
+.product-info__container .short-desc .hotel-name {
+  font-size: 2.6rem;
+  font-weight: 500;
+  margin-right: 8px;
 }
-::ng-deep .product-info__container .short-desc app-start-rating svg{
-    width: 16px !important;
-    height: 16px !important;
+::ng-deep .product-info__container .short-desc app-start-rating svg {
+  width: 16px !important;
+  height: 16px !important;
 }
-.product-info__container .short-desc .address{
-    font-weight: 450;
-    margin-bottom: 10px;
+.product-info__container .short-desc .address {
+  font-weight: 450;
+  margin-bottom: 10px;
 }
-.product-info__container .short-desc .address:hover{
-    text-decoration: underline;
+.product-info__container .short-desc .address:hover {
+  text-decoration: underline;
 }
-.product-info__container .short-desc .desc{
-    margin-top: 10px
+.product-info__container .short-desc .desc {
+  margin-top: 10px;
 }
-.product-info__container .benefits .benefit__item{
-    display: flex;
-    align-items: center;
-    margin: 0 8px 16px 0
+.product-info__container .benefits .benefit__item {
+  display: flex;
+  align-items: center;
+  margin: 0 8px 16px 0;
 }
-.product-info__container .benefits .benefit__item i{
-    font-size: 2rem;
+.product-info__container .benefits .benefit__item i {
+  font-size: 2rem;
 }
-.product-info__container .benefits .benefit__item span{
-    margin-left: 10px;
-    font-weight: 500;
+.product-info__container .benefits .benefit__item span {
+  margin-left: 10px;
+  font-weight: 500;
 }
-.product-info__container .rate{
-    font-weight: 500
+.product-info__container .rate {
+  font-weight: 500;
 }
-.product-info__container .rate .points{
-    font-size: 2.4rem;
-    margin-bottom: 8px
+.product-info__container .rate .points {
+  font-size: 2.4rem;
+  margin-bottom: 8px;
 }
-.product-info__container .rate .reviews{
-    font-size: 1.4rem;
-    color: var(--primary-color)
+.product-info__container .rate .reviews {
+  font-size: 1.4rem;
+  color: var(--primary-color);
 }
 
-.product__item__body .center__wrapper .product-info .product-info__footer .vip-member__wrapper{
-    position: relative;
+.product__item__body
+  .center__wrapper
+  .product-info
+  .product-info__footer
+  .vip-member__wrapper {
+  position: relative;
 }
 // tag
-.vip-member{
-    height: 20px;
-    border-radius: 2px;
-    display: inline-flex;
-    align-items: center;
-    overflow: hidden;
+.vip-member {
+  height: 20px;
+  border-radius: 2px;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
 }
-.vip-member .left{
-    background-color: #000;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    padding: 0 8px 0;
-    position: relative;
-    font-weight: 700;
+.vip-member .left {
+  background-color: #000;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 8px 0;
+  position: relative;
+  font-weight: 700;
 }
-.vip-member .left::before{
-    content: "";
-    width: 4px;
-    height: 60px;
-    position: absolute;
-    bottom: -12px;
-    right: -3px;
-    z-index: 1;
-    background-color: var(--primary-color);
-    transform: rotate(20deg);
-    background-color: #000;
+.vip-member .left::before {
+  content: "";
+  width: 4px;
+  height: 60px;
+  position: absolute;
+  bottom: -12px;
+  right: -3px;
+  z-index: 1;
+  background-color: var(--primary-color);
+  transform: rotate(20deg);
+  background-color: #000;
 }
-.vip-member .right{
-    color: #000; 
-    background: linear-gradient(90deg, var(--primary-hover-color) 0%, var(--primary-color) 100%);
-    display: flex;
-    align-items: center;
-    padding: 0 8px;
-    position: relative;
+.vip-member .right {
+  color: #000;
+  background: linear-gradient(
+    90deg,
+    var(--primary-hover-color) 0%,
+    var(--primary-color) 100%
+  );
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  position: relative;
 }
-.vip-member .right::before{
-    content: "";
-    width: 4px;
-    height: 60px;
-    position: absolute;
-    bottom: -12px;
-    left: 3px;
-    z-index: 1;
-    background-color: var(--primary-color);
-    transform: rotate(20deg);
+.vip-member .right::before {
+  content: "";
+  width: 4px;
+  height: 60px;
+  position: absolute;
+  bottom: -12px;
+  left: 3px;
+  z-index: 1;
+  background-color: var(--primary-color);
+  transform: rotate(20deg);
+}
+.product-image__container {
+  position: relative;
 }
 
+.favorite-icon {
+  position: absolute;
+  top: 4%;
+  right: 10px;
+  i {
+    font-size: 200%;
+    color: red;
+    cursor: pointer;
+  }
+}

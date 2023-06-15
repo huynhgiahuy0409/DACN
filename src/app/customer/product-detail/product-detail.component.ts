@@ -1,12 +1,13 @@
-import { URL_API } from 'src/app/models/constance';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, map, switchMap, tap } from 'rxjs';
-import { ProductFilterRequest } from 'src/app/models/request';
+import { Observable, switchMap } from 'rxjs';
+import { ProductFilterRequest, SaveFavoriteHotelRequest } from 'src/app/models/request';
+import { ProductDetailResponse } from 'src/app/models/response';
 import { FilterProductService } from '../services/filter-product.service';
-import { ProgressSpinnerService } from '../services/progress-spinner.service';
-import { HotelResponse, ProductDetailResponse } from 'src/app/models/response';
 import { HotelService } from '../services/hotel.service';
+import { ProgressSpinnerService } from '../services/progress-spinner.service';
+import { FavoriteHotelService } from '../services/favorite-hotel.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-detail',
@@ -16,10 +17,12 @@ import { HotelService } from '../services/hotel.service';
 export class ProductDetailComponent implements OnInit {
   productDetail$!: Observable<ProductDetailResponse>
   minPrice!: number
-  constructor( private _route: ActivatedRoute,
+  constructor(private _route: ActivatedRoute,
     private _productFilterService: FilterProductService,
     private _hotelService: HotelService,
-    private _progressSpinnerService: ProgressSpinnerService) { }
+    private _progressSpinnerService: ProgressSpinnerService,
+    private favoriteHotelService: FavoriteHotelService,
+    private toastrService: ToastrService) { }
 
   ngOnInit(): void {
     /* Detect change value from QueryParams to update filter state */
@@ -73,7 +76,24 @@ export class ProductDetailComponent implements OnInit {
           return this._hotelService.findDetailHotel(value, productFilterRequest)
         }),
       )
-      
+
+  }
+
+  onAddToFavoriteList(hotelId: number) {
+    const data: SaveFavoriteHotelRequest = {
+      hotelId: hotelId,
+      username: 'tester' //test user only
+    };
+
+    this.favoriteHotelService.save(data).subscribe({
+      next: (res) => {
+        this.toastrService.success(res.message, 'Thành công !')
+      },
+      error: (err) => {
+        console.log(err);
+        this.toastrService.error(err.error, 'Thất bại !')
+      }
+    })
   }
 
 }

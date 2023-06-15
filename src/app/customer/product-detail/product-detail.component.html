@@ -2,9 +2,10 @@
 <div class="pd-container" *ngIf="productDetail$ | async as productDetail">
   <div class="grid wide">
     <div class="product-image__container">
-      <app-product-image
-        [images]="productDetail.hotel.hotelImages"
-      ></app-product-image>
+      <app-product-image [images]="productDetail.hotel.hotelImages"></app-product-image>
+      <div class="d-flex-bh justify-content-end-bh favorite-icon" (click)="onAddToFavoriteList(productDetail.hotel.id)">
+        <i class="fa-sharp fa-solid fa-heart"></i>
+      </div>
     </div>
     <div class="product-info__container">
       <div class="line-box" style="padding: 0 16px">
@@ -19,14 +20,12 @@
             </div>
           </div>
           <div class="col l-3">
-            <div
-              class="d-flex-bh align-items-center-bh justify-content-end-bh h-fit"
-            >
+            <div class="d-flex-bh align-items-center-bh justify-content-end-bh h-fit">
               <div class="price-from">
                 <span class="fs-10">Từ</span>
                 <span>{{
                   productDetail.rooms[0].finalPrice | currency : "VND"
-                }}</span>
+                  }}</span>
               </div>
               <button mat-raised-button color="primary">Xem giá</button>
             </div>
@@ -39,10 +38,7 @@
             <div class="line-box">
               <div style="border-bottom: 1px solid #ccc">
                 <div class="d-flex-bo" style="margin-bottom: 10px">
-                  <div
-                    class="vip-member__wrapper"
-                    *ngIf="productDetail.hotel.isDeals"
-                  >
+                  <div class="vip-member__wrapper" *ngIf="productDetail.hotel.isDeals">
                     <div class="vip-member">
                       <div class="left">
                         <app-star-svg [fillColor]="'#fff'"></app-star-svg>
@@ -55,15 +51,11 @@
                     </div>
                   </div>
                 </div>
-                <div
-                  class="d-flex-bh align-items-center-bh hotel-name__wrapper"
-                >
+                <div class="d-flex-bh align-items-center-bh hotel-name__wrapper">
                   <div class="hotel-name">
                     {{ productDetail.hotel.name }}
                   </div>
-                  <app-start-rating
-                    [starRating]="productDetail.hotel.starRating"
-                  ></app-start-rating>
+                  <app-start-rating [starRating]="productDetail.hotel.starRating"></app-start-rating>
                 </div>
                 <div class="address">
                   {{ productDetail.hotel.address.street }},
@@ -93,7 +85,7 @@
           <div class="benefits">
             <div class="line-box">
               <div class="label">Tiện nghi</div>
-              <div class="row no-gutters"  style="align-items: center">
+              <div class="row no-gutters" style="align-items: center">
                 <ng-container *ngFor="let i of productDetail.hotel.facilities.slice(5,13)">
                   <div class="col l-3">
                     <div class="benefit__item">
@@ -109,21 +101,22 @@
         <div class="col l-3">
           <div class="rate">
             <div class="line-box">
-                <div class="d-flex-bo">
-                    <div>
-                        <div class="points"> {{ productDetail.hotel.averageRating.points }} {{productDetail.hotel.averageRating.name}}</div>
-                        <div class="reviews">{{ productDetail.hotel.averageRating.reviews }} bài đánh giá</div>
-                    </div>
+              <div class="d-flex-bo">
+                <div>
+                  <div class="points"> {{ productDetail.hotel.averageRating.points }}
+                    {{productDetail.hotel.averageRating.name}}</div>
+                  <div class="reviews">{{ productDetail.hotel.averageRating.reviews }} bài đánh giá</div>
                 </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="room__container">
-        <ng-container *ngFor="let roomItem of productDetail.rooms; index as idx">
-            <app-room-item [room]="roomItem" [isMinPrice]="idx == 0"></app-room-item>
-        </ng-container>
+      <ng-container *ngFor="let roomItem of productDetail.rooms; index as idx">
+        <app-room-item [room]="roomItem" [isMinPrice]="idx == 0"></app-room-item>
+      </ng-container>
     </div>
   </div>
 </div>

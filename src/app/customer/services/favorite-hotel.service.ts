@@ -4,6 +4,7 @@ import { DELETE_FAVORITE_HOTEL_BY_ID, FIND_ALL_FAVORITE_HOTEL, SAVE_FAVORITE_HOT
 import { FavoriteHotelResponse } from 'src/app/models/response';
 import { Observable } from 'rxjs';
 import { SaveFavoriteHotelRequest } from 'src/app/models/request';
+import { ApiResponse } from 'src/app/models/model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,8 +26,8 @@ export class FavoriteHotelService {
     return this.httpClient.get<FavoriteHotelResponse[]>(`${FIND_ALL_FAVORITE_HOTEL}`, this.httpOptions);
   }
 
-  save(favorite_hotel: SaveFavoriteHotelRequest): Observable<FavoriteHotelResponse> {
-    return this.httpClient.post<FavoriteHotelResponse>(`${SAVE_FAVORITE_HOTEL}`, favorite_hotel);
+  save(favorite_hotel: SaveFavoriteHotelRequest): Observable<ApiResponse> {
+    return this.httpClient.post<ApiResponse>(`${SAVE_FAVORITE_HOTEL}`, favorite_hotel);
   }
 
   deleteById(id: number): Observable<any> {
