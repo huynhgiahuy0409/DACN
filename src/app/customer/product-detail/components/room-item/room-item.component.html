@@ -92,10 +92,12 @@
                                 </div>
                                 <div class="space m"></div>
                                 <div class="button__wrapper">
-                                    <button class="w-fit" mat-raised-button color="primary">Đặt ngay</button>
+                                    <button class="w-fit" mat-raised-button color="primary"
+                                        (click)="onProceedToCheckout()">Đặt ngay</button>
                                 </div>
                                 <div class="button__wrapper">
-                                    <button class="w-fit" mat-stroked-button color="primary">Thêm vào xe đẩy
+                                    <button class="w-fit" mat-stroked-button color="primary"
+                                        (click)="onAddToCart()">Thêm vào xe đẩy
                                         hàng</button>
                                 </div>
                                 <!-- <div class="free-cancellation" *ngIf="searchedProduct.isFreeCancellation">+ Miễn phí huỷ phòng</div> -->

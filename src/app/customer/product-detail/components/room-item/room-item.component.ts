@@ -33,7 +33,7 @@ export class RoomItemComponent implements OnInit {
   }
   ngOnInit(): void {
     this.room.roomImages = this.room.roomImages.map(image => {
-      return {...image, url: `${DIRECT_LINK}/room-img/${image.url}`}
+      return { ...image, url: `${DIRECT_LINK}/room-img/${image.url}` }
     })
     this.room_id = this.room.id
   }
