@@ -6,13 +6,17 @@ import { ProductItemComponent } from './product-item/product-item.component';
 import { AngularMaterialModule } from 'src/app/shared/angular-material/angular-material.module';
 import { RouterModule } from '@angular/router';
 import { CustomerRoutingModule } from 'src/app/customer/customer-routing.module';
+import { LiveshowImageDialogComponent } from './product-item/dialog/liveshow-image-dialog/liveshow-image-dialog.component';
+import { LsImageItemComponent } from './product-item/dialog/liveshow-image-dialog/ls-image-item/ls-image-item.component';
 
 
 
 @NgModule({
   declarations: [
     ProductListComponent,
-    ProductItemComponent
+    ProductItemComponent,
+    LiveshowImageDialogComponent,
+    LsImageItemComponent
   ],
   imports: [
     CommonModule,

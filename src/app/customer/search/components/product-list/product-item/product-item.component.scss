@@ -378,3 +378,6 @@
     line-height: 16px;
     font-weight: 500;
 }
+::ng-deep mat-dialog-container{
+    padding: 0 !important
+}

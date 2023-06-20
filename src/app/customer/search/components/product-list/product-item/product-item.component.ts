@@ -6,6 +6,8 @@ import { HotelService } from 'src/app/customer/services/hotel.service';
 import { FilterProductService } from 'src/app/customer/services/filter-product.service';
 import { NavigationExtras, Router } from '@angular/router';
 import { ProductFilterRequest } from 'src/app/models/request';
+import { MatDialog } from '@angular/material/dialog';
+import { LiveshowImageDialogComponent } from './dialog/liveshow-image-dialog/liveshow-image-dialog.component';
 
 @Component({
   selector: 'app-product-item',
@@ -24,7 +26,8 @@ export class ProductItemComponent implements OnInit {
   constructor(
     private hotelService: HotelService,
     private filterProductService: FilterProductService,
-    private router: Router
+    private router: Router,
+    private matDialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -61,6 +64,14 @@ export class ProductItemComponent implements OnInit {
         type: type,
       },
     };
-    this.router.navigate([`${sltItem.name.replace(/ /g, "-")}/${curFilter.type}`], navigationExtras)
+    console.log(navigationExtras);
+    
+    this.router.navigate([`/product/${sltItem.name.replace(/ /g, "-")}/${curFilter.type}`], navigationExtras)
+  }
+  openLiveshowImage(event: any, images: ImageResponse[], selectedImageIdx: number){
+    event.stopPropagation();
+    this.matDialog.open(LiveshowImageDialogComponent, {
+      data: {images: images, selectedImageIdx: selectedImageIdx}
+    })    
   }
 }

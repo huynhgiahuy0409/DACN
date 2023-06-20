@@ -1,7 +1,7 @@
 <div class="pi__container">
   <div class="row no-gutters">
     <div class="col l-4">
-        <div class="image__wrapper thumb">
+        <div class="image__wrapper thumb" (click)="openLiveshowImage($event, thumbImage)">
             <img
               [src]="thumbImage.url"
               alt=""
@@ -13,8 +13,8 @@
         <ng-container *ngFor="let imgGroup of viewImages">
           <div class="col l-4">
             <div class="image__group">
-              <ng-container *ngFor="let image of imgGroup">
-                <div class="image__wrapper">
+              <ng-container *ngFor="let image of imgGroup; index as idx">
+                <div class="image__wrapper" (click)="openLiveshowImage($event, image)">
                     <img
                       [src]="image.url"
                       alt=""

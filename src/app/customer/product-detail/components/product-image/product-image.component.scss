@@ -36,3 +36,7 @@
 .image__group img:nth-child(2) {
   margin-top: 8px;
 }
+
+::ng-deep mat-dialog-container{
+  padding: 0 !important
+}

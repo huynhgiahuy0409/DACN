@@ -17,9 +17,10 @@
                 <div class="row no-gutters">
                   <div
                     class="col l-3 product-image__review-item"
-                    *ngFor="let image of hotelImages.slice(0,4); last as lastIdx"
+                    *ngFor="let image of hotelImages.slice(0,4); last as lastIdx; index as idx"
                     (mouseenter)="hoverImage(image)"
                     (mouseleave)="isHoverReviewItem = false"
+                    (click)="openLiveshowImage($event, hotelImages, idx)"
                   >
                     <img
                       [src]="image? image.url: null"

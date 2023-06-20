@@ -4,15 +4,21 @@ import { Observable, switchMap } from 'rxjs';
 import { ProductFilterRequest, SaveFavoriteHotelRequest } from 'src/app/models/request';
 import { ProductDetailResponse } from 'src/app/models/response';
 import { FilterProductService } from '../services/filter-product.service';
-import { HotelService } from '../services/hotel.service';
 import { ProgressSpinnerService } from '../services/progress-spinner.service';
 import { FavoriteHotelService } from '../services/favorite-hotel.service';
 import { ToastrService } from 'ngx-toastr';
+import {
+  HotelResponse,
+  ImageResponse,
+} from 'src/app/models/response';
+import { HotelService } from '../services/hotel.service';
+import { MatDialog } from '@angular/material/dialog';
+import { LiveshowImageDialogComponent } from '../search/components/product-list/product-item/dialog/liveshow-image-dialog/liveshow-image-dialog.component';
 
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
-  styleUrls: ['./product-detail.component.scss']
+  styleUrls: ['./product-detail.component.scss'],
 })
 export class ProductDetailComponent implements OnInit {
   productDetail$!: Observable<ProductDetailResponse>
@@ -22,7 +28,9 @@ export class ProductDetailComponent implements OnInit {
     private _hotelService: HotelService,
     private _progressSpinnerService: ProgressSpinnerService,
     private favoriteHotelService: FavoriteHotelService,
-    private toastrService: ToastrService) { }
+    private toastrService: ToastrService,
+    private _matDialog: MatDialog
+    ) { }
 
   ngOnInit(): void {
     /* Detect change value from QueryParams to update filter state */
@@ -95,5 +103,4 @@ export class ProductDetailComponent implements OnInit {
       }
     })
   }
-
 }

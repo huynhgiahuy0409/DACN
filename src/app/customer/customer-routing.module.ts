@@ -32,10 +32,10 @@ const routes: Routes = [
         loadChildren: () => import('./favorite-list/favorite-list.module').then((m) => m.FavoriteListModule)
       },
       {
-        path: ":hotel-name/:type",
+        path: "product/:hotel-name/:type",
         component: ProductDetailComponent,
       },
-      // { path: 'auth',  loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule) }
+      { path: 'auth',  loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule) }
     ],
   },
 ];
