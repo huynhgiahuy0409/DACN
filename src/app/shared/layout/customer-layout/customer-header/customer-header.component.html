@@ -8,7 +8,7 @@
               <div class="login-success">
                 <div class="avatar">H</div>
                 <span style="margin-right: 10px">{{user.fullName}}</span>
-                <span class="logout">Đăng xuất</span>
+                <span class="logout" (click)="logout()">Đăng xuất</span>
               </div>
           </ng-container>
          <ng-template #noneLogin>
