@@ -28,5 +28,8 @@ export class CustomerHeaderComponent implements OnInit {
     this.user$ = this.userService.user$
     this.user$.subscribe(v => console.log(v))
   }
-
+  logout(){
+    localStorage.removeItem('token');
+    window.location.href = '/home';
+  }
 }
