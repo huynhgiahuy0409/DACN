@@ -60,7 +60,7 @@
                     </div>
                     <div class="item-price text-end" *ngIf="isAvailable(item.status)">
                         <p class="text-price">
-                            {{getPriceByNights(item.fromDate,item.toDate,item.room.originPrice,item.discountPercent)}}
+                            {{getPriceByNights(item.fromDate,item.toDate,item.room.rentalPrice,item.discountPercent)}}
                         </p>
                         <p class="text-secondary item-daterange">Bao gồm thuế và phí</p>
                     </div>

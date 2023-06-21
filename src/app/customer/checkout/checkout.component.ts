@@ -75,7 +75,7 @@ export class CheckoutComponent implements OnInit {
 
   getTotalPrice() {
     const totalPrice = this.chosenItems.reduce((total, item: CartItem) => {
-      return total + (this.getNightInNumber(item.fromDate, item.toDate) * this.getPriceAfterDiscount(item.room.originPrice,
+      return total + (this.getNightInNumber(item.fromDate, item.toDate) * this.getPriceAfterDiscount(item.room.rentalPrice,
         item.discountPercent));
     }
       , 0);
@@ -95,8 +95,8 @@ export class CheckoutComponent implements OnInit {
     return getNightNumber(start, end);
   }
 
-  getPriceByNights(fromDate: number[], toDate: number[], originalPrice: number, discountPercent: number) {
-    return getMoneyFormat(this.getNightInNumber(fromDate, toDate) * this.getPriceAfterDiscount(originalPrice, discountPercent));
+  getPriceByNights(fromDate: number[], toDate: number[], rentalPrice: number, discountPercent: number) {
+    return getMoneyFormat(this.getNightInNumber(fromDate, toDate) * this.getPriceAfterDiscount(rentalPrice, discountPercent));
   }
 
   onProceedToPayment() {
@@ -111,7 +111,7 @@ export class CheckoutComponent implements OnInit {
           children: item.child,
           startDate: getDateFromArray(item.fromDate),
           endDate: getDateFromArray(item.toDate),
-          username: "",//if user is logged in pls put username here ( at here we will create a random user with random username and password )
+          username: "",// (test user only ) if user is logged in pls put username here ( at here we will create a random user with random username and password )
           hotelId: item.hotel.id,
           roomId: item.room.id,
           fullName: fullName,

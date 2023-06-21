@@ -53,7 +53,7 @@ export class CartComponent implements OnInit {
 
   getTotalPrice() {
     const totalPrice = this.chosenItems.reduce((total, item: CartItem) => {
-      return total + (this.getNightInNumber(item.fromDate, item.toDate) * this.getPriceAfterDiscount(item.room.originPrice,
+      return total + (this.getNightInNumber(item.fromDate, item.toDate) * this.getPriceAfterDiscount(item.room.rentalPrice,
         item.discountPercent));
     }
       , 0);
@@ -79,8 +79,8 @@ export class CartComponent implements OnInit {
     return getNightNumber(start, end);
   }
 
-  getPriceByNights(fromDate: number[], toDate: number[], originalPrice: number, discountPercent: number) {
-    return this.formatMoney(this.getNightInNumber(fromDate, toDate) * this.getPriceAfterDiscount(originalPrice, discountPercent));
+  getPriceByNights(fromDate: number[], toDate: number[], rentalPrice: number, discountPercent: number) {
+    return this.formatMoney(this.getNightInNumber(fromDate, toDate) * this.getPriceAfterDiscount(rentalPrice, discountPercent));
   }
 
   onDeleteItemFromCart(id: number) {
