@@ -75,18 +75,18 @@
                                     </h6>
                                 </div>
                                 <div class="price__wrapper">
-                                    <div class="price__item">
+                                    <!-- <div class="price__item">
                                         <div class="origin-price__wrapper">
                                             <span>{{
                                                 room.originPrice | currency : "VND"
                                                 }}</span>
                                         </div>
-                                    </div>
-                                    <span class="fs-12 mr-b-5">Giá mỗi đêm rẻ nhất từ</span>
+                                    </div> -->
+                                    <span class="fs-12 mr-b-5">Giá mỗi đêm chỉ từ</span>
                                     <div class="price__item">
                                         <div class="rental-price__wrapper">
                                             <span>{{
-                                                room.rentalPrice | currency : "VND"
+                                                room.originPrice | currency : "VND"
                                                 }}</span>
                                         </div>
                                     </div>
