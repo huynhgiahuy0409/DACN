@@ -26,12 +26,14 @@ export class RoomItemComponent implements OnInit {
 
   constructor(private _productFilterService: FilterProductService, private cartService: CartService
     , private toastrService: ToastrService, private router: Router) {
-    this.start_date = getDateInFormat(this._productFilterService.startDateControl.value);
-    this.end_date = getDateInFormat(this._productFilterService.endDateControl.value);
-    this.adult = this._productFilterService.adultControl.value;
-    this.children = this._productFilterService.childrenControl.value;
-  }
-  ngOnInit(): void {
+      this.adult = this._productFilterService.adultControl.value;
+      this.children = this._productFilterService.childrenControl.value;
+    }
+    ngOnInit(): void {
+      console.log(this._productFilterService.startDateControl.value);
+      
+    this.start_date = getDateInFormat(new Date(this._productFilterService.startDateControl.value));
+    this.end_date = getDateInFormat(new Date(this._productFilterService.endDateControl.value));
     this.room.roomImages = this.room.roomImages.map(image => {
       return { ...image, url: `${DIRECT_LINK}/room-img/${image.url}` }
     })

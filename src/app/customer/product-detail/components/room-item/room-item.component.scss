@@ -1,7 +1,7 @@
 .room__container{
     border-radius: 2px;
     border: 1px solid #ccc;
-    margin-bottom: 24px;
+    margin-bottom: 24px;    
     position: relative;
 }
 .room__container.min-price-border{
@@ -52,11 +52,10 @@
 .body .content-col{
     border-right: 1px solid #ccc;
     padding: 0 12px;
+    height: calc(100% - 40px);
+    background-color: #fff;
 }
 .body .capacity{
-    background-color: #fff;
-    height: 100%;
-    padding: 0
 }
 .body .capacity .capacity__list{
     padding: 12px 0
@@ -78,9 +77,6 @@
     font-size: 2.4rem;
 }
 .body .room__info{
-    background: #fff;
-    padding: 0 12px;
-    height: 100%;
 }
 .body .room__info .benefit__wrapper{
     padding: 12px 0
@@ -103,19 +99,16 @@
 }
 .body .payment{
     background: #f4f8fd;
-    height: 100%;
-    padding: 0 12px
 }
 .body .payment .payment__item{
     margin-bottom: 12px
 }
+.body .price__info{
+    padding: 0;
+    border: unset;
+}
 .price__wrapper {
     text-align: end;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    background-color: #fff;
-    padding: 0;
     padding: 12px
 }
 .price__wrapper .button__wrapper{
@@ -150,7 +143,7 @@
     color: #e12d2d
 }
 .voucher__wrapper{
-    padding: 12px 0
+    
 }
 .voucher-tag {
     background: rgb(40, 135, 28);
