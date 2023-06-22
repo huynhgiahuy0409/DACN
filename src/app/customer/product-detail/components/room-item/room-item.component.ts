@@ -5,7 +5,7 @@ import { CartService } from 'src/app/customer/services/cart.service';
 import { FilterProductService } from 'src/app/customer/services/filter-product.service';
 import { AddToCartRequest, FindCartItemRequest } from 'src/app/models/request';
 import { DIRECT_LINK } from 'src/app/models/constance';
-import { RoomResponse } from 'src/app/models/response';
+import { ImageResponse, RoomResponse } from 'src/app/models/response';
 import { getDateInFormat } from 'src/app/shared/utils/DateUtils';
 
 @Component({
@@ -16,6 +16,9 @@ import { getDateInFormat } from 'src/app/shared/utils/DateUtils';
 export class RoomItemComponent implements OnInit {
   @Input()
   room!: RoomResponse
+  roomImages!: ImageResponse[]
+  thumbImage!: ImageResponse
+  filtedImages!: ImageResponse[]
   start_date !: string;
   end_date !: string;
   adult!: number;
@@ -30,13 +33,13 @@ export class RoomItemComponent implements OnInit {
       this.children = this._productFilterService.childrenControl.value;
     }
     ngOnInit(): void {
-      console.log(this._productFilterService.startDateControl.value);
-      
     this.start_date = getDateInFormat(new Date(this._productFilterService.startDateControl.value));
     this.end_date = getDateInFormat(new Date(this._productFilterService.endDateControl.value));
-    this.room.roomImages = this.room.roomImages.map(image => {
+    this.roomImages = this.room.roomImages.map(image => {
       return { ...image, url: `${DIRECT_LINK}/room-img/${image.url}` }
     })
+    this.thumbImage = this.roomImages.find(image => image.isThumbnail)!
+    this.filtedImages = this.roomImages.filter(image => !image.isThumbnail)!
     this.room_id = this.room.id
   }
 

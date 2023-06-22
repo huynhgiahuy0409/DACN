@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, concatMap, switchMap } from 'rxjs';
 import { ProductFilterRequest, SaveFavoriteHotelRequest } from 'src/app/models/request';
 import { ProductDetailResponse } from 'src/app/models/response';
 import { FilterProductService } from '../services/filter-product.service';
@@ -20,7 +20,9 @@ import { LiveshowImageDialogComponent } from '../search/components/product-list/
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss'],
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, AfterViewChecked {
+  @ViewChild('tabWrapper')
+  tabWrapper!: ElementRef
   productDetail$!: Observable<ProductDetailResponse>
   minPrice!: number
   constructor(private _route: ActivatedRoute,
@@ -29,8 +31,13 @@ export class ProductDetailComponent implements OnInit {
     private _progressSpinnerService: ProgressSpinnerService,
     private favoriteHotelService: FavoriteHotelService,
     private toastrService: ToastrService,
-    private _matDialog: MatDialog
+    private _matDialog: MatDialog,
+    private _renderer: Renderer2
     ) { }
+  ngAfterViewChecked(): void {
+  }
+  ngAfterViewInit(): void {
+  }
 
   ngOnInit(): void {
     /* Detect change value from QueryParams to update filter state */
@@ -84,7 +91,7 @@ export class ProductDetailComponent implements OnInit {
           return this._hotelService.findDetailHotel(value, productFilterRequest)
         }),
       )
-
+    
   }
 
   onAddToFavoriteList(hotelId: number) {
@@ -102,5 +109,26 @@ export class ProductDetailComponent implements OnInit {
         this.toastrService.error(err.error, 'Thất bại !')
       }
     })
+  }
+  scrollToElement(element: HTMLElement){
+    window.scrollTo({
+      top: element.offsetTop - 135 - 56,
+      left: 0,
+      behavior: 'smooth'
+    })
+  }
+  @HostListener('window:scroll')
+  onWindowScroll() {
+    if(this.tabWrapper){
+      console.log(this.tabWrapper.nativeElement.getBoundingClientRect());
+      
+      if(this.tabWrapper.nativeElement.getBoundingClientRect().y === 135){
+        this._renderer.removeClass(this.tabWrapper.nativeElement, 'grid')
+        this._renderer.removeClass(this.tabWrapper.nativeElement, 'wide')
+      }else{
+        this._renderer.addClass(this.tabWrapper.nativeElement, 'grid')
+        this._renderer.addClass(this.tabWrapper.nativeElement, 'wide')
+      }
+    }
   }
 }

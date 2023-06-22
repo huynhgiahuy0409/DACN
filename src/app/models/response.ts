@@ -131,10 +131,17 @@ export interface RoomResponse {
 export interface ProductDetailResponse {
     hotel: HotelResponse
     rooms: RoomResponse[]
+    hotelFacilityGroups: HotelFacilityGroup[]
 }
 export interface FacilityResponse {
     name: string,
-    icon: string
+    icon: string,
+}
+export interface HotelFacilityGroup{
+    id: number,
+    name: string,
+    code: string,
+    facilities: FacilityResponse[]
 }
 
 export interface AddToCartResponse {
