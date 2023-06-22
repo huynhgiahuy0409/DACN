@@ -64,6 +64,11 @@
               <div class="payment content-col">
                 <div class="payment__item">
                   <strong class="fs-12">Thanh toán</strong>
+                  <mat-radio-group aria-label="Select an option" [(ngModel)]="paymentMethod">
+                    <mat-radio-button value="online">Thanh toán online</mat-radio-button>
+                    <div class="space"></div>
+                    <mat-radio-button value="direct">Thanh toán tại khách sạn</mat-radio-button>
+                  </mat-radio-group>
                 </div>
               </div>
             </div>

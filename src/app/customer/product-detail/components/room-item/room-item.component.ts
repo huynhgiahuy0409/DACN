@@ -14,6 +14,7 @@ import { getDateInFormat } from 'src/app/shared/utils/DateUtils';
   styleUrls: ['./room-item.component.scss']
 })
 export class RoomItemComponent implements OnInit {
+
   @Input()
   room!: RoomResponse
   roomImages!: ImageResponse[]
@@ -26,7 +27,7 @@ export class RoomItemComponent implements OnInit {
   room_id!: number;
   @Input()
   isMinPrice: boolean = false
-
+  paymentMethod: string = 'online'
   constructor(private _productFilterService: FilterProductService, private cartService: CartService
     , private toastrService: ToastrService, private router: Router) {
       this.adult = this._productFilterService.adultControl.value;

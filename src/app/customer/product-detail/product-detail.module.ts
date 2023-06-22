@@ -8,6 +8,7 @@ import { FilterBarModule } from 'src/app/shared/layout/customer-layout/filter-ba
 import { ProductImageComponent } from './components/product-image/product-image.component';
 import { RoomItemComponent } from './components/room-item/room-item.component';
 import { SvgAsTemplateModule } from 'src/app/shared/svg-as-template/svg-as-template.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -23,7 +24,9 @@ import { SvgAsTemplateModule } from 'src/app/shared/svg-as-template/svg-as-templ
     RouterModule,
     CustomerRoutingModule,
     FilterBarModule,
-    SvgAsTemplateModule
+    SvgAsTemplateModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class ProductDetailModule { }
