@@ -75,6 +75,9 @@
   align-items: center;
   margin: 0 8px 16px 0;
 }
+.product-info__container .benefits .benefit__item span::first-letter {
+  text-transform: uppercase;
+}
 .product-info__container .benefits .benefit__item i {
   font-size: 2rem;
 }
@@ -198,4 +201,7 @@
   line-height: 1.4rem;
   margin-bottom: 16px;
   list-style: disc;
+}
+.facility__item ul li::first-letter{
+  text-transform: uppercase;
 }
