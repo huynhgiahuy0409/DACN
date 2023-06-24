@@ -31,13 +31,13 @@ export class PhotosComponent implements OnInit {
     this.hi = {
       id: 0,
       isThumbnail: true,
-      url: this.rfPhotos.controls['url'].value,
+      url: this.rfPhotos.controls['url'].value.split('\\')[2],
 
       hotel: this.hotelProfileService.hotelDescription
 
 
     };
-
+    console.log(this.hi)
     this.hotelImageService.createAddress(this.hi).subscribe(value => {
     console.log(value)
     })
