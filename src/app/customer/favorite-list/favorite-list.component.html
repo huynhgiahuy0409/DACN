@@ -21,7 +21,7 @@
             <div class="item-content cursor-pointer" *ngFor="let item of favorite_list"
                 [routerLink]="['/details/',item.hotelId]">
                 <div class="item-image">
-                    <img [src]="BASE_IMG+favorite_list[0].bannerUrl" [alt]="item.name">
+                    <img [src]="BASE_IMG+item.bannerUrl" [alt]="item.name">
                 </div>
                 <div class="toggle-icon cursor-pointer" (click)="deleteFavoriteHotel(item.id)">
                     <i class="fa-solid fa-heart"></i>
