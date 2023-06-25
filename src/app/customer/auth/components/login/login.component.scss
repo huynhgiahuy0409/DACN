@@ -47,9 +47,9 @@ input#email.form-control {
 input#password.form-control {
   display: flex;
   position: relative;
-  width: auto;
-  padding-right: 16em;
+  width: 93%;
   margin-top: 5px;
+  padding: 15px;
 }
 
 button.login {
@@ -193,18 +193,19 @@ p#login-or {
 .input-text-phone {
   border: 1px solid rgba(0, 0, 0, .1);
   border-radius: 5px;
-  width: 406px;
+  width: 93%;
   margin-bottom: 15px;
   margin-top: 5px;
+  padding: 15px;
 }
 
 
 // .input#phone {
 //   display: flex;
 //   position: relative;
-//   width: auto;
-//   padding-right: 16em;
+//   width: 93%;
 //   margin-top: 5px;
 //   margin-bottom: 15px;
+//   padding: 15px;
 // }
 
