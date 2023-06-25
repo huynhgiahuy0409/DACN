@@ -9,7 +9,7 @@
 // .otp-validation__wrapper{
 // }
 .otp-validation__form{
-  background: #fff;
+  background: #f9f7f7;
   padding: 65px 50px 40px;
   border-radius: 20px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, .4);
@@ -30,7 +30,7 @@
   background-color: #5dd898;
 }
 .otp-validation__header span:nth-child(1){
-  background-color: #5dd898;
+  background-color: rgb(196, 138, 251);
   z-index: 1;
   transform: translate(calc(50% - 20px), 20px);
   box-shadow: 0 5px 10px rgba(0, 0, 0, .4);
