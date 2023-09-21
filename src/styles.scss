@@ -127,3 +127,32 @@ i.icon-bo {
 .spinner__wrapper body {
   overflow: hidden;
 }
+body,
+body .p-component
+{
+  margin: 0;
+  font-family: "Nunito", sans-serif;
+}
+/* Mobile */
+@media (max-width: 767px) {
+  /* CSS cho màn hình nhỏ hơn hoặc bằng 767px (mobile) */
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* CSS cho màn hình từ 768px đến 1023px (tablet) */
+  .hide-on-tablet {
+    display: none !important;
+  }
+}
+
+/* PC */
+@media (min-width: 1024px) {
+  /* CSS cho màn hình lớn hơn hoặc bằng 1024px (PC) */
+  .hide-on-pc {
+    display: none !important;
+  }
+}

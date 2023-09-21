@@ -111,7 +111,7 @@
 }
 
 .home-banner .banner_filter .search__wrapper button:disabled {
-    background-color: var(--primary-color);
+    background-color: #ddd;
     color: #fff;
     cursor: not-allowed;
 }
@@ -121,7 +121,7 @@
     font-size: 2rem;
 }
 #line-form__search{
-    z-index: 1001;
+    z-index: 1002;
 }
 #line-form__search #autocomplete-search{
     position: absolute;
@@ -161,3 +161,23 @@
     font-size: 1.2rem;
     color: #a9a9a9;
 }
+
+/* Mobile */
+@media (max-width: 767px) {
+    /* CSS cho màn hình nhỏ hơn hoặc bằng 767px (mobile) */
+    .home-banner .banner_filter .search__wrapper button{
+        width: 350px;
+    }
+  }
+  
+  /* Tablet */
+  @media (min-width: 740px) and (max-width: 1023px) {
+    /* CSS cho màn hình từ 768px đến 1023px (tablet) */
+   
+  }
+  
+  /* PC */
+  @media (min-width: 1024px) {
+    /* CSS cho màn hình lớn hơn hoặc bằng 1024px (PC) */
+    
+  }

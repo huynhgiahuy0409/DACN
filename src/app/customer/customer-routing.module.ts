@@ -35,7 +35,8 @@ const routes: Routes = [
         path: "product/:hotel-name/:type",
         component: ProductDetailComponent,
       },
-      { path: 'auth',  loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule) }
+      { path: 'auth',  loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule) },
+      { path: 'account', loadChildren: () => import('./account/account.module').then(m => m.AccountModule) },
     ],
   },
 ];

@@ -1,5 +1,5 @@
 .link-trip {
-    color: var(--gemstone-color);
+    color: var(--primary-color);
     cursor: pointer;
     text-decoration: underline;
 }
@@ -55,18 +55,18 @@
 }
 
 .mr-b-10 {
-    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-.mr-side-5 {
+.mr-x-5 {
     margin: 0 5px;
 }
 
-.mr-side-10 {
+.mr-x-10 {
     margin: 0 10px;
 }
 
-.mr-upper-10 {
+.mr-y-10 {
     margin: 0 10px;
 }
 
@@ -99,19 +99,19 @@
     padding-bottom: 10px;
 }
 
-.pd-side-5 {
+.pd-x-5 {
     padding: 0 5px;
 }
 
-.pd-side-10 {
+.pd-x-10 {
     padding: 0 10px;
 }
 
-.pd-upper-5 {
+.pd-y-5 {
     padding: 5px 0;
 }
 
-.pd-upper-10 {
+.pd-y-10 {
     padding: 10px 0;
 }
 
@@ -231,14 +231,14 @@
 }
 
 .car-card-item:hover .price-car {
-    background-color: var(--gemstone-color)
+    background-color: var(--primary-color)
 }
 
 .car-card-item .price-car {
     position: absolute;
     bottom: 0;
     right: 0;
-    background-color: var(--gemstone-color-hover);
+    background-color: var(--primary-color-hover);
     color: #fff;
     padding: 0.25rem 0.75rem;
     border-top-left-radius: 5px;
@@ -495,7 +495,7 @@
     position: relative;
     cursor: pointer;
     user-select: none;
-    z-index: 1000;
+    z-index: 1001;
 }
 
 #occupancy-box .occupancy__popup {

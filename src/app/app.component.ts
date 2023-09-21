@@ -1,5 +1,7 @@
+
 import { Component } from '@angular/core';
 import { ProgressSpinnerService } from './customer/services/progress-spinner.service';
+import { AuthService } from './customer/services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,5 +10,7 @@ import { ProgressSpinnerService } from './customer/services/progress-spinner.ser
 })
 export class AppComponent {
   title = 'dacn';
-  constructor(public progressSpinnerService: ProgressSpinnerService){}
+  constructor(public progressSpinnerService: ProgressSpinnerService, private _authService: AuthService){
+    this._authService.loadGoogleClientLibs()
+  }
 }

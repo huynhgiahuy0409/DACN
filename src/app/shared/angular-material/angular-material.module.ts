@@ -15,15 +15,15 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
-import {MatSliderModule} from '@angular/material/slider';
+import { MatSliderModule } from '@angular/material/slider';
 
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatExpansionModule } from '@angular/material/expansion';
 @NgModule({
-  declarations: [
-
-  ],
+  declarations: [],
   exports: [
     CommonModule,
     MatButtonModule,
@@ -42,7 +42,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MatSliderModule,
     MatDialogModule,
     MatProgressBarModule,
-    MatTabsModule
-  ]
+    MatTabsModule,
+    MatSlideToggleModule,
+    MatExpansionModule,
+  ],
 })
-export class AngularMaterialModule { }
+export class AngularMaterialModule {}

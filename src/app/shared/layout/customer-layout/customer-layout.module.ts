@@ -24,3 +24,4 @@ import { AuthModule } from 'src/app/customer/auth/auth.module';
   exports: [CustomerHeaderComponent, CustomerFooterComponent],
 })
 export class CustomerLayoutModule { }
+``

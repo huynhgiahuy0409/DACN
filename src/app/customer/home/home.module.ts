@@ -10,6 +10,8 @@ import { SvgAsTemplateModule } from 'src/app/shared/svg-as-template/svg-as-templ
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { FilterProductService } from '../services/filter-product.service';
+import { ProgressSpinnerService } from '../services/progress-spinner.service';
 
 
 @NgModule({
@@ -27,6 +29,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     FilterBarModule,
     RouterModule,
     HttpClientModule
-  ]
+  ],
+  providers: [ProgressSpinnerService]
 })
 export class HomeModule { }

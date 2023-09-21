@@ -43,9 +43,9 @@
 .row.no-gutters {
     margin-left: 0px;
     margin-right: 0px;
-}
+}  
 
-.row.row.no-gutters>.col {
+.row.no-gutters>.col {
     padding-left: 0;
     padding-right: 0
 }
@@ -262,7 +262,7 @@
         min-width: 66.66667%;
     }
 
-    .m∏-9 {
+    .m-9 {
         flex: 0 0 75%;
         min-width: 75%;
     }
@@ -501,7 +501,7 @@
 
 
 @media only screen and (min-width: 1024px) and (max-width: 1239px) {
-    .wide {
+    .grid.wide {
         width: 984px;
     }
 
@@ -644,11 +644,5 @@
 
     .wide .l-o-11 {
         margin-left: 91.66667%;
-    }
-}
-
-@media only screen and (min-width: 740px) and (max-width: 1023px) {
-    .wide {
-        width: 644px;
     }
 }

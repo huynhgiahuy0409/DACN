@@ -36,8 +36,6 @@ export class ProductItemComponent implements OnInit {
       })
       this.thumbImage = this.searchedProduct.hotelImages.find(hotel => hotel.isThumbnail)!
       this.hotelImages = this.searchedProduct.hotelImages.filter(hotel => !hotel.isThumbnail)
-      console.log(this.hotelImages);
-      
   }
 
   computeStarCover(starRating: number): string{

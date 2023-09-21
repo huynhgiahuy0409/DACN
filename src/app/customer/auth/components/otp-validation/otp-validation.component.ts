@@ -1,15 +1,17 @@
 import { Component, ComponentRef, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/customer/services/auth.services';
+import { AuthService } from 'src/app/customer/services/auth.service';
 import { OTPType } from 'src/app/models/enum';
-import { tap } from 'rxjs';
+import { finalize, tap } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { ComponentType } from '@angular/cdk/portal';
 import { ProgressSpinnerService } from 'src/app/customer/services/progress-spinner.service';
 import { ChangePasswordDialogComponent } from '../change-password-dialog/change-password-dialog.component';
 import { MessageDialogService } from 'src/app/customer/services/message-dialog.service';
+import { LoginComponent } from '../login/login.component';
+import { MailOTPService } from 'src/app/customer/services/mail-otp.service';
 
 @Component({
   selector: 'otp-validation',
@@ -25,6 +27,7 @@ export class OtpValidationComponent implements OnInit, OnDestroy {
     private _fb: FormBuilder,
     private _activatedRoute: ActivatedRoute,
     private _authService: AuthService,
+    private mailOTPService: MailOTPService,
     private _matDialog: MatDialog,
     private _router: Router,
     private _progressSpinnerService: ProgressSpinnerService,
@@ -69,78 +72,52 @@ export class OtpValidationComponent implements OnInit, OnDestroy {
     console.log(this.otpForm.value);
   }
   onSubmitMailOTP(username: string, otpForm: FormGroup) {
-    this._progressSpinnerService.next(true);
+    this._progressSpinnerService.next(true)
     const otpArr: number[] = Object.values(otpForm.getRawValue());
-    let otpNumberText: string = otpArr.join(",").replace(/,/g, "");
-    this._authService
+    let otpNumberText: string = otpArr.join("");
+    this.mailOTPService
       .validateMailOTP(username, Number.parseInt(otpNumberText), this.otpType)
       .pipe(
-        tap((otpValidationStatusResponse) => {
-          this._progressSpinnerService.next(false);
-          const { data, statusCode } = otpValidationStatusResponse;
-          if (statusCode === 200) {
-            if (this.otpType === OTPType.REGISTER) {
-              let dataDialog = {
-                title: 'Đăng ký thành công',
-                message: data,
-                navigatePages: ['home', 'login'],
-              };
-              this._messageDialogService
-                .openMessageDialog(MessageDialogComponent, dataDialog)
-                .afterClosed()
-                .subscribe((_) => {
-                  this._router.navigate(['/home']);
-                });
-            } else {
-              this._matDialog.open(ChangePasswordDialogComponent, {
-                data: { username },
+        tap((res) => {
+          if (this.otpType === OTPType.REGISTER) {
+            this._messageDialogService
+              .openSuccessDialog(
+                MessageDialogComponent, res
+              )
+              .afterClosed()
+              .subscribe((_) => {
+                this._router.navigate(['/home']);
+                this._matDialog.open(LoginComponent)
               });
-            }
           } else {
-            let dataDialog = {
-              title: 'Sai mã xác thực',
-              message: data,
-              navigatePages: ['close'],
-            };
-            this._messageDialogService.openMessageDialog(
-              MessageDialogComponent,
-              dataDialog
-            );
+            this._matDialog.open(ChangePasswordDialogComponent, {
+              data: { username },
+            }).afterClosed().subscribe(val => {
+              this._router.navigate(['/home'])
+            });
           }
+        }),
+        finalize(() => {
+          this._progressSpinnerService.next(false)
         })
       )
       .subscribe();
   }
   resendMailOTP(otpType: OTPType) {
-    this._progressSpinnerService.next(true);
+    this._progressSpinnerService.next(true)
     let username = this._authService.registerUsernameCurrentValue;
-    this._authService
-      .generateMailOTP(username!, otpType)
-      .subscribe((mailOTPResponse) => {
-        this._progressSpinnerService.next(false);
-        const { data, statusCode } = mailOTPResponse;
-        if (mailOTPResponse != null) {
-          if (statusCode === 500) {
-            this._messageDialogService.openMessageDialog(
-              MessageDialogComponent,
-              {
-                title: 'Lỗi khởi tạo mã xác thực',
-                message: data,
-              }
-            );
-          } else if (statusCode === 201) {
-            this._messageDialogService.openMessageDialog(
-              MessageDialogComponent,
-              {
-                title: 'Yêu cầu gửi lại thành công',
-                message: data,
-              }
-            );
-          }
-        }
-      });
+    this.mailOTPService
+      .generateMailOTP(username!, otpType).pipe(
+        tap(res => {
+          this._messageDialogService.openSuccessDialog(MessageDialogComponent, res)
+        }),
+        finalize(() => {
+          this._progressSpinnerService.next(false)
+        })
+      )
+      .subscribe();
   }
   ngOnDestroy(): void {
-    this._authService.nextUsername(null);
+    this._authService.emitUsername(null);
   }
 }

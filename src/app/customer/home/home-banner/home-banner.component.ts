@@ -1,45 +1,17 @@
-  import { NgIf } from '@angular/common';
 import {
-  AfterContentChecked,
-  AfterViewChecked,
-  AfterViewInit,
   Component,
-  DoCheck,
   ElementRef,
   HostListener,
-  OnChanges,
   OnInit,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import {
-  BehaviorSubject,
-  Observable,
-  debounce,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  of,
-  switchMap,
-  tap,
-  timeout,
-  timer,
-} from 'rxjs';
-import { OccupancyOption, RedirectInfo } from 'src/app/models/model';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { OccupancyOption } from 'src/app/models/model';
 import { HotelService } from '../../services/hotel.service';
 import { AutocompleteSearchResponse } from 'src/app/models/response';
 import { ProgressSpinnerService } from '../../services/progress-spinner.service';
-import { NavigationExtras, Router } from '@angular/router';
-import * as moment from 'moment';
-import { log } from 'console';
-import { start } from 'repl';
+import { Router } from '@angular/router';
 import { FilterProductService } from '../../services/filter-product.service';
 interface Tab {
   idx: number;
@@ -170,12 +142,15 @@ export class HomeBannerComponent implements OnInit {
   }
   ngOnInit(): void {
     this.hotelFormGroup = this.filterProductService.hotelFormGroup;
-    this.autocompleteSearchs$ = this.filterProductService.autocompletes$.pipe(
-      tap((autocompletes) => {
-        this._progressSpinnerService.next(false);
+    this.autocompleteSearchs$ = this.filterProductService.autocompletes$;
+    if(this.filterProductService.searchControl.value){
+      this.overlayStateBSub.next({
+        isShow: true,
+        currElement: undefined
       })
-    );
+    }
   }
+  /* Process UI */
   updateOverlayState(element: Element) {
     let { isShow, currElement } = this.curOverlayState;
     if (isShow === true) {
@@ -205,6 +180,7 @@ export class HomeBannerComponent implements OnInit {
       currElement: currElement,
     });
   }
+
   sltTab(tab: Tab) {
     this.selectedTab = tab;
     this.overlayStateBSub.next({
@@ -224,6 +200,7 @@ export class HomeBannerComponent implements OnInit {
       currElement: undefined,
     });
   }
+
   @HostListener('window:scroll', ['$event'])
   onScroll(event: Event) {
     // Gọi hàm xử lý sự kiện scroll ở đây
@@ -254,6 +231,6 @@ export class HomeBannerComponent implements OnInit {
     this.filterProductService.updateOccupancy(occupancy, action);
   }
   onKeyupSearch(value: string) {
-    this.filterProductService.nextSearchValue(value)
+    this.filterProductService.searchControl.setValue(value)
   }
 }

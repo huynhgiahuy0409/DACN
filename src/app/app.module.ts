@@ -10,6 +10,7 @@ import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { AngularMaterialModule } from './shared/angular-material/angular-material.module';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CoreModule } from './core/core.module';
 // import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
@@ -24,7 +25,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HttpClientModule,
     ToastrModule.forRoot(),
     AngularMaterialModule,
-    FormsModule
+    FormsModule,
+    CoreModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' }

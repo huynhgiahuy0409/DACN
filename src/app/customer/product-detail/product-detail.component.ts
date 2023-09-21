@@ -1,6 +1,6 @@
 import { AfterViewChecked, AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, concatMap, switchMap } from 'rxjs';
+import { Observable, concatMap, finalize, switchMap, tap } from 'rxjs';
 import { ProductFilterRequest, SaveFavoriteHotelRequest } from 'src/app/models/request';
 import { ProductDetailResponse } from 'src/app/models/response';
 import { FilterProductService } from '../services/filter-product.service';
@@ -89,7 +89,12 @@ export class ProductDetailComponent implements OnInit, AfterViewChecked {
           };
           this._productFilterService.nextProductFilterRequest(productFilterRequest)
           return this._hotelService.findDetailHotel(value, productFilterRequest)
-        }),
+        },
+        
+        ),
+        tap(() => {
+          this._progressSpinnerService.next(false)
+        })
       )
     
   }

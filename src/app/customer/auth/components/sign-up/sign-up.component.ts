@@ -1,5 +1,4 @@
-import jwt_decode from 'jwt-decode';
-
+declare const FB: any;
 import {
   AfterViewInit,
   Component,
@@ -28,9 +27,12 @@ import {
   of,
   Observable,
   switchMap,
+  finalize,
+  catchError,
+  throwError,
 } from 'rxjs';
 import { LoginComponent } from '../login/login.component';
-import { AuthService } from 'src/app/customer/services/auth.services';
+import { AuthService } from 'src/app/customer/services/auth.service';
 import { NUMBER_REGEX, TEXT_SPACE_REGEX } from 'src/app/models/constance';
 import { MessageDialogComponent } from 'src/app/message-dialog/message-dialog.component';
 import { ProgressBarService } from 'src/app/customer/services/progress-bar.service';
@@ -46,6 +48,7 @@ import {
 import { UserService } from 'src/app/customer/services/user.service';
 import { MessageDialogService } from 'src/app/customer/services/message-dialog.service';
 import { ProgressSpinnerService } from 'src/app/customer/services/progress-spinner.service';
+import { MailOTPService } from 'src/app/customer/services/mail-otp.service';
 export function matchingPasswordsValidator(
   controlName: string,
   matchingControlName: string
@@ -95,41 +98,31 @@ export class SignUpComponent implements AfterViewInit {
     private _router: Router,
     private _progressSpinnerService: ProgressSpinnerService,
     private _messageDialogService: MessageDialogService,
-    private _userService: UserService
+    private _userService: UserService,
+    private _mailOTPService: MailOTPService
   ) {
-
-    this.signUpFG = this._fb.group(
-      {
-        username: [
-          '',
-          Validators.compose([Validators.required, Validators.email]),
-        ],
-        password: [
-          '',
-          Validators.compose([Validators.required, passwordValidator]),
-        ],
-        confirmPassword: [
-          '',
-          Validators.compose([Validators.required, passwordValidator]),
-        ],
-        fullName: ['', Validators.compose([Validators.required])],
-        phone: [
-          '',
-          Validators.compose([
-            Validators.required,
-          ]),
-        ],
-      },
-      // {
-      //   validators: matchingPasswordsValidator('password', 'confirmPassword'),
-      // }
-    );
+    this._authService.loadGoogleClientLibs();
+    this.signUpFG = this._fb.group({
+      username: [
+        '',
+        Validators.compose([Validators.required, Validators.email]),
+      ],
+      password: [
+        '',
+        Validators.compose([Validators.required, passwordValidator]),
+      ],
+      confirmPassword: [
+        '',
+        Validators.compose([Validators.required, passwordValidator]),
+      ],
+      fullName: ['', Validators.compose([Validators.required])],
+      phone: ['', Validators.compose([Validators.required])],
+    });
   }
   ngOnInit(): void {
-    this._authService.loadGoogleClientLibs();
     (window as any).signInWithGoogleCallback =
       this.signInWithGoogleCallback.bind(this);
-      this.signUpFG.valueChanges.subscribe(v => console.log(v))
+    this.signUpFG.valueChanges.subscribe((v) => console.log(v));
   }
   ngAfterViewInit(): void {}
   get usernameControl(): FormControl {
@@ -149,62 +142,68 @@ export class SignUpComponent implements AfterViewInit {
   }
 
   onClickSignUp(signUpFormValue: SignUpRequest) {
-    this.progressBarService.next(true);
+    this._progressSpinnerService.next(true);
+    /* Check exist username and valid password */
     this._authService
       .validateSignUp(signUpFormValue)
       .pipe(
-        switchMap((validateSignUpResponse) => {
-          console.log(validateSignUpResponse)
-          if (
-            validateSignUpResponse.statusCode === 409 ||
-            validateSignUpResponse.statusCode === 400
-          ) {
-            this.progressBarService.next(false);
-            this._messageDialogService.openMessageDialog(
-              MessageDialogComponent,
-              {
-                title: 'Thông tin không hợp lệ',
-                message: validateSignUpResponse.data,
-              }
-            );
-            return of(null);
-          } else if (validateSignUpResponse.statusCode === 200) {
-            let otpType: OTPType = OTPType.REGISTER;
-            return this._authService.generateMailOTP(
+        switchMap((res) => {
+          /* Call API to generate Mail OTP */
+          return this._mailOTPService.generateMailOTP(
             this.usernameControl.value,
-              otpType
-            );
-          }
-          return of(null);
+            OTPType.REGISTER
+          );
         }),
-        tap((mailOTPResponse) => {
-          this.progressBarService.next(false);
-          if (mailOTPResponse != null) {
-            if (mailOTPResponse.statusCode === 500) {
-              this._matDialog.open(MessageDialogComponent, {
-                minWidth: '500px',
-                data: {
-                  title: 'Lỗi khởi tạo mã xác thực',
-                  message: mailOTPResponse.data,
-                },
-              });
-            } else if (mailOTPResponse.statusCode === 201) {
-              this._authService.nextUsername(this.usernameControl.value);
-              this._router.navigate([`/auth/validate-otp/register`]);
-            }
-          }
+        tap((res) => {
+          let dialogRef = this._messageDialogService.openSuccessDialog(
+            MessageDialogComponent,
+            res
+          );
+          dialogRef.afterClosed().subscribe((val) => {
+            this._authService.emitUsername(this.usernameControl.value);
+            this._router.navigate([`/validate-otp/register`]);
+          });
+        }),
+        finalize(() => {
+          this._progressSpinnerService.next(false);
         })
       )
       .subscribe();
   }
   signInWithGoogleCallback(response: any) {
-    this._authService.signInWithGoogleCallback(response);
+    this._authService.signInGoogleCallBack(response);
   }
   signInWithFacebook(): void {
-    this._authService.signInWithFacebook();
+    FB.login(
+      (response: any) => {
+        if (response.status === 'connected') {
+          const accessToken = response.authResponse.accessToken;
+          const userID = response.authResponse.userID;
+          FB.api(
+            `/${userID}`,
+            'GET',
+            { access_token: accessToken, fields: 'name,email,picture' },
+            (user: any) => {
+              const { email, id, name, picture } = user;
+              const socialUserRequest: SocialUserRequest = {
+                email: email,
+                name: name,
+                photoUrl: picture.data.url,
+                provider: OAuthProvider.FACEBOOK,
+                id: id,
+              };
+              this._authService
+                .signInWithSocial(socialUserRequest)
+                .subscribe((res) => {});
+            }
+          );
+        }
+      },
+      { scope: 'email' }
+    );
   }
-  openSignInDialog(){
-    this._matDialog.open(LoginComponent)
+  openSignInDialog() {
+    this._matDialog.open(LoginComponent);
   }
   ngOnDestroy() {}
 }

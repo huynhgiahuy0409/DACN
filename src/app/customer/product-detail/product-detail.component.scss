@@ -40,9 +40,9 @@
 .pd-container .tab__wrapper .tab__item:hover {
   border-color: var(--primary-color);
 }
-.pd-container .tab__wrapper .price-from {
+.price-from {
 }
-.pd-container .tab__wrapper .price-from span:nth-child(2) {
+.price-from span:nth-child(2) {
   font-size: 2.2rem;
   color: #e12d2d;
   margin: 0 10px;
@@ -204,4 +204,33 @@
 }
 .facility__item ul li::first-letter{
   text-transform: uppercase;
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  /* CSS cho màn hình nhỏ hơn hoặc bằng 767px (mobile) */
+  .tab__list{
+    justify-content: space-evenly;
+  }
+  .pd-container .tab__wrapper{
+    top: var(--header-height);
+    border-top-right-radius: unset;
+    border-top-left-radius: unset;
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* CSS cho màn hình từ 768px đến 1023px (tablet) */
+  .pd-container .tab__wrapper{
+    top: 126px;
+    border-top-right-radius: unset;
+    border-top-left-radius: unset;
+  }
+}
+
+/* PC */
+@media (min-width: 1024px) {
+  /* CSS cho màn hình lớn hơn hoặc bằng 1024px (PC) */
+  
 }

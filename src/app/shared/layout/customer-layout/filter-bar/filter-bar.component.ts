@@ -99,14 +99,12 @@ export class FilterBarComponent implements OnInit {
     });
   }
   ngOnInit(): void {
-    this.autocompleteSearchs$ = this.filterProductService.autocompletes$.pipe((tap(autocompletes => {
-      if (autocompletes) {
-        this._progressSpinnerService.next(false)
-      }
-    })))
+    this.autocompleteSearchs$ = this.filterProductService.autocompletes$
   }
   updateOverlayState(element: Element) {
     let { isShow, currElement } = this.curOverlayState;
+    console.log(this.curOverlayState);
+    
     if (isShow === true) {
       // select another element
       if (currElement !== element) {
@@ -114,7 +112,7 @@ export class FilterBarComponent implements OnInit {
       }
       // retarget pre element
       else {
-        if (element === this.autocompleteSearch.nativeElement) {
+        if (this.autocompleteSearch && element === this.autocompleteSearch.nativeElement) {
           currElement = element;
           isShow = true;
         } else {
@@ -133,6 +131,8 @@ export class FilterBarComponent implements OnInit {
       isShow: isShow,
       currElement: currElement,
     });
+    console.log(this.curOverlayState);
+    
   }
   onClickOverlay() {
     this.overlayStateBSub.next({
@@ -140,27 +140,38 @@ export class FilterBarComponent implements OnInit {
       currElement: undefined,
     });
   }
-  // @HostListener('window:scroll', ['$event'])
-  // onScroll(event: Event) {
-  //   // Gọi hàm xử lý sự kiện scroll ở đây
-  //   if (this.occupancyPopup) {
-  //     const occupancyPopupTop =
-  //       this.occupancyPopup.nativeElement.getBoundingClientRect().top;
-  //     if (occupancyPopupTop < 0) {
-  //       this.overlayState.currElement = undefined;
-  //       this.overlayState.isShow = false;
-  //       this.isEnableOccupancy = false;
-  //     }
-  //   }
-  //   const homeBannerBottom =
-  //     this.homeBanner.nativeElement.getBoundingClientRect().bottom;
+  private lastScrollTop = 0;
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: Event) {
+    // Gọi hàm xử lý sự kiện scroll ở đây
+    // if (this.occupancyPopup) {
+    //   const occupancyPopupTop =
+    //     this.occupancyPopup.nativeElement.getBoundingClientRect().top;
+    //   if (occupancyPopupTop < 0) {
+    //     this.overlayState.currElement = undefined;
+    //     this.overlayState.isShow = false;
+    //     this.isEnableOccupancy = false;
+    //   }
+    // }
+    // const homeBannerBottom =
+    //   this.homeBanner.nativeElement.getBoundingClientRect().bottom;
 
-  //   if (homeBannerBottom < 0) {
-  //     this.isShowFilterBar = true;
-  //   } else {
-  //     this.isShowFilterBar = false;
-  //   }
-  // }
+    // if (homeBannerBottom < 0) {
+    //   this.isShowFilterBar = true;
+    // } else {
+    //   this.isShowFilterBar = false;
+    // }
+
+    const currentScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+    if (currentScrollTop < this.lastScrollTop) {
+      // Scrolling up
+      console.log('Scrolling up');
+      // You can perform your actions here for scrolling up
+    }
+
+    this.lastScrollTop = currentScrollTop;
+  }
   selectAutocomplete(autocompleteSearch: AutocompleteSearchResponse) {
     this.hotelFormGroup.get('search')!.patchValue(autocompleteSearch.name);
     this.hotelFormGroup.get('type')!.patchValue(autocompleteSearch.type);
@@ -174,6 +185,6 @@ export class FilterBarComponent implements OnInit {
     this.onClickOverlay();
   }
   onKeyupSearch(value: string) {
-    this.filterProductService.nextSearchValue(value)
+    this.filterProductService.searchControl.setValue(value)
   }
 }

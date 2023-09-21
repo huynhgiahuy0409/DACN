@@ -37,3 +37,16 @@ export const DIRECT_LINK = `${URL_API}/uploads`
 export const HOTEL_IMG = `${DIRECT_LINK}/hotel-img/`;
 
 export const ONE_DOLLAR_IN_USD = 23456;
+
+
+
+export const SUCCESS_ALERT_TITLE = "Thành công"
+export const SUCCESS_ALERT_ICON = "success"
+
+export const FAIL_SERVER_ALERT_TEXT = "Đây là lỗi của chúng tôi. Vui lòng đăng nhập sau"
+export const FAIL_ALERT_TITLE = "Thất bại"
+export const FAIL_ALERT_ICON = "danger"
+
+export const UPLOAD_PATH = `${URL_API}/uploads`;
+export const USER_AVATAR_PATH = `${UPLOAD_PATH}/avatar/`
+export const USER_COVER_PATH = `${UPLOAD_PATH}/cover/`

@@ -156,3 +156,25 @@
     border-bottom: 2px solid #ccc;
     padding: 20px 0;
 }
+
+::ng-deep .sidebar-filter__field .mat-checkbox-label{
+   white-space: normal
+}
+
+/* Mobile */
+@media (max-width: 740px) {
+   /* CSS cho màn hình nhỏ hơn hoặc bằng 767px (mobile) */
+   
+ }
+ 
+ /* Tablet */
+ @media (min-width: 740px) and (max-width: 1023px) {
+   /* CSS cho màn hình từ 768px đến 1023px (tablet) */
+  
+ }
+ 
+ /* PC */
+ @media (min-width: 1024px) {
+   /* CSS cho màn hình lớn hơn hoặc bằng 1024px (PC) */
+  
+ }

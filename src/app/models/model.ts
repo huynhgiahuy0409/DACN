@@ -1,4 +1,4 @@
-import { HotelResponse, RoomResponse } from "./response";
+import { HotelResponse, RoomResponse } from './response';
 
 export interface CartItem {
   id: number;
@@ -36,11 +36,10 @@ export interface Benefit {
   code: string;
 }
 
-
 export interface ApiResponse {
   data: string;
   message: string;
-  statusCode: number
+  statusCode: number;
 }
 
 export interface Room {
@@ -78,8 +77,8 @@ export interface PaymentLink {
 }
 
 export interface PaymentTransaction {
-  amount: { total: string, currency: string };
-  related_resources: { sale: { id: string, state: string } }[];
+  amount: { total: string; currency: string };
+  related_resources: { sale: { id: string; state: string } }[];
 }
 
 export interface PaymentResponse {
@@ -112,20 +111,19 @@ export interface PaymentResultResponse {
 }
 
 export interface RedirectInfo {
-  label: string,
-  path: string,
-  icon?: string
+  label: string;
+  path: string;
+  icon?: string;
 }
 export interface OccupancyOption {
   idx: number;
   label: string;
   subLabel?: string;
   value: number;
-  name: string
+  name: string;
 }
 
 export interface Basic {
-
   typeComparisionBusiness: string;
   numComparisionBusiness: number;
   numAccommodations: number;
@@ -138,7 +136,6 @@ export interface Basic {
 }
 
 export interface Location {
-
   address: string;
   house: string;
   country: string;
@@ -167,9 +164,7 @@ export interface MySelf {
 export interface Company {
   nameCompany: string;
 
-
   addressCompany: string;
-
 
   codeAreaCompany: string;
 }
@@ -200,91 +195,91 @@ export interface HotelProfile {
   pricing: Pricing;
   photos: Photos;
   profile: Profile;
-
 }
-export  interface  ProvinceFinal{
-code:string;
-name:string;
-domain:string;
-
+export interface ProvinceFinal {
+  code: string;
+  name: string;
+  domain: string;
 }
-export  interface  DistrictFinal{
-  id:number;
-  createBy:string;
-  createDate:string;
-  modifiedDate:Date;
-  street:string;
-  name:string;
-  prefix:string;
-  province:ProvinceFinal;
+export interface DistrictFinal {
+  id: number;
+  createBy: string;
+  createDate: string;
+  modifiedDate: Date;
+  street: string;
+  name: string;
+  prefix: string;
+  province: ProvinceFinal;
 }
-export interface  WardFinal{
-  id:number;
-  createBy:string;
-  createDate:string;
-  modifiedDate:Date;
-  name:string;
-  prefix:string;
-  district:DistrictFinal;
-  province:ProvinceFinal;
+export interface WardFinal {
+  id: number;
+  createBy: string;
+  createDate: string;
+  modifiedDate: Date;
+  name: string;
+  prefix: string;
+  district: DistrictFinal;
+  province: ProvinceFinal;
 }
-export  interface  AddressFinal{
-  id:number;
-  createBy:string;
-  createDate:string;
-  modifiedDate:Date;
-  street:string;
+export interface AddressFinal {
+  id: number;
+  createBy: string;
+  createDate: string;
+  modifiedDate: Date;
+  street: string;
 
-  district:DistrictFinal;
+  district: DistrictFinal;
 
-  ward:WardFinal;
+  ward: WardFinal;
 
-  province:ProvinceFinal;
+  province: ProvinceFinal;
 }
 
-export  interface HotelProfileFinal{
-  id:number;
+export interface HotelProfileFinal {
+  id: number;
 
-  createBy:string;
-  createDate:Date;
+  createBy: string;
+  createDate: Date;
 
-  modifiedBy:string;
+  modifiedBy: string;
 
-  modifiedDate:Date;
-  name:String;
+  modifiedDate: Date;
+  name: String;
 
-  description:String;
+  description: String;
 
-averagePoints:number;
-status:String;
+  averagePoints: number;
+  status: String;
 
-address:AddressFinal;
+  address: AddressFinal;
 
-username:String;
+  username: String;
 }
 
 export interface Occupancy {
-    idx: number;
-    label: string;
-    subLabel?: string;
-    value: number;
-    childOptions?: string[];
-    add(occupancy: Occupancy): void;
-    remove(occupancy: Occupancy): void;
-  }
+  idx: number;
+  label: string;
+  subLabel?: string;
+  value: number;
+  childOptions?: string[];
+  add(occupancy: Occupancy): void;
+  remove(occupancy: Occupancy): void;
+}
 
-  // DTO
-  export interface UserDTO {
-    id: number,
-    username: string,
-    email: string,
-    dob: Date,
-    gender: string,
-    fullName: string,
-    phone: string,
-    createdDate: string
+// DTO
+export interface UserDTO {
+  id: number;
+  username: string;
+  email: string;
+  dob: Date;
+  gender: string;
+  fullName: string;
+  phone: string;
+  createdDate: string;
+  avatarUrl: string;
+  coverUrl: string;
 }
 export interface JWTDTO {
-    token: string,
-    tokenExpirationDate: Date
+  token: string;
+  tokenExpirationDate: Date;
 }

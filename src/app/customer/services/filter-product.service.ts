@@ -7,6 +7,7 @@ import {
   combineLatest,
   concatMap,
   debounceTime,
+  finalize,
   map,
   of,
   switchMap,
@@ -42,13 +43,15 @@ import { log } from 'console';
 @Injectable({
   providedIn: 'root',
 })
-export class FilterProductService{
+export class FilterProductService {
   private productFilterRequestBSub: BehaviorSubject<ProductFilterRequest | null> =
     new BehaviorSubject<ProductFilterRequest | null>(null);
   productFilterRequest$ = this.productFilterRequestBSub.asObservable();
 
-  searchedProductResponseBSub: BehaviorSubject<SearchedProductResponse | null> = new BehaviorSubject<SearchedProductResponse | null>(null);
-  searchedProductResponse$: Observable<SearchedProductResponse | null> = this.searchedProductResponseBSub.asObservable();
+  searchedProductResponseBSub: BehaviorSubject<SearchedProductResponse | null> =
+    new BehaviorSubject<SearchedProductResponse | null>(null);
+  searchedProductResponse$: Observable<SearchedProductResponse | null> =
+    this.searchedProductResponseBSub.asObservable();
 
   autocompletes$!: Observable<AutocompleteSearchResponse[] | null>;
 
@@ -90,10 +93,6 @@ export class FilterProductService{
   minStartDate!: Date;
   minEndDate!: Date;
   private searchBSub: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  search$: Observable<string> = this.searchBSub.asObservable();
-  nextSearchValue(value: string) {
-    this.searchBSub.next(value);
-  }
   constructor(
     private _httpClient: HttpClient,
     private _route: ActivatedRoute,
@@ -141,25 +140,24 @@ export class FilterProductService{
       type: ['', Validators.required],
     });
 
-    this.startDateControl.valueChanges.subscribe(startDate => {
-      console.log(startDate)
+    this.startDateControl.valueChanges.subscribe((startDate) => {
       this.minStartDate = new Date(startDate);
       this.minEndDate = moment(this.minStartDate).add(1, 'day').toDate();
-      this.endDateControl.patchValue(this.minEndDate)
-    })
-
-    /* Setup Autocompletes for search by Detect change search$ */
-    this.autocompletes$ = this.search$.pipe(
+      this.endDateControl.patchValue(this.minEndDate);
+    });
+    /* Assign autocompletes$ by search$ when search$ emitted a value */
+    this.autocompletes$ = this.searchControl.valueChanges.pipe(
       debounceTime(500),
       switchMap((search: string) => {
-        if (search && search.trim().length > 0) {
-          return this._hotelService.getAutocompleteSearch(search).pipe();
+        if (search.trim().length > 0) {
+          return this._hotelService.getAutocompleteSearch(search);
+        } else {
+          return of(null);    
         }
-        return of(null);
       }),
     );
     /* Detect change state filter to reassign for Standard Filter FormGroup and update state of SearchedProduct after API response */
-    this.productFilterRequest$.pipe(
+    this.searchedProductResponse$ = this.productFilterRequest$.pipe(
       switchMap((filter) => {
         if (filter) {
           return this.filterProduct(filter).pipe(
@@ -195,12 +193,8 @@ export class FilterProductService{
           return of(null);
         }
       }),
-    ).subscribe(response => {
-      console.log(response);
-      
-      this.searchedProductResponseBSub.next(response)
-      this._progressSpinnerService.next(false)
-    });
+    );
+    this.hotelFormGroup.valueChanges.subscribe(v => console.log(v))
   }
   updateOccupancy(occupancy: OccupancyOption, action: '+' | '-') {
     let curValue: number = Number.parseInt(

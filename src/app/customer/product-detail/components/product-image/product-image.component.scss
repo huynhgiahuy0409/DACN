@@ -5,28 +5,27 @@
 }
 .image__wrapper {
   width: 100%;
-  height: 140px;
+  position: relative;
+  padding-bottom: 66.6666%;
 }
 .image__wrapper:nth-child(1){
   margin-bottom: 8px;
 }
 .image__wrapper.thumb{
-  width: 100%;
-  height: 100%;
-  margin-bottom: 0;
-}
-.image__wrapper.thumb img{
-    height: 288px;
+  padding-bottom: 88.8888%;
 }
 
+
 .image__wrapper img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 .image__group {
   margin-left: 8px;
-  height: 100%;
 }
 // .image__group img{
 //     width: 100%;

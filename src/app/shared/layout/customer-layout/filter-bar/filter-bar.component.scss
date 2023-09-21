@@ -1,5 +1,4 @@
 .filter-bar{
-    height: 70px;
     padding: 11px 0;
     background-color: var(--filter-bar-color);
     position: sticky;
@@ -25,6 +24,8 @@
 .search-button__wrapper button{
     display: block;
     height: 100%;
+    width: 100%;
+    white-space: auto;
 }
 .search-button__wrapper button:disabled{
     background-color: var(--primary-color);
@@ -73,3 +74,70 @@
     font-size: 1.2rem;
     color: #a9a9a9;
 }
+/* Mobile */
+@media (max-width: 740px) {
+    /* CSS cho màn hình nhỏ hơn hoặc bằng 767px (mobile) */
+    .filter-form{
+        padding: 0 11px;
+    }
+    .filter-bar{
+        position: relative;
+        top: 0
+    }
+    .filter-form .col{
+        margin-bottom: 8px
+    }
+    .filter-form .col:nth-child(4){
+        margin-bottom: unset
+    }
+    .filter-form .col:nth-child(4) button{
+        margin: 0 auto;
+        width: 75%
+    }
+  }
+  
+  /* Tablet */
+  @media (min-width: 740px) and (max-width: 1023px) {
+    /* CSS cho màn hình từ 768px đến 1023px (tablet) */
+    .filter-bar{
+        position: sticky;
+        top: 0;
+    }
+    .filter-form{
+        
+    }
+    .filter-form .col:nth-child(1){
+        order: 1;
+        margin-bottom: 8px
+    }
+    .filter-form .col:nth-child(2){
+        order: 3
+    }
+    .filter-form .col:nth-child(3){
+        order: 2
+    }
+    .filter-form .col:nth-child(4){
+        order: 4
+    }
+    .filter-form .col:nth-child(4) button{
+        width: 100%;
+    }
+    // .info-group{
+    //     display: flex;
+    // }
+  }
+  
+  /* PC */
+  @media (min-width: 1024px) {
+    /* CSS cho màn hình lớn hơn hoặc bằng 1024px (PC) */
+    .info-group{
+        height: 100%;
+        margin: auto 0;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
+    }
+    .info-group p, .info-group span{
+        font-size: 1.4rem;
+    }
+  }

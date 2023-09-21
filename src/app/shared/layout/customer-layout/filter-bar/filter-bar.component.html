@@ -2,7 +2,7 @@
   <div class="grid wide">
     <form [formGroup]="hotelFormGroup" class="filter-form form-default">
       <div class="row m-gutters">
-        <div class="col l-4">
+        <div class="col l-4 m-6 c-12">
           <div
              id="line-form__search"
             #locationLineForm
@@ -72,7 +72,7 @@
             </ng-container>
           </div>
         </div>
-        <div class="col l-4">
+        <div class="col l-3 m-9 c-12">
           <div class="line-form">
             <div
               #startDateLineForm
@@ -120,7 +120,7 @@
             </div>
           </div>
         </div>
-        <div class="col l-3">
+        <div class="col l-3 m-6 c-12">
           <div id="occupancy-box" formGroupName="occupancy">
             <div
               #occupancyLineForm
@@ -194,7 +194,7 @@
             </div>
           </div>
         </div>
-        <div class="col l-1">
+        <div class="col l-2 m-3 c-12">
           <div class="search-button__wrapper">
             <button
               [disabled]="hotelFormGroup.invalid"

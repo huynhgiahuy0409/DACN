@@ -131,8 +131,8 @@
   position: relative;
 }
 
-.h-item:hover.h-item--gemstone-hover {
-  color: var(--gemstone-color) !important;
+.h-item:hover.h-item--primary-hover {
+  color: var(--primary-color) !important;
 }
 
 .h-item:first-child .h-item__link {
@@ -570,11 +570,11 @@ svg.booking-oto-rating-stars__hollow-star {
 }
 
 .cl-gem {
-  color: var(--gemstone-color);
+  color: var(--primary-color);
 }
 
 .cl-gem--hover:hover {
-  color: var(--gemstone-color);
+  color: var(--primary-color);
 }
 
 .mt-2-h {

@@ -10,7 +10,8 @@
     display: flex;
     flex-wrap: nowrap;
     max-width: 1242px;
-    overflow: hidden;
+    overflow: scroll;
+    position: relative;
 }
 .ls-image__container .ls-image__footer .ls-image__item{
     width: 93px;
@@ -21,11 +22,6 @@
     position: relative;
 }
 
-
-.ls-image__container .ls-image__main .ls-image__list{
-    position: relative;
-    max-width: 1000px;
-}
 .ls-image__container .ls-image__main .ls-image__list .control{
     position: absolute;
     width: 40px;
@@ -54,13 +50,17 @@
 }
 .ls-image__container .ls-image__main .ls-image__list .ls-image__item{
     display: none;
-    width: 960px;
-    height: 520px;
+    width: 100%;
+    padding-bottom: 66.6666%;
+    position: relative;
 }
 .ls-image__container .ls-image__main .ls-image__list .ls-image__item.show{
     display: block;
 }
 .ls-image__container .ls-image__main .ls-image__list .ls-image__item img{
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;

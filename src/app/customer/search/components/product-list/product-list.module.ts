@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 import { CustomerRoutingModule } from 'src/app/customer/customer-routing.module';
 import { LiveshowImageDialogComponent } from './product-item/dialog/liveshow-image-dialog/liveshow-image-dialog.component';
 import { LsImageItemComponent } from './product-item/dialog/liveshow-image-dialog/ls-image-item/ls-image-item.component';
+import { ProgressSpinnerService } from 'src/app/customer/services/progress-spinner.service';
 
 
 
@@ -28,6 +29,7 @@ import { LsImageItemComponent } from './product-item/dialog/liveshow-image-dialo
   exports: [
     ProductListComponent,
     ProductItemComponent,
-  ]
+  ],
+  providers: [ProgressSpinnerService]
 })
 export class ProductListModule { }
