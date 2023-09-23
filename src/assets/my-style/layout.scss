@@ -46,6 +46,7 @@
 .mr-t-5 {
     margin-top: 5px;
 }
+
 .mr-b-5 {
     margin-bottom: 5px;
 }
@@ -62,12 +63,16 @@
     margin: 0 5px;
 }
 
+.mr-y-5 {
+    margin: 5px 05px;
+}
+
 .mr-x-10 {
     margin: 0 10px;
 }
 
 .mr-y-10 {
-    margin: 0 10px;
+    margin: 10px 0;
 }
 
 // padding
@@ -409,9 +414,10 @@
     margin-bottom: 20px;
     height: 66px;
 }
-.filter-form .line-form .mat-form-field{
+
+.filter-form .line-form .mat-form-field {
     display: block;
-    
+
 }
 
 .filter-form i {
@@ -460,14 +466,16 @@
     flex: 1;
     max-width: 50%;
 }
-.filter-form .line-form .line-form__fit-item .date-picker__wrapper{
+
+.filter-form .line-form .line-form__fit-item .date-picker__wrapper {
     padding-left: 10px;
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
 }
-.filter-form .line-form .line-form__fit-item .date-picker__wrapper.right-line{
+
+.filter-form .line-form .line-form__fit-item .date-picker__wrapper.right-line {
     border-right: 1px solid #ccc
 }
 
@@ -648,7 +656,8 @@
     display: flex;
     align-items: center;
 }
-.occupancy-option__item.child-option .info-group .dot{
+
+.occupancy-option__item.child-option .info-group .dot {
     width: 5px;
     height: 5px;
     border-radius: 100rem;
@@ -661,12 +670,12 @@
     font-weight: unset;
 }
 
-::ng-deep .occupancy-option__item.child-option .mat-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-form-field-flex {
-}
+::ng-deep .occupancy-option__item.child-option .mat-form-field-type-mat-select:not(.mat-form-field-disabled) .mat-form-field-flex {}
 
 ::ng-deep .occupancy-option__item.child-option .mat-form-field-appearance-fill .mat-select-arrow-wrapper {
     padding-right: 3px
 }
+
 ::ng-deep .occupancy-option__item.child-option .mat-form-field-infix {
     border: unset;
 }
@@ -674,11 +683,13 @@
 ::ng-deep .occupancy-option__item.child-option .mat-select-arrow {
     color: var(--primary-color);
 }
-::ng-deep .occupancy-option__item.child-option .mat-select-value{
+
+::ng-deep .occupancy-option__item.child-option .mat-select-value {
     text-align: center;
 }
 
 .occupancy-option__item .info-group .sub-label {
     font-size: 1.2rem;
 }
+
 // filter-form end

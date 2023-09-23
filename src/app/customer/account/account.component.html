@@ -5,31 +5,28 @@
         <div class="sidebar">
           <mat-accordion>
             <ng-container
-              *ngFor="let n of sidebarNavigates; let index; as: idx"
+              *ngFor="let n of sidebarNavigates"
             >
               <a [routerLink]="[n.path]">
                 <mat-expansion-panel
                   [hideToggle]="!n.scrollIntoViewList.length"
                   [disabled]="!n.scrollIntoViewList.length"
                   class="mr-b-5"
-                  style="margin-bottom: 5px;"
+                  style="margin-bottom: 5px"
                 >
                   <mat-expansion-panel-header>
                     <mat-panel-title>
                       {{ n.label }}
                     </mat-panel-title>
                   </mat-expansion-panel-header>
-                  <div
+                  <a
                     class="scroll-item"
                     *ngFor="let c of n.scrollIntoViewList"
+                    (click)="$event.stopPropagation()"
+                    [routerLink]="[n.path + '/' + c.path]"
                   >
-                    <a
-                      [routerLink]="[n.path + '/' + c.path]"
-                      (click)="$event.stopPropagation()"
-                    >
-                      {{ c.label }}
-                    </a>
-                  </div>
+                    {{ c.label }}
+                  </a>
                 </mat-expansion-panel>
               </a>
             </ng-container>

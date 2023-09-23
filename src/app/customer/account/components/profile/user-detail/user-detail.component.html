@@ -1,1 +1,290 @@
-<p>user-detail works!</p>
+<h2>Thông tin người dùng</h2>
+<form [formGroup]="userFG" class="info" *ngIf="user$ | async as user">
+  <div class="fullname">
+    <h5>Họ tên</h5>
+    <div
+      class="d-flex-bh align-items-center-bh justify-content-between-bh"
+      *ngIf="!modifyState.fullName"
+    >
+      <p>{{ user.fullName }}</p>
+      <button mat-button color="primary" (click)="editUser('fullName')">
+        Chỉnh sửa
+      </button>
+    </div>
+    <div
+      class="d-flex-bh align-items-center-bh justify-content-between-bh"
+      *ngIf="modifyState.fullName"
+    >
+      <div class="line-form" style="flex: 1">
+        <div class="d-flex-bh align-items-center-bh w-fit">
+          <mat-form-field class="w-fit" appearance="fill">
+            <mat-label>Họ & tên</mat-label>
+            <input #fullName matInput formControlName="fullName" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="d-flex-bh align-items-center-bh">
+        <div class="mr-r-5">
+          <button
+            mat-button
+            (click)="modifyState.fullName = !modifyState.fullName"
+          >
+            Huỷ
+          </button>
+        </div>
+        <div>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="updateUser('fullName')"
+            [disabled]="userFG.get('fullName')!.invalid"
+          >
+            Cập nhật
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="gender">
+    <h5>Giới tính</h5>
+    <div
+      class="d-flex-bh align-items-center-bh justify-content-between-bh"
+      *ngIf="!modifyState.gender"
+    >
+      <ng-container>
+        <p *ngIf="user.gender === 'MALE'">Nam</p>
+        <p *ngIf="user.gender === 'FEMALE'">Nữ</p>
+      </ng-container>
+      <button
+        mat-button
+        color="primary"
+        (click)="modifyState.gender = !modifyState.gender"
+      >
+        Chỉnh sửa
+      </button>
+    </div>
+    <div
+      class="d-flex-bh align-items-center-bh justify-content-between-bh"
+      *ngIf="modifyState.gender"
+    >
+      <div class="line-form" style="flex: 1">
+        <mat-radio-group aria-label="Select an option" formControlName="gender">
+          <mat-radio-button color="primary" class="mr-r-10" value="MALE">Nam</mat-radio-button>
+          <mat-radio-button color="primary" value="FEMALE">Nữ</mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="d-flex-bh align-items-center-bh">
+        <div class="mr-r-5">
+          <button mat-button (click)="modifyState.gender = !modifyState.gender">
+            Huỷ
+          </button>
+        </div>
+        <div>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="updateUser('gender')"
+            [disabled]="userFG.get('gender')!.invalid"
+          >
+            Cập nhật
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="email">
+    <h5>Email</h5>
+    <p>{{ user.email }}</p>
+  </div>
+  <div class="password">
+    <h5>Mật khẩu</h5>
+    <div
+      class="d-flex-bh align-items-center-bh justify-content-between-bh"
+      *ngIf="!modifyState.password"
+    >
+      <p>************</p>
+      <button
+        mat-button
+        color="primary"
+        (click)="modifyState.password = !modifyState.password"
+      >
+        Chỉnh sửa
+      </button>
+    </div>
+    <div *ngIf="modifyState.password">
+      <div formGroupName="passwordChangeFG">
+        <div class="line-form" style="flex: 1">
+          <div class="d-flex-bh align-items-center-bh w-fit">
+            <mat-form-field class="w-fit" appearance="fill">
+              <mat-label>Mật khẩu hiện tại</mat-label>
+              <input matInput formControlName="curPassword" />
+              <mat-error
+                *ngIf="
+                  passwordChangeFG.get('curPassword')!.hasError('required')
+                "
+              >
+                Mật khẩu <strong> không được để trống</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="d-flex-bh align-items-center-bh w-fit">
+            <mat-form-field class="w-fit" appearance="fill">
+              <mat-label>Mật khẩu mới</mat-label>
+              <input matInput formControlName="newPassword1st" />
+              <mat-error
+                *ngIf="
+                  passwordChangeFG.get('newPassword1st')!.hasError('required')
+                "
+              >
+                Mật khẩu <strong> không được để trống</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="d-flex-bh align-items-center-bh w-fit">
+            <mat-form-field class="w-fit" appearance="fill">
+              <mat-label>Nhập lại mật khẩu mới</mat-label>
+              <input matInput formControlName="newPassword2nd" />
+              <mat-error
+                *ngIf="
+                  passwordChangeFG.get('newPassword2nd')!.hasError('required')
+                "
+              >
+                Mật khẩu <strong> không được để trống</strong>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <mat-error *ngIf="passwordChangeFG.hasError('passwordMismatch')">
+            Mật khẩu <strong> không trùng khớp</strong>
+          </mat-error>
+        </div>
+        <div class="d-flex-bh align-items-center-bh mr-y-10">
+          <div class="mr-r-5">
+            <button
+              mat-button
+              (click)="modifyState.password = !modifyState.password"
+            >
+              Huỷ
+            </button>
+          </div>
+          <div>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="updateUser('password')"
+              [disabled]="passwordChangeFG.invalid"
+            >
+              Cập nhật
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="phone">
+    <h5>Số điện thoại</h5>
+    <ng-container *ngIf="!modifyState.phone">
+      <div
+        class="d-flex-bh align-items-center-bh justify-content-between-bh"
+        *ngIf="!modifyState.phone"
+      >
+        <div>
+          <p *ngIf="user.phone">{{ user.phone }}</p>
+          <p *ngIf="!user.phone">Số điện thoại chưa được cập nhật</p>
+        </div>
+        <div>
+          <button
+            mat-button
+            color="primary"
+            (click)="modifyState.phone = !modifyState.phone!"
+          >
+            <span *ngIf="user.phone"> Chỉnh sửa </span>
+            <span *ngIf="!user.phone">Thêm</span>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="modifyState.phone">
+      <div class="d-flex-bh align-items-center-bh justify-content-between-bh">
+        <div class="line-form" style="flex: 1">
+          <div class="d-flex-bh align-items-center-bh w-fit">
+            <mat-form-field class="w-fit" appearance="fill">
+              <mat-label>Số điện thoại</mat-label>
+              <input matInput formControlName="phone" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="d-flex-bh align-items-center-bh">
+          <div class="mr-r-5">
+            <button mat-button (click)="modifyState.phone = !modifyState.phone">
+              Huỷ
+            </button>
+          </div>
+          <div>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="updateUser('phone')"
+              [disabled]="userFG.get('phone')!.invalid"
+            >
+              Cập nhật
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <div class="dob">
+    <h5>Ngày sinh</h5>
+    <ng-container *ngIf="!modifyState.dob">
+      <div class="d-flex-bh align-items-center-bh justify-content-between-bh">
+        <div>
+          <p *ngIf="user.dob">{{ user.dob }}</p>
+          <p *ngIf="!user.dob">Ngày sinh chưa được cập nhật</p>
+        </div>
+        <div>
+          <button
+            mat-button
+            color="primary"
+            (click)="modifyState.dob = !modifyState.dob"
+          >
+            <span *ngIf="user.dob"> Chỉnh sửa </span>
+            <span *ngIf="!user.dob"> Thêm </span>
+          </button>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="modifyState.dob">
+      <div class="d-flex-bh align-items-center-bh justify-content-between-bh">
+        <mat-form-field appearance="fill">
+          <mat-label>Choose a date</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dob" />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <div class="d-flex-bh align-items-center-bh">
+          <div class="mr-r-5">
+            <button mat-button (click)="modifyState.dob = !modifyState.dob">
+              Huỷ
+            </button>
+          </div>
+          <div>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="updateUser('dob')"
+              [disabled]="userFG.get('dob')!.invalid"
+            >
+              Cập nhật
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</form>
