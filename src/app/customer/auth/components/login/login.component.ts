@@ -93,13 +93,16 @@ export class LoginComponent {
   signInWithGoogleCallback(response: any) {
     this._progressSpinnerService.next(true);
     this.ngZone.run(() => {
-      this._authService.signInGoogleCallBack(response).subscribe((res) => {
-        const { user, accessToken, refreshToken } = res;
-        this._userService.nextUser(user);
-        this._authService.emitAccessToken(accessToken);
-        this._authService.storeCookieRefreshToken(refreshToken);
-        this.dialogRef.close();
-      });
+      this._authService
+        .signInGoogleCallBack(response)
+        .subscribe((res: AuthenticationResponse) => {
+          console.log(res);
+          const { user, accessToken, refreshToken } = res;
+          this._userService.nextUser(user);
+          this._authService.emitAccessToken(accessToken);
+          this._authService.storeCookieRefreshToken(refreshToken);
+          this.dialogRef.close();
+        });
     });
   }
 

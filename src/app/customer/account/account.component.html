@@ -9,6 +9,7 @@
             >
               <a [routerLink]="[n.path]">
                 <mat-expansion-panel
+                  [expanded]="n.isExpanded"
                   [hideToggle]="!n.scrollIntoViewList.length"
                   [disabled]="!n.scrollIntoViewList.length"
                   class="mr-b-5"
@@ -24,6 +25,7 @@
                     *ngFor="let c of n.scrollIntoViewList"
                     (click)="$event.stopPropagation()"
                     [routerLink]="[n.path + '/' + c.path]"
+                    routerLinkActive="router-link--active"
                   >
                     {{ c.label }}
                   </a>

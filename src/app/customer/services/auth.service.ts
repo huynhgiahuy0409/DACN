@@ -18,7 +18,9 @@ import {
   catchError,
   finalize,
   map,
+  of,
   tap,
+  throwError,
 } from 'rxjs';
 import { OAuthProvider, OTPType } from 'src/app/models/enum';
 import { AuthenticationResponse } from 'src/app/models/response/model';
@@ -86,7 +88,7 @@ export class AuthService implements OnInit {
   }
 
   deleteRefreshTokenFromCookie() {
-    return this.cookieService.delete('refresh-token');
+    this.cookieService.delete("refresh-token", "/")
   }
 
   signIn(signInRequest: SignInRequest): Observable<AuthenticationResponse> {
@@ -221,14 +223,14 @@ export class AuthService implements OnInit {
           user.coverUrl = USER_COVER_PATH + `${user.coverUrl}`;
           return res;
         }),
+        catchError((errorRes: any) => {
+          this.deleteRefreshTokenFromCookie()
+          window.location.href = "/home"
+          return throwError(() => errorRes)
+        }),
         finalize(() => {
           this._progressSpinnerService.next(false);
         }),
-        catchError((errorRes: HttpErrorResponse) => {
-          this.deleteRefreshTokenFromCookie();
-          this._router.navigateByUrl('/home');
-          throw errorRes;
-        })
       );
   }
 
